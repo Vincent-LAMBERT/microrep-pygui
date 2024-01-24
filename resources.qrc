@@ -1,9 +1,13 @@
 <RCC>
   <qresource prefix="images">
+    <file>images/images/microRep.png</file>
+    <file>images/images/microRep_vertical.png</file>
+    <file>images/images/microRep_horizontal.png</file>
     <file>images/images/PyDracula.png</file>
     <file>images/images/PyDracula_vertical.png</file>
   </qresource>
   <qresource prefix="icons">
+    <file>images/icons/cil-info.png</file>
     <file>images/icons/cil-3d.png</file>
     <file>images/icons/cil-4k.png</file>
     <file>images/icons/cil-account-logout.png</file>

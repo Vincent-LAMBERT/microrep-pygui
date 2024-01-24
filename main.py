@@ -22,7 +22,6 @@ import platform
 # ///////////////////////////////////////////////////////////////
 from modules import *
 from widgets import *
-os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 
 # SET AS GLOBAL WIDGETS
 # ///////////////////////////////////////////////////////////////
@@ -41,15 +40,19 @@ class MainWindow(QMainWindow):
 
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
-        Settings.ENABLE_CUSTOM_TITLE_BAR = True
+        
+        # On windows set to true
+        if platform.system() == 'Windows':
+            Settings.ENABLE_CUSTOM_TITLE_BAR = True
+        # On mac or linux set to false
+        else : 
+            Settings.ENABLE_CUSTOM_TITLE_BAR = False
 
         # APP NAME
         # ///////////////////////////////////////////////////////////////
-        title = "PyDracula - Modern GUI"
-        description = "PyDracula APP - Theme with colors based on Dracula for Python."
+        title = "µRep-PyGUI"
         # APPLY TEXTS
         self.setWindowTitle(title)
-        widgets.titleRightInfo.setText(description)
 
         # TOGGLE MENU
         # ///////////////////////////////////////////////////////////////
