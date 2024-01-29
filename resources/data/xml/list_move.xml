@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<hand>
+  <finger fingerType="thumb">
+    <gesture microgesture="swipe" charac="up|down" markerType="actuator" id_coord="0"/>
+    <gesture microgesture="tap|hold" charac="tip|middle|base" markerType="actuator" id_coord="0"/>
+    <gesture microgesture="tap|hold" charac="tip" markerType="traj-start" id_coord="1"/>
+    <gesture microgesture="tap|hold" charac="middle" markerType="traj-start" id_coord="2"/>
+    <gesture microgesture="tap|hold" charac="base" markerType="traj-start" id_coord="3"/>
+  </finger>
+  <finger fingerType="index">
+    <gesture microgesture="tap|hold" charac="tip" markerType="traj-end" id_coord="4"/>
+    <gesture microgesture="tap|hold" charac="middle" markerType="traj-end" id_coord="5"/>
+    <gesture microgesture="tap|hold" charac="base" markerType="traj-end" id_coord="6"/>
+    <gesture microgesture="tap" charac="tip" markerType="receiver" id_coord="7"/>
+    <gesture microgesture="tap" charac="middle" markerType="receiver" id_coord="9"/>
+    <gesture microgesture="tap" charac="base" markerType="receiver" id_coord="11"/>
+    <gesture microgesture="hold" charac="tip" markerType="receiver" id_coord="7"/>
+    <gesture microgesture="hold" charac="middle" markerType="receiver" id_coord="9"/>
+    <gesture microgesture="hold" charac="base" markerType="receiver" id_coord="11"/>
+    <gesture microgesture="swipe" charac="up" markerType="traj-start" id_coord="10"/>
+    <gesture microgesture="swipe" charac="up" markerType="traj-end" id_coord="8"/>
+    <gesture microgesture="swipe" charac="down" markerType="traj-start" id_coord="8"/>
+    <gesture microgesture="swipe" charac="down" markerType="traj-end" id_coord="10"/>
+  </finger>
+  <finger fingerType="middle">
+    <gesture microgesture="tap|hold" charac="tip" markerType="traj-end" id_coord="12"/>
+    <gesture microgesture="tap|hold" charac="middle" markerType="traj-end" id_coord="13"/>
+    <gesture microgesture="tap|hold" charac="base" markerType="traj-end" id_coord="14"/>
+    <gesture microgesture="tap" charac="tip" markerType="receiver" id_coord="15"/>
+    <gesture microgesture="tap" charac="middle" markerType="receiver" id_coord="17"/>
+    <gesture microgesture="tap" charac="base" markerType="receiver" id_coord="19"/>
+    <gesture microgesture="hold" charac="tip" markerType="receiver" id_coord="15"/>
+    <gesture microgesture="hold" charac="middle" markerType="receiver" id_coord="17"/>
+    <gesture microgesture="hold" charac="base" markerType="receiver" id_coord="19"/>
+    <gesture microgesture="swipe" charac="up" markerType="traj-start" id_coord="18"/>
+    <gesture microgesture="swipe" charac="up" markerType="traj-end" id_coord="16"/>
+    <gesture microgesture="swipe" charac="down" markerType="traj-start" id_coord="16"/>
+    <gesture microgesture="swipe" charac="down" markerType="traj-end" id_coord="18"/>
+  </finger>
+  <finger fingerType="ring">
+    <gesture microgesture="tap|hold" charac="tip" markerType="traj-end" id_coord="20"/>
+    <gesture microgesture="tap|hold" charac="middle" markerType="traj-end" id_coord="21"/>
+    <gesture microgesture="tap|hold" charac="base" markerType="traj-end" id_coord="22"/>
+    <gesture microgesture="tap" charac="tip" markerType="receiver" id_coord="23"/>
+    <gesture microgesture="tap" charac="middle" markerType="receiver" id_coord="25"/>
+    <gesture microgesture="tap" charac="base" markerType="receiver" id_coord="27"/>
+    <gesture microgesture="hold" charac="tip" markerType="receiver" id_coord="23"/>
+    <gesture microgesture="hold" charac="middle" markerType="receiver" id_coord="25"/>
+    <gesture microgesture="hold" charac="base" markerType="receiver" id_coord="27"/>
+    <gesture microgesture="swipe" charac="up" markerType="traj-start" id_coord="26"/>
+    <gesture microgesture="swipe" charac="up" markerType="traj-end" id_coord="24"/>
+    <gesture microgesture="swipe" charac="down" markerType="traj-start" id_coord="24"/>
+    <gesture microgesture="swipe" charac="down" markerType="traj-end" id_coord="26"/>
+  </finger>
+  <finger fingerType="pinky">
+    <gesture microgesture="tap|hold" charac="tip" markerType="traj-end" id_coord="28"/>
+    <gesture microgesture="tap|hold" charac="middle" markerType="traj-end" id_coord="29"/>
+    <gesture microgesture="tap|hold" charac="base" markerType="traj-end" id_coord="30"/>
+    <gesture microgesture="tap" charac="tip" markerType="receiver" id_coord="31"/>
+    <gesture microgesture="tap" charac="middle" markerType="receiver" id_coord="33"/>
+    <gesture microgesture="tap" charac="base" markerType="receiver" id_coord="35"/>
+    <gesture microgesture="hold" charac="tip" markerType="receiver" id_coord="31"/>
+    <gesture microgesture="hold" charac="middle" markerType="receiver" id_coord="33"/>
+    <gesture microgesture="hold" charac="base" markerType="receiver" id_coord="35"/>
+    <gesture microgesture="swipe" charac="up" markerType="traj-start" id_coord="34"/>
+    <gesture microgesture="swipe" charac="up" markerType="traj-end" id_coord="32"/>
+    <gesture microgesture="swipe" charac="down" markerType="traj-start" id_coord="32"/>
+    <gesture microgesture="swipe" charac="down" markerType="traj-end" id_coord="34"/>
+  </finger>
+</hand>

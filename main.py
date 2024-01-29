@@ -71,9 +71,10 @@ class MainWindow(QMainWindow):
 
         # LEFT MENUS
         widgets.btn_home.clicked.connect(self.buttonClick)
-        widgets.btn_widgets.clicked.connect(self.buttonClick)
-        widgets.btn_new.clicked.connect(self.buttonClick)
-        widgets.btn_save.clicked.connect(self.buttonClick)
+        widgets.btn_generator.clicked.connect(self.buttonClick)
+        widgets.btn_classic.clicked.connect(self.buttonClick)
+        widgets.btn_webcam.clicked.connect(self.buttonClick)
+        widgets.btn_exp.clicked.connect(self.buttonClick)
 
         # EXTRA LEFT BOX
         def openCloseLeftBox():
@@ -108,6 +109,10 @@ class MainWindow(QMainWindow):
         widgets.stackedWidget.setCurrentWidget(widgets.home)
         widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
 
+        # START CUSTOM FUNCTIONS
+        # ///////////////////////////////////////////////////////////////
+        AppFunctions.addLiveThreads(self)
+
 
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
@@ -123,20 +128,29 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
-        # SHOW WIDGETS PAGE
-        if btnName == "btn_widgets":
-            widgets.stackedWidget.setCurrentWidget(widgets.widgets)
-            UIFunctions.resetStyle(self, btnName)
-            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
-
-        # SHOW NEW PAGE
-        if btnName == "btn_new":
-            widgets.stackedWidget.setCurrentWidget(widgets.new_page) # SET PAGE
+        # SHOW GENERATOR PAGE
+        if btnName == "btn_generator":
+            widgets.stackedWidget.setCurrentWidget(widgets.widgets) # SET PAGE
             UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
 
-        if btnName == "btn_save":
-            print("Save BTN clicked!")
+        # SHOW CLASSIC DEMO PAGE
+        if btnName == "btn_classic":
+            widgets.stackedWidget.setCurrentWidget(widgets.new_page)
+            UIFunctions.resetStyle(self, btnName)
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
+
+        # SHOW WEBCAM DEMO PAGE
+        if btnName == "btn_webcam":
+            widgets.stackedWidget.setCurrentWidget(widgets.home) # SET PAGE
+            UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
+
+        # SHOW WEBCAM DEMO PAGE
+        if btnName == "btn_exp":
+            widgets.stackedWidget.setCurrentWidget(widgets.new_page) # SET PAGE
+            UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
 
         # PRINT BTN NAME
         print(f'Button "{btnName}" pressed!')
@@ -164,4 +178,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon("icon.ico"))
     window = MainWindow()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

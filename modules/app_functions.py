@@ -17,6 +17,9 @@
 # MAIN FILE
 # ///////////////////////////////////////////////////////////////
 from main import *
+from modules.utils.AppUtils import TEMP_FOLDER_PATH, createFolder, deleteFolder
+from modules.utils.LiveCompute import LiveCompute
+from modules.utils.WebcamThread import WebcamThread
 
 # WITH ACCESS TO MAIN WINDOW WIDGETS
 # ///////////////////////////////////////////////////////////////
@@ -39,3 +42,22 @@ class AppFunctions(MainWindow):
         self.ui.horizontalScrollBar.setStyleSheet("background-color: #6272a4;")
         self.ui.verticalScrollBar.setStyleSheet("background-color: #6272a4;")
         self.ui.commandLinkButton.setStyleSheet("color: #8de4ee;")
+
+    def addLiveThreads(self) :
+        # # Create the temp folder (erase the old one if it exists)
+        # deleteFolder(TEMP_FOLDER_PATH)
+        # createFolder(TEMP_FOLDER_PATH)
+
+        # live_compute = LiveCompute("live_config.csv")
+        # self.video_thread = WebcamThread(live_compute=live_compute, frame_rate=30, frame_skip=2)
+        
+        # # Permet la superposition des labels/images
+        # frame_layout = self.ui.webcam.layout()
+        # frame_layout.addWidget(self.video_thread.label_live_file,0,0)
+        # frame_layout.addWidget(self.video_thread.label_markers,0,0)
+        # frame_layout.addWidget(self.video_thread.label_rep,0,0)
+        # frame_layout.addWidget(self.video_thread.label_commands,0,0)
+
+        # self.video_thread.start()
+
+        print("Threads started")

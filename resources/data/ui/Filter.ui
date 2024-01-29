@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>510</width>
+    <height>519</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Filter</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../images/favicon.ico</normaloff>../../images/favicon.ico</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="3" column="0" colspan="4">
+    <widget class="QLabel" name="label_str_config">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QComboBox" name="comboBox_fing">
+     <item>
+      <property name="text">
+       <string>Index</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Middle</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ring</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Pinky</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="5">
+    <widget class="QListWidget" name="listWidget"/>
+   </item>
+   <item row="3" column="4">
+    <widget class="QPushButton" name="pushButton_4">
+     <property name="text">
+      <string>Apply</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="5">
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Choose a gesture to add to the computation :</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QComboBox" name="comboBox_charac">
+     <item>
+      <property name="text">
+       <string>Tip</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Middle</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Base</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Up</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Down</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="comboBox_type">
+     <item>
+      <property name="text">
+       <string>Tap</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Hold</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Swipe</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Flex</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="5">
+    <widget class="QLabel" name="label_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Liste of choosen gesture :</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="5">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Current configuration string :</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="text">
+      <string>Remove</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="text">
+      <string>Clear</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="2">
+    <widget class="QPushButton" name="pushButton_5">
+     <property name="text">
+      <string>Save</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="3" colspan="2">
+    <widget class="QPushButton" name="pushButton_6">
+     <property name="text">
+      <string>Save and quit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QPushButton" name="pushButton_9">
+     <property name="text">
+      <string>Set to default</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QPushButton" name="pushButton_7">
+     <property name="text">
+      <string>Set to last save</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>addRepresentationType()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>432</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>428</x>
+     <y>31</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>applyRepresentationConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>434</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>483</x>
+     <y>84</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>removeRepresentationConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>17</x>
+     <y>463</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>88</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>clearRepresentationConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>159</x>
+     <y>474</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>182</x>
+     <y>285</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_9</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>defaultRepresentationConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>44</x>
+     <y>500</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>106</x>
+     <y>204</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_7</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>lastRepresentationConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>121</x>
+     <y>492</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>142</x>
+     <y>258</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>saveRepresentationConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>231</x>
+     <y>497</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>273</x>
+     <y>317</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_6</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>quitRepresentationConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>323</x>
+     <y>506</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>330</x>
+     <y>347</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>addRepresentationType()</slot>
+  <slot>applyRepresentationConfig()</slot>
+  <slot>removeRepresentationConfig()</slot>
+  <slot>clearRepresentationConfig()</slot>
+  <slot>defaultRepresentationConfig()</slot>
+  <slot>lastRepresentationConfig()</slot>
+  <slot>saveRepresentationConfig()</slot>
+  <slot>quitRepresentationConfig()</slot>
+ </slots>
+</ui>
