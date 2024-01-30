@@ -24,7 +24,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplicat
     QVBoxLayout, QWidget)
 
 from widgets.image_viewer.ImageViewer import ImageViewer
-from .resources_rc import *
+import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):

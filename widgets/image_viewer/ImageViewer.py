@@ -1,19 +1,19 @@
 # Code taken from : https://stackoverflow.com/questions/67948983/resizing-a-window-with-pyqt5-how-do-i-reduce-the-size-of-a-widget-to-allow-the/67952671#67952671
 
-from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtGui import QPixmap, QPainter
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtWidgets import QLabel
+from PySide6.QtGui import QPixmap, QPainter
 
-class ImageViewer(QWidget):
+class ImageViewer(QLabel):
     pixmap = None
     _sizeHint = QSize()
     ratio = Qt.KeepAspectRatio
     transformation = Qt.SmoothTransformation
 
-    def __init__(self, pixmap=None):
-        super().__init__()
+    def __init__(self, parent):
+        super().__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
-        self.setPixmap(pixmap)
+        self.setPixmap(None)
 
     def setPixmap(self, pixmap):
         if self.pixmap != pixmap:

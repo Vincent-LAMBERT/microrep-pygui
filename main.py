@@ -29,7 +29,7 @@ widgets = None
 
 class MainWindow(QMainWindow):
     def __init__(self):
-        QMainWindow.__init__(self)
+        super(MainWindow, self).__init__()
 
         # SET AS GLOBAL WIDGETS
         # ///////////////////////////////////////////////////////////////
@@ -111,8 +111,8 @@ class MainWindow(QMainWindow):
 
         # START CUSTOM FUNCTIONS
         # ///////////////////////////////////////////////////////////////
-        AppFunctions.addLiveThreads(self)
-
+        AppFunctions.appStartUp(self)
+        AppFunctions.startWebcam(self)
 
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
@@ -146,7 +146,7 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
 
-        # SHOW WEBCAM DEMO PAGE
+        # SHOW EXPERIMENT PAGE
         if btnName == "btn_exp":
             widgets.stackedWidget.setCurrentWidget(widgets.new_page) # SET PAGE
             UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED

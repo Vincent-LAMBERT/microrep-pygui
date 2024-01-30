@@ -42,22 +42,22 @@ class AppFunctions(MainWindow):
         self.ui.horizontalScrollBar.setStyleSheet("background-color: #6272a4;")
         self.ui.verticalScrollBar.setStyleSheet("background-color: #6272a4;")
         self.ui.commandLinkButton.setStyleSheet("color: #8de4ee;")
+    
+    def appStartUp(self) :
+        # Create the temp folder (erase the old one if it exists)
+        deleteFolder(TEMP_FOLDER_PATH)
+        createFolder(TEMP_FOLDER_PATH)
+        self.live_compute = LiveCompute("live_config.csv")
 
-    def addLiveThreads(self) :
-        # # Create the temp folder (erase the old one if it exists)
-        # deleteFolder(TEMP_FOLDER_PATH)
-        # createFolder(TEMP_FOLDER_PATH)
+    def startWebcam(self) :
+        label_live_file = self.ui.label_live_file
+        label_markers = self.ui.label_markers
+        label_rep = self.ui.label_rep
+        label_commands = self.ui.label_commands
+        self.video_thread = WebcamThread(label_live_file, label_markers, label_rep, label_commands, live_compute=self.live_compute, frame_rate=30, frame_skip=2)
 
-        # live_compute = LiveCompute("live_config.csv")
-        # self.video_thread = WebcamThread(live_compute=live_compute, frame_rate=30, frame_skip=2)
-        
-        # # Permet la superposition des labels/images
-        # frame_layout = self.ui.webcam.layout()
-        # frame_layout.addWidget(self.video_thread.label_live_file,0,0)
-        # frame_layout.addWidget(self.video_thread.label_markers,0,0)
-        # frame_layout.addWidget(self.video_thread.label_rep,0,0)
-        # frame_layout.addWidget(self.video_thread.label_commands,0,0)
+        self.video_thread.start()
 
-        # self.video_thread.start()
+    def stopWebcam(self) :
+        self.video_thread.terminate()
 
-        print("Threads started")

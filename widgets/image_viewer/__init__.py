@@ -14,5 +14,4 @@
 #
 # ///////////////////////////////////////////////////////////////
 
-from . custom_grips import CustomGrip
-from . image_viewer import ImageViewer
+from . ImageViewer import ImageViewer

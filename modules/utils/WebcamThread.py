@@ -40,7 +40,7 @@ class WebcamThread(QThread):
     detector = create_detector()
     dic = get_microgest_xml()
     
-    def __init__(self, live_compute, frame_rate=60, frame_skip=1, mp_result_max_size=3):
+    def __init__(self, label_live_file, label_markers, label_rep, label_commands, live_compute, frame_rate=60, frame_skip=1, mp_result_max_size=3):
         super(WebcamThread, self).__init__()
         self.is_running = True
         
@@ -49,10 +49,10 @@ class WebcamThread(QThread):
         self.frame_skip = frame_skip
         
         # Création des labels
-        self.label_live_file = ImageViewer()
-        self.label_markers = ImageViewer()
-        self.label_rep = ImageViewer()
-        self.label_commands = ImageViewer()
+        self.label_live_file = label_live_file
+        self.label_markers = label_markers
+        self.label_rep = label_rep
+        self.label_commands = label_commands
 
         # Creation de la liste des mp_results et de sa taille max
         # (pour fluidification de la détection)
@@ -74,7 +74,6 @@ class WebcamThread(QThread):
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 # Upscale the image by 450%
                 image = cv2.resize(image, None, fx=2.28, fy=2.28, interpolation=cv2.INTER_LANCZOS4)
-                # print(f"Image shape : {image.shape}")
                 self.image_data.emit(image)
         self.quit()
     
@@ -92,7 +91,7 @@ class WebcamThread(QThread):
 
     # Fonction gerant la mise a jour de l'affichage
     def update_image(self, image):
-        print("update")
+        print(f"Image : {image}")
         if not self.resize_done :
             self.lc.resizeDesign(image)
             self.resize_done = True
