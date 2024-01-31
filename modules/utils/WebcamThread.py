@@ -20,8 +20,16 @@ from .AppUtils import *
 import time, numpy,cv2, subprocess, copy
 import threading
 
+from PySide6.QtCore import QLibraryInfo
+
+
+os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = QLibraryInfo.path(QLibraryInfo.PluginsPath)
+os.environ["QT_LOGGING_RULES"] = '*.debug=false;qt.accessibility.cache.warning=false;qt.qpa.events.warning=false;qt.qpa.fonts.warning=false;qt.qpa.gl.warning=false;qt.qpa.input.devices.warning=false;qt.qpa.screen.warning=false;qt.qpa.xcb.warning=false;qt.text.font.db.warning=false;qt.xkb.compose.warning=false'
+
 # Classe QThread personnalisée pour la capture vidéo
 class WebcamThread(QThread):
+    is_running = True
+    webcam_on = False
     image_data = Signal(np.ndarray)
     dic = get_microgest_xml()
 
@@ -41,7 +49,6 @@ class WebcamThread(QThread):
     
     def __init__(self, label_live_file, label_markers, label_rep, label_commands, live_compute, frame_rate=60, frame_skip=1, mp_result_max_size=3):
         super(WebcamThread, self).__init__()
-        self.is_running = True
         
         self.lc = live_compute
         self.frame_rate = frame_rate
@@ -58,31 +65,50 @@ class WebcamThread(QThread):
         self.mp_result_list = []
         self.mp_result_max_size = mp_result_max_size
 
+        self.start()
+
     def run(self):
-        cap = cv2.VideoCapture(0)
-        prev = 0
-        while cap.isOpened() and self.is_running:
-            time_elapsed = time.time() - prev
-            success, image = cap.read()
-            if not success:
-                print("Ignoring empty camera frame.")
-                continue
-            if time_elapsed > 1./self.frame_rate:
-                prev = time.time()
-                image.flags.writeable = False
-                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                # Upscale the image by 450%
-                image = cv2.resize(image, None, fx=2.28, fy=2.28, interpolation=cv2.INTER_LANCZOS4)
-                self.image_data.emit(image)
-        self.quit()
-    
-    def stop(self):
-        self.is_running = False
+        cap = None
+        while self.is_running :
+            if self.webcam_on :
+                # Turn the camera on
+                cap = cv2.VideoCapture(0)
+                prev = 0
+                while cap.isOpened() and self.webcam_on:
+                    self.lc.update_running_info()
+                    time_elapsed = time.time() - prev
+                    success, image = cap.read()
+                    if not success:
+                        print("Ignoring empty camera frame.")
+                        continue
+                    if time_elapsed > 1./self.frame_rate:
+                        prev = time.time()
+                        image.flags.writeable = False
+                        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                        # Upscale the image by 450%
+                        image = cv2.resize(image, None, fx=2.28, fy=2.28, interpolation=cv2.INTER_LANCZOS4)
+                        self.image_data.emit(image)
+
+                if cap.isOpened():
+                    cap.release()
+            else :
+                self.lc.update_running_info()
+        # self.quit()
 
     def start(self) -> None:
         self.image_data.connect(self.update_image)
         self.setTerminationEnabled(True)
         super().start()
+
+    def stop(self) -> None:
+        self.is_running = False
+    
+    def stopWebcam(self):
+        self.webcam_on = False
+        print("Stopping the camera")
+
+    def restartWebcam(self):
+        self.webcam_on = True
 
     #####################################################
     ############## UPDATE FUNCTIONS #####################
@@ -105,7 +131,6 @@ class WebcamThread(QThread):
         self.update_labels()
 
         self.frame_count += 1
-        self.lc.update_running_info()
 
     def update_background(self, image):
         time.sleep(0.2) # Makes the background update coincide with the markers update

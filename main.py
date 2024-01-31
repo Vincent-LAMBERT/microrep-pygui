@@ -146,10 +146,9 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
             
-            self.webcam_thread.start()
+            self.webcam_thread.restartWebcam()
         else :
-            self.webcam_thread.stop()
-            self.webcam_thread.wait()
+            self.webcam_thread.stopWebcam()
 
         # SHOW EXPERIMENT PAGE
         if btnName == "btn_exp":
