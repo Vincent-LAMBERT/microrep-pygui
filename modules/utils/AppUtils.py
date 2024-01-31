@@ -1,8 +1,8 @@
 import os
-from PyQt5.QtGui import QPixmap, QPainter
-from PyQt5.QtCore import QByteArray
-from PyQt5.QtSvg import QSvgRenderer
-from PyQt5.QtCore import QSize, Qt
+from PySide6.QtGui import QPixmap, QPainter
+from PySide6.QtCore import QByteArray
+from PySide6.QtSvg import QSvgRenderer
+from PySide6.QtCore import QSize, Qt
 from lxml import etree
 import pathlib
 from microrep.core.ref_and_specs import LayerRef, get_layer_refs, get_mg_layer_refs, get_marker_layer_refs, get_markers_pos

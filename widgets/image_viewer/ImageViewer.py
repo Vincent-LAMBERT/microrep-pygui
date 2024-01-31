@@ -1,4 +1,4 @@
-# Code taken from : https://stackoverflow.com/questions/67948983/resizing-a-window-with-pyqt5-how-do-i-reduce-the-size-of-a-widget-to-allow-the/67952671#67952671
+# Code taken from : https://stackoverflow.com/questions/67948983/resizing-a-window-with-PySide6-how-do-i-reduce-the-size-of-a-widget-to-allow-the/67952671#67952671
 
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import QLabel
@@ -10,7 +10,7 @@ class ImageViewer(QLabel):
     ratio = Qt.KeepAspectRatio
     transformation = Qt.SmoothTransformation
 
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setPixmap(None)

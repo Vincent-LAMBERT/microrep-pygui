@@ -17,6 +17,7 @@
 import sys
 import os
 import platform
+import cv2
 
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
@@ -87,6 +88,10 @@ class MainWindow(QMainWindow):
             UIFunctions.toggleRightBox(self, True)
         widgets.settingsTopBtn.clicked.connect(openCloseRightBox)
 
+        # START CUSTOM FUNCTIONS
+        # ///////////////////////////////////////////////////////////////
+        AppFunctions.appStartUp(self)
+
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
         self.show()
@@ -108,11 +113,6 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         widgets.stackedWidget.setCurrentWidget(widgets.home)
         widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
-
-        # START CUSTOM FUNCTIONS
-        # ///////////////////////////////////////////////////////////////
-        AppFunctions.appStartUp(self)
-        AppFunctions.startWebcam(self)
 
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
@@ -142,9 +142,14 @@ class MainWindow(QMainWindow):
 
         # SHOW WEBCAM DEMO PAGE
         if btnName == "btn_webcam":
-            widgets.stackedWidget.setCurrentWidget(widgets.home) # SET PAGE
+            widgets.stackedWidget.setCurrentWidget(widgets.webcam) # SET PAGE
             UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
+            
+            self.webcam_thread.start()
+        else :
+            self.webcam_thread.stop()
+            self.webcam_thread.wait()
 
         # SHOW EXPERIMENT PAGE
         if btnName == "btn_exp":
@@ -173,6 +178,44 @@ class MainWindow(QMainWindow):
             print('Mouse click: LEFT CLICK')
         if event.buttons() == Qt.RightButton:
             print('Mouse click: RIGHT CLICK')
+
+            
+    @Slot(QImage)
+    def runWebCam(self, idx):
+        self.idx = idx
+        combo = self.sender()
+        print(f"Selected the variable {idx} from combo {combo.id_number}")
+        self.th.start()
+
+    @Slot(QImage)
+    def setImage(self, image):
+        self.label.setPixmap(QPixmap.fromImage(image))
+    
+    def getAvailableCameras(self):
+        cameras = QMediaDevices.videoInputs()
+        for cameraDevice in cameras:
+            self.availableCameras.append(cameraDevice.description())
+
+
+class Thread(QThread):
+    updateFrame = Signal(QImage)
+    def __init__(self, parent=None):
+        QThread.__init__(self, parent)
+        self.status = True
+        self.cap = True
+
+    def run(self):
+        self.cap = cv2.VideoCapture(0)
+        while self.status:
+            ret, frame = self.cap.read()
+            if not ret:
+                continue
+            h, w, ch = frame.shape
+            img = QImage(frame.data, w, h, ch * w, QImage.Format_RGB888)
+            scaled_img = img.scaled(640, 480, Qt.KeepAspectRatio)
+            # Emit signal
+            self.updateFrame.emit(scaled_img)
+        sys.exit(-1)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

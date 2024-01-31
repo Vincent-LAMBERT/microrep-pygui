@@ -2,13 +2,12 @@
 import threading
 import time
 import os
-from PyQt5.QtCore import pyqtSignal, Qt, QBuffer, QThread
-from PyQt5.QtGui import QPixmap,QImage
+from PySide6.QtCore import Signal, Qt, QBuffer, QThread
+from PySide6.QtGui import QPixmap,QImage
 import cv2
 from microrep.core.utils import TRAJ_END, TRAJ_START, get_fmc_combination
 from microrep.create_representations.create_representations.configuration_file import get_combinations_from_file
 import PIL as pix
-from PyQt5 import uic
 
 from lxml import etree
 import numpy as np
@@ -18,7 +17,7 @@ import threading
 
 # Classe QThread personnalisée pour la capture vidéo
 class VideoThread(QThread):
-    image_data = pyqtSignal(np.ndarray)
+    image_data = Signal(np.ndarray)
     
     def __init__(self, frame_rate=60, frame_skip=1):
         super(VideoThread, self).__init__()

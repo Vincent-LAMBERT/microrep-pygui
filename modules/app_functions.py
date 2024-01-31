@@ -16,10 +16,14 @@
 
 # MAIN FILE
 # ///////////////////////////////////////////////////////////////
+import threading
+import cv2
 from main import *
 from modules.utils.AppUtils import TEMP_FOLDER_PATH, createFolder, deleteFolder
 from modules.utils.LiveCompute import LiveCompute
 from modules.utils.WebcamThread import WebcamThread
+
+from PySide6.QtMultimedia import QMediaDevices
 
 # WITH ACCESS TO MAIN WINDOW WIDGETS
 # ///////////////////////////////////////////////////////////////
@@ -47,17 +51,10 @@ class AppFunctions(MainWindow):
         # Create the temp folder (erase the old one if it exists)
         deleteFolder(TEMP_FOLDER_PATH)
         createFolder(TEMP_FOLDER_PATH)
-        self.live_compute = LiveCompute("live_config.csv")
-
-    def startWebcam(self) :
+        self.live_compute = LiveCompute("live_config.csv", running_info=self.ui.runningInfo)
         label_live_file = self.ui.label_live_file
         label_markers = self.ui.label_markers
         label_rep = self.ui.label_rep
         label_commands = self.ui.label_commands
-        self.video_thread = WebcamThread(label_live_file, label_markers, label_rep, label_commands, live_compute=self.live_compute, frame_rate=30, frame_skip=2)
-
-        self.video_thread.start()
-
-    def stopWebcam(self) :
-        self.video_thread.terminate()
+        self.webcam_thread = WebcamThread(label_live_file, label_markers, label_rep, label_commands, live_compute=self.live_compute, frame_rate=30, frame_skip=2)
 

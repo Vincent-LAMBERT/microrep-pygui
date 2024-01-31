@@ -2,7 +2,7 @@ import copy
 import csv
 import logging
 import os
-from PyQt5.QtGui import QPixmap,QImage
+from PySide6.QtGui import QPixmap,QImage
 import random
 import cv2
 import svg.path

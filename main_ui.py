@@ -22,8 +22,6 @@ from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplicat
     QScrollArea, QScrollBar, QSizePolicy, QSlider,
     QStackedWidget, QTableWidget, QTableWidgetItem, QTextEdit,
     QVBoxLayout, QWidget)
-
-from widgets.image_viewer.ImageViewer import ImageViewer
 import resources_rc
 
 class Ui_MainWindow(object):
@@ -572,10 +570,9 @@ class Ui_MainWindow(object):
 "\n"
 "\n"
 "")
-        self.verticalLayout_11 = QVBoxLayout(self.styleSheet)
-        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
         self.bgApp = QFrame(self.styleSheet)
         self.bgApp.setObjectName(u"bgApp")
+        self.bgApp.setGeometry(QRect(9, 9, 922, 699))
         self.bgApp.setStyleSheet(u"")
         self.bgApp.setFrameShape(QFrame.NoFrame)
         self.bgApp.setFrameShadow(QFrame.Raised)
@@ -1156,7 +1153,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 274, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -1361,38 +1358,28 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.new_page)
         self.webcam = QWidget()
         self.webcam.setObjectName(u"webcam")
-        self.webcam.setStyleSheet(u"background-image: url(:/images/resources/images/images//microRep_vertical.png);\n"
-"    background-position: center;\n"
-"    background-repeat: no-repeat;")
-        self.verticalLayout_21 = QVBoxLayout(self.webcam)
-        self.verticalLayout_21.setObjectName(u"verticalLayout_21")
-        self.label_live_file = ImageViewer(self.webcam)
+        self.webcam.setStyleSheet(u"")
+        self.gridLayout_3 = QGridLayout(self.webcam)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.label_live_file = QLabel(self.webcam)
         self.label_live_file.setObjectName(u"label_live_file")
-        self.label_live_file.setGeometry(QRect(0, 0, 47, 14))
-        self.label_live_file.setMinimumSize(QSize(0, 0))
 
-        self.verticalLayout_21.addWidget(self.label_live_file)
+        self.gridLayout_3.addWidget(self.label_live_file, 0, 0, 1, 1)
 
-        self.label_markers = ImageViewer(self.webcam)
+        self.label_markers = QLabel(self.webcam)
         self.label_markers.setObjectName(u"label_markers")
-        self.label_markers.setGeometry(QRect(0, 0, 47, 14))
-        self.label_markers.setMinimumSize(QSize(0, 0))
 
-        self.verticalLayout_21.addWidget(self.label_markers)
+        self.gridLayout_3.addWidget(self.label_markers, 0, 0, 1, 1)
 
-        self.label_rep = ImageViewer(self.webcam)
+        self.label_rep = QLabel(self.webcam)
         self.label_rep.setObjectName(u"label_rep")
-        self.label_rep.setGeometry(QRect(0, 0, 47, 14))
-        self.label_rep.setMinimumSize(QSize(0, 0))
 
-        self.verticalLayout_21.addWidget(self.label_rep)
+        self.gridLayout_3.addWidget(self.label_rep, 0, 0, 1, 1)
 
-        self.label_commands = ImageViewer(self.webcam)
+        self.label_commands = QLabel(self.webcam)
         self.label_commands.setObjectName(u"label_commands")
-        self.label_commands.setGeometry(QRect(0, 0, 47, 14))
-        self.label_commands.setMinimumSize(QSize(0, 0))
 
-        self.verticalLayout_21.addWidget(self.label_commands)
+        self.gridLayout_3.addWidget(self.label_commands, 0, 0, 1, 1)
 
         self.stackedWidget.addWidget(self.webcam)
 
@@ -1516,9 +1503,6 @@ class Ui_MainWindow(object):
 
 
         self.appLayout.addWidget(self.contentBox)
-
-
-        self.verticalLayout_11.addWidget(self.bgApp)
 
         MainWindow.setCentralWidget(self.styleSheet)
 
@@ -1656,10 +1640,10 @@ class Ui_MainWindow(object):
         self.tableWidget.setSortingEnabled(__sortingEnabled)
 
         self.label_new_page.setText(QCoreApplication.translate("MainWindow", u"NEW PAGE TEST", None))
-        self.label_live_file.setText("")
-        self.label_markers.setText("")
-        self.label_rep.setText("")
-        self.label_commands.setText("")
+        self.label_live_file.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_markers.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_rep.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_commands.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.btn_author.setText(QCoreApplication.translate("MainWindow", u"Author", None))
         self.btn_related.setText(QCoreApplication.translate("MainWindow", u"Related works", None))
         self.creditsLabel.setText(QCoreApplication.translate("MainWindow", u"By: Vincent Lambert", None))

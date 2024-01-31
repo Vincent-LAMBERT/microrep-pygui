@@ -2,13 +2,12 @@
 import threading
 import time
 import os
-from PyQt5.QtCore import pyqtSignal, Qt, QBuffer, QThread
-from PyQt5.QtGui import QPixmap,QImage
+from PySide6.QtCore import Signal, Qt, QBuffer, QThread
+from PySide6.QtGui import QPixmap,QImage
 import cv2
 from microrep.core.utils import TRAJ_END, TRAJ_START, get_fmc_combination
 from microrep.create_representations.create_representations.configuration_file import get_combinations_from_file
 import PIL as pix
-from PyQt5 import uic
 
 from lxml import etree
 import numpy as np
@@ -28,7 +27,7 @@ class LiveCompute(QThread):
     fmc_combinations = None
     rep_tree = None
 
-    def __init__(self, config_file_name, mp_result_max_size=3):
+    def __init__(self, config_file_name, running_info=None, mp_result_max_size=3):
         super(LiveCompute, self).__init__()
 
         self.config_path = getConfig(config_file_name)
@@ -42,6 +41,12 @@ class LiveCompute(QThread):
         # (pour fluidification de la détection)
         self.mp_result_list = []
         self.mp_result_max_size = mp_result_max_size
+
+        self.running_info = running_info
+
+    def update_running_info(self):
+        label = f"Running threads : {threading.active_count()}"
+        self.running_info.setText(label)
 
     def compute_design(self):
         tree = get_markers_tree()
