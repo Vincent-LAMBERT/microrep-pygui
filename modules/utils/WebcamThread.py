@@ -22,7 +22,6 @@ import threading
 
 from PySide6.QtCore import QLibraryInfo
 
-
 os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = QLibraryInfo.path(QLibraryInfo.PluginsPath)
 os.environ["QT_LOGGING_RULES"] = '*.debug=false;qt.accessibility.cache.warning=false;qt.qpa.events.warning=false;qt.qpa.fonts.warning=false;qt.qpa.gl.warning=false;qt.qpa.input.devices.warning=false;qt.qpa.screen.warning=false;qt.qpa.xcb.warning=false;qt.text.font.db.warning=false;qt.xkb.compose.warning=false'
 

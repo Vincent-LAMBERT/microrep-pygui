@@ -17,6 +17,7 @@
 # MAIN FILE
 # ///////////////////////////////////////////////////////////////
 from main import *
+from modules.app_settings import Settings
 
 # GLOBALS
 # ///////////////////////////////////////////////////////////////
@@ -232,8 +233,8 @@ class UIFunctions(MainWindow):
                     UIFunctions.maximize_restore(self)
                 # MOVE WINDOW
                 if event.buttons() == Qt.LeftButton:
-                    self.move(self.pos() + event.globalPos() - self.dragPos)
-                    self.dragPos = event.globalPos()
+                    self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
+                    self.dragPos = event.globalPosition().toPoint()
                     event.accept()
             self.ui.titleRightInfo.mouseMoveEvent = moveWindow
 

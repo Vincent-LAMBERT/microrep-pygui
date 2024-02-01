@@ -63,10 +63,6 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         UIFunctions.uiDefinitions(self)
 
-        # QTableWidget PARAMETERS
-        # ///////////////////////////////////////////////////////////////
-        widgets.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-
         # BUTTONS CLICK
         # ///////////////////////////////////////////////////////////////
 
@@ -111,7 +107,7 @@ class MainWindow(QMainWindow):
 
         # SET HOME PAGE AND SELECT MENU
         # ///////////////////////////////////////////////////////////////
-        widgets.stackedWidget.setCurrentWidget(widgets.home)
+        widgets.stackedWidget.setCurrentWidget(widgets.home_page)
         widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
 
     # BUTTONS CLICK
@@ -124,25 +120,25 @@ class MainWindow(QMainWindow):
 
         # SHOW HOME PAGE
         if btnName == "btn_home":
-            widgets.stackedWidget.setCurrentWidget(widgets.home)
+            widgets.stackedWidget.setCurrentWidget(widgets.home_page)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         # SHOW GENERATOR PAGE
         if btnName == "btn_generator":
-            widgets.stackedWidget.setCurrentWidget(widgets.widgets) # SET PAGE
+            widgets.stackedWidget.setCurrentWidget(widgets.generator_page) # SET PAGE
             UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
 
         # SHOW CLASSIC DEMO PAGE
         if btnName == "btn_classic":
-            widgets.stackedWidget.setCurrentWidget(widgets.new_page)
+            widgets.stackedWidget.setCurrentWidget(widgets.classic_page)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         # SHOW WEBCAM DEMO PAGE
         if btnName == "btn_webcam":
-            widgets.stackedWidget.setCurrentWidget(widgets.webcam) # SET PAGE
+            widgets.stackedWidget.setCurrentWidget(widgets.webcam_page) # SET PAGE
             UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
             
@@ -152,7 +148,7 @@ class MainWindow(QMainWindow):
 
         # SHOW EXPERIMENT PAGE
         if btnName == "btn_exp":
-            widgets.stackedWidget.setCurrentWidget(widgets.new_page) # SET PAGE
+            widgets.stackedWidget.setCurrentWidget(widgets.experiment_page) # SET PAGE
             UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
 
@@ -170,14 +166,7 @@ class MainWindow(QMainWindow):
     # ///////////////////////////////////////////////////////////////
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
-        self.dragPos = event.globalPos()
-
-        # PRINT MOUSE EVENTS
-        if event.buttons() == Qt.LeftButton:
-            print('Mouse click: LEFT CLICK')
-        if event.buttons() == Qt.RightButton:
-            print('Mouse click: RIGHT CLICK')
-
+        self.dragPos = event.globalPosition().toPoint()
             
     @Slot(QImage)
     def runWebCam(self, idx):

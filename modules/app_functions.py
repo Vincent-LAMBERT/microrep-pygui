@@ -40,7 +40,6 @@ class AppFunctions(MainWindow):
         self.ui.lineEdit.setStyleSheet("background-color: #6272a4;")
         self.ui.pushButton.setStyleSheet("background-color: #6272a4;")
         self.ui.plainTextEdit.setStyleSheet("background-color: #6272a4;")
-        self.ui.tableWidget.setStyleSheet("QScrollBar:vertical { background: #6272a4; } QScrollBar:horizontal { background: #6272a4; }")
         self.ui.scrollArea.setStyleSheet("QScrollBar:vertical { background: #6272a4; } QScrollBar:horizontal { background: #6272a4; }")
         self.ui.comboBox.setStyleSheet("background-color: #6272a4;")
         self.ui.horizontalScrollBar.setStyleSheet("background-color: #6272a4;")
@@ -51,10 +50,15 @@ class AppFunctions(MainWindow):
         # Create the temp folder (erase the old one if it exists)
         deleteFolder(TEMP_FOLDER_PATH)
         createFolder(TEMP_FOLDER_PATH)
+
         self.live_compute = LiveCompute("live_config.csv", running_info=self.ui.runningInfo)
+
         label_live_file = self.ui.label_live_file
         label_markers = self.ui.label_markers
         label_rep = self.ui.label_rep
         label_commands = self.ui.label_commands
+        
         self.webcam_thread = WebcamThread(label_live_file, label_markers, label_rep, label_commands, live_compute=self.live_compute, frame_rate=30, frame_skip=2)
 
+        # Set to home page
+        self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
