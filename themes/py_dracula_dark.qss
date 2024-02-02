@@ -22,6 +22,10 @@ QWidget{
 	font: 10pt "Segoe UI";
 }
 
+QStackedWidget > QWidget{
+	background : transparent;
+}
+
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 Tooltip */
 QToolTip {
@@ -130,7 +134,7 @@ Extra Tab */
 #extraIcon {
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url(:/icons/resources/images/icons/icon_settings.png);
+	background-image: url(:/icons/images/icons/icon_settings.png);
 }
 
 /* Label */
@@ -379,7 +383,7 @@ QCheckBox::indicator:hover {
 QCheckBox::indicator:checked {
     background: 3px solid rgb(52, 59, 72);
 	border: 3px solid rgb(52, 59, 72);	
-	background-image: url(:/icons/resources/images/icons/cil-check-alt.png);
+	background-image: url(:/icons/images/icons/cil-check-alt.png);
 }
 
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -402,13 +406,14 @@ QRadioButton::indicator:checked {
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 ComboBox */
 QComboBox{
-	background-color: rgb(27, 29, 35);
+	background-color: rgb(52, 59, 72);
 	border-radius: 5px;
-	border: 2px solid rgb(33, 37, 43);
+	border: 2px solid rgb(52, 59, 72);
 	padding: 5px;
 	padding-left: 10px;
 }
 QComboBox:hover{
+	background-color: rgb(57, 65, 80);
 	border: 2px solid rgb(64, 71, 88);
 }
 QComboBox::drop-down {
@@ -420,9 +425,9 @@ QComboBox::drop-down {
 	border-left-style: solid;
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;	
-	background-image: url(:/icons/resources/images/icons/cil-arrow-bottom.png);
+	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);
 	background-position: center;
-	background-repeat: no-reperat;
+	background-repeat: repeat;
  }
 QComboBox QAbstractItemView {
 	color: #6cbfcf;	
@@ -511,6 +516,67 @@ Button */
 #pagesContainer QPushButton:pressed {	
 	background-color: rgb(35, 40, 49);
 	border: 2px solid rgb(43, 50, 61);
+}
+
+/* /////////////////////////////////////////////////////////////////////////////////////////////////
+ListWidget */
+#pagesContainer QListWidget {
+	background-color: rgb(33, 37, 43);
+	border-radius: 5px;
+	border: 2px solid rgb(33, 37, 43);
+	padding: 10px;
+}
+
+/* /////////////////////////////////////////////////////////////////////////////////////////////////
+Disabled */
+
+#pagesContainer QPushButton:disabled {
+	color: rgb(132, 134, 137);
+	background-color: rgb(59, 64, 75);
+}
+#pagesContainer QLabel:disabled {
+	color: rgb(132, 134, 137);
+}
+#pagesContainer QComboBox:disabled {
+	color: rgb(132, 134, 137);
+	background-color: rgb(59, 64, 75);
+}
+#pagesContainer QComboBox QAbstractItemView:disabled {
+	color: rgb(132, 134, 137);
+	background-color: rgb(59, 64, 75);
+}
+#pagesContainer QSlider:disabled {
+	background-color: rgb(59, 64, 75);
+}
+#pagesContainer QSlider::groove:disabled {
+	background-color: rgb(59, 64, 75);
+}
+#pagesContainer QSlider::handle:disabled {
+	background-color: rgb(59, 64, 75);
+}
+#pagesContainer QScrollBar:disabled {
+	background-color: rgb(59, 64, 75);
+}
+#pagesContainer QScrollBar::handle:disabled {
+	background-color: rgb(59, 64, 75);
+}
+#pagesContainer QCheckBox:disabled {
+	color: rgb(132, 134, 137);
+}
+#pagesContainer QRadioButton:disabled {
+	color: rgb(132, 134, 137);
+}
+#pagesContainer QPlainTextEdit:disabled {
+	color: rgb(132, 134, 137);
+	background-color: rgb(59, 64, 75);
+}
+#pagesContainer QLineEdit:disabled {
+	color: rgb(132, 134, 137);
+	background-color: rgb(59, 64, 75);
+}
+#pagesContainer QListWidget:disabled {
+	color: rgb(132, 134, 137);
+	background-color: rgb(59, 64, 75);
 }
 
 

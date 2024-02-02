@@ -63,9 +63,13 @@ class Ui_MainWindow(object):
 "	font: 10pt \"Segoe UI\";\n"
 "}\n"
 "\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-""
-                        "Tooltip */\n"
+"QStackedWidget > QWidget{\n"
+"	background : transparent;\n"
+"}\n"
+"\n"
+"/* //////////////////////////"
+                        "///////////////////////////////////////////////////////////////////////\n"
+"Tooltip */\n"
 "QToolTip {\n"
 "	color: #ffffff;\n"
 "	background-color: rgba(33, 37, 43, 180);\n"
@@ -97,9 +101,9 @@ class Ui_MainWindow(object):
 "	background-position: centered;\n"
 "	background-repeat: no-repeat;\n"
 "}\n"
-"#titleLeftApp { font: 63 12pt \"Segoe UI Semibold\"; }\n"
-"#titleLeftDescription { font: 8pt \"Segoe UI\"; color: #"
-                        "8cbfca; }\n"
+"#titleLeftApp { font: 63 12pt \"Segoe U"
+                        "I Semibold\"; }\n"
+"#titleLeftDescription { font: 8pt \"Segoe UI\"; color: #8cbfca; }\n"
 "\n"
 "/* MENUS */\n"
 "#topMenu .QPushButton {	\n"
@@ -135,12 +139,12 @@ class Ui_MainWindow(object):
 "	color: rgb(255, 255, 255);\n"
 "}\n"
 "#leftMenuFrame{\n"
-"	border-top: 3px solid rgb(44, 49, 58);\n"
+"	border-top: 3"
+                        "px solid rgb(44, 49, 58);\n"
 "}\n"
 "\n"
 "/* Toggle Button */\n"
-"#toggleButt"
-                        "on {\n"
+"#toggleButton {\n"
 "	background-position: left center;\n"
 "    background-repeat: no-repeat;\n"
 "	border: none;\n"
@@ -178,11 +182,11 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "/* Label */\n"
-"#extraLabel { color: rgb(255, 255, 255); }\n"
+"#extraLabel { color: "
+                        "rgb(255, 255, 255); }\n"
 "\n"
 "/* Btn Close */\n"
-"#extraCloseColumnBtn { ba"
-                        "ckground-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }\n"
+"#extraCloseColumnBtn { background-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }\n"
 "#extraCloseColumnBtn:hover { background-color: #80c5d3; border-style: solid; border-radius: 4px; }\n"
 "#extraCloseColumnBtn:pressed { background-color: #7bcdde; border-style: solid; border-radius: 4px; }\n"
 "\n"
@@ -209,11 +213,11 @@ class Ui_MainWindow(object):
 "	color: rgb(255, 255, 255);\n"
 "}\n"
 "\n"
-"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
+"/* ///////////////////////////////////////////////////////////////////////////////////"
+                        "//////////////\n"
 "Content App */\n"
 "#contentTopBg{	\n"
-"	background-color:"
-                        " rgb(33, 37, 43);\n"
+"	background-color: rgb(33, 37, 43);\n"
 "}\n"
 "#contentBottom{\n"
 "	border-top: 3px solid rgb(44, 49, 58);\n"
@@ -235,11 +239,11 @@ class Ui_MainWindow(object):
 "/* CONTENT SETTINGS */\n"
 "/* MENUS */\n"
 "#contentSettings .QPushButton {	\n"
-"	background-position: left center;\n"
+"	background-position: left cente"
+                        "r;\n"
 "    background-repeat: no-repeat;\n"
 "	border: none;\n"
-"	border-left"
-                        ": 22px solid transparent;\n"
+"	border-left: 22px solid transparent;\n"
 "	background-color:transparent;\n"
 "	text-align: left;\n"
 "	padding-left: 44px;\n"
@@ -273,10 +277,10 @@ class Ui_MainWindow(object):
 "QHeaderView::section{\n"
 "	background-color: rgb(33, 37, 43);\n"
 "	max-width: 30px;\n"
-"	border: 1px solid rgb(44, 49, 58);\n"
+"	"
+                        "border: 1px solid rgb(44, 49, 58);\n"
 "	border-style: none;\n"
-"    border-b"
-                        "ottom: 1px solid rgb(44, 49, 60);\n"
+"    border-bottom: 1px solid rgb(44, 49, 60);\n"
 "    border-right: 1px solid rgb(44, 49, 60);\n"
 "}\n"
 "QTableWidget::horizontalHeader {	\n"
@@ -309,11 +313,11 @@ class Ui_MainWindow(object):
 "	border: 2px solid rgb(64, 71, 88);\n"
 "}\n"
 "QLineEdit:focus {\n"
-"	border: 2px solid rgb(91, 101, 124);\n"
+"	border: "
+                        "2px solid rgb(91, 101, 124);\n"
 "}\n"
 "\n"
-"/* /////////////////////////////"
-                        "////////////////////////////////////////////////////////////////////\n"
+"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
 "PlainTextEdit */\n"
 "QPlainTextEdit {\n"
 "	background-color: rgb(27, 29, 35);\n"
@@ -346,11 +350,11 @@ class Ui_MainWindow(object):
 "}\n"
 "QScrollBar::handle:horizontal {\n"
 "    background: #8cbfca;\n"
-"    min-width: 25px;\n"
+"    m"
+                        "in-width: 25px;\n"
 "	border-radius: 4px\n"
 "}\n"
-"QScrollBar::add-line:horiz"
-                        "ontal {\n"
+"QScrollBar::add-line:horizontal {\n"
 "    border: none;\n"
 "    background: rgb(55, 63, 77);\n"
 "    width: 20px;\n"
@@ -384,12 +388,12 @@ class Ui_MainWindow(object):
 "	border-radius: 0px;\n"
 " }\n"
 " QScrollBar::handle:vertical {	\n"
-"	background: #8cbfca;\n"
+"	background: #8c"
+                        "bfca;\n"
 "    min-height: 25px;\n"
 "	border-radius: 4px\n"
 " }\n"
-" QScrollB"
-                        "ar::add-line:vertical {\n"
+" QScrollBar::add-line:vertical {\n"
 "     border: none;\n"
 "    background: rgb(55, 63, 77);\n"
 "     height: 20px;\n"
@@ -419,11 +423,11 @@ class Ui_MainWindow(object):
 "CheckBox */\n"
 "QCheckBox::indicator {\n"
 "    border: 3px solid rgb(52, 59, 72);\n"
-"	width: 15px;\n"
+"	width"
+                        ": 15px;\n"
 "	height: 15px;\n"
 "	border-radius: 10px;\n"
-"    background: rgb"
-                        "(44, 49, 60);\n"
+"    background: rgb(44, 49, 60);\n"
 "}\n"
 "QCheckBox::indicator:hover {\n"
 "    border: 3px solid rgb(58, 66, 81);\n"
@@ -452,16 +456,17 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
-"ComboBox */\n"
+"ComboBox "
+                        "*/\n"
 "QComboBox{\n"
-"	background-color: rgb(27, 29, 35);\n"
-"	border-radius"
-                        ": 5px;\n"
-"	border: 2px solid rgb(33, 37, 43);\n"
+"	background-color: rgb(52, 59, 72);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(52, 59, 72);\n"
 "	padding: 5px;\n"
 "	padding-left: 10px;\n"
 "}\n"
 "QComboBox:hover{\n"
+"	background-color: rgb(57, 65, 80);\n"
 "	border: 2px solid rgb(64, 71, 88);\n"
 "}\n"
 "QComboBox::drop-down {\n"
@@ -475,7 +480,7 @@ class Ui_MainWindow(object):
 "	border-bottom-right-radius: 3px;	\n"
 "	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);\n"
 "	background-position: center;\n"
-"	background-repeat: no-reperat;\n"
+"	background-repeat: repeat;\n"
 " }\n"
 "QComboBox QAbstractItemView {\n"
 "	color: #6cbfcf;	\n"
@@ -486,12 +491,12 @@ class Ui_MainWindow(object):
 "\n"
 "/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
 "Sliders */\n"
-"QSlider::groove:horizontal {\n"
+"QSl"
+                        "ider::groove:horizontal {\n"
 "    border-radius: 5px;\n"
 "    height: 10px;\n"
 "	margin: 0px;\n"
-"	background-co"
-                        "lor: rgb(52, 59, 72);\n"
+"	background-color: rgb(52, 59, 72);\n"
 "}\n"
 "QSlider::groove:horizontal:hover {\n"
 "	background-color: rgb(55, 62, 76);\n"
@@ -529,11 +534,11 @@ class Ui_MainWindow(object):
 "	border-radius: 5px;\n"
 "}\n"
 "QSlider::handle:vertical:hover {\n"
-"    background-color: #9bf5ff;\n"
+""
+                        "    background-color: #9bf5ff;\n"
 "}\n"
 "QSlider::handle:vertical:pressed {\n"
-"    background-color: #6cbfcf"
-                        ";\n"
+"    background-color: #6cbfcf;\n"
 "}\n"
 "\n"
 "/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
@@ -564,8 +569,71 @@ class Ui_MainWindow(object):
 "	border: 2px solid rgb(61, 70, 86);\n"
 "}\n"
 "#pagesContainer QPushButton:pressed {	\n"
-"	background-color: rgb(35, 40, 49);\n"
+"	background-color: rgb(35, 40, 49"
+                        ");\n"
 "	border: 2px solid rgb(43, 50, 61);\n"
+"}\n"
+"\n"
+"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
+"ListWidget */\n"
+"#pagesContainer QListWidget {\n"
+"	background-color: rgb(33, 37, 43);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(33, 37, 43);\n"
+"	padding: 10px;\n"
+"}\n"
+"\n"
+"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
+"Disabled */\n"
+"\n"
+"#pagesContainer QPushButton:disabled {\n"
+"	color: rgb(132, 134, 137);\n"
+"	background-color: rgb(59, 64, 75);\n"
+"}\n"
+"#pagesContainer QLabel:disabled {\n"
+"	color: rgb(132, 134, 137);\n"
+"}\n"
+"#pagesContainer QComboBox:disabled {\n"
+"	color: rgb(132, 134, 137);\n"
+"	background-color: rgb(59, 64, 75);\n"
+"}\n"
+"#pagesContainer QComboBox QAbstractItemView:disabled {\n"
+"	color: rgb(132, 134, 137);\n"
+"	background-color: rgb(59, 64, 75);\n"
+"}\n"
+"#pagesContainer QSlider:disabled {\n"
+"	background-color: rgb(59, 64, 75);\n"
+"}\n"
+"#pagesCont"
+                        "ainer QSlider::groove:disabled {\n"
+"	background-color: rgb(59, 64, 75);\n"
+"}\n"
+"#pagesContainer QSlider::handle:disabled {\n"
+"	background-color: rgb(59, 64, 75);\n"
+"}\n"
+"#pagesContainer QScrollBar:disabled {\n"
+"	background-color: rgb(59, 64, 75);\n"
+"}\n"
+"#pagesContainer QScrollBar::handle:disabled {\n"
+"	background-color: rgb(59, 64, 75);\n"
+"}\n"
+"#pagesContainer QCheckBox:disabled {\n"
+"	color: rgb(132, 134, 137);\n"
+"}\n"
+"#pagesContainer QRadioButton:disabled {\n"
+"	color: rgb(132, 134, 137);\n"
+"}\n"
+"#pagesContainer QPlainTextEdit:disabled {\n"
+"	color: rgb(132, 134, 137);\n"
+"	background-color: rgb(59, 64, 75);\n"
+"}\n"
+"#pagesContainer QLineEdit:disabled {\n"
+"	color: rgb(132, 134, 137);\n"
+"	background-color: rgb(59, 64, 75);\n"
+"}\n"
+"#pagesContainer QListWidget:disabled {\n"
+"	color: rgb(132, 134, 137);\n"
+"	background-color: rgb(59, 64, 75);\n"
 "}\n"
 "\n"
 "\n"
@@ -575,7 +643,6 @@ class Ui_MainWindow(object):
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.bgApp = QFrame(self.styleSheet)
         self.bgApp.setObjectName(u"bgApp")
-        self.bgApp.setStyleSheet(u"")
         self.bgApp.setFrameShape(QFrame.NoFrame)
         self.bgApp.setFrameShadow(QFrame.Raised)
         self.appLayout = QHBoxLayout(self.bgApp)
@@ -843,7 +910,6 @@ class Ui_MainWindow(object):
         self.textEdit = QTextEdit(self.extraCenter)
         self.textEdit.setObjectName(u"textEdit")
         self.textEdit.setMinimumSize(QSize(222, 0))
-        self.textEdit.setStyleSheet(u"background: transparent;")
         self.textEdit.setFrameShape(QFrame.NoFrame)
         self.textEdit.setReadOnly(True)
 
@@ -998,7 +1064,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.pagesContainer = QFrame(self.content)
         self.pagesContainer.setObjectName(u"pagesContainer")
-        self.pagesContainer.setStyleSheet(u"")
         self.pagesContainer.setFrameShape(QFrame.NoFrame)
         self.pagesContainer.setFrameShadow(QFrame.Raised)
         self.verticalLayout_15 = QVBoxLayout(self.pagesContainer)
@@ -1007,7 +1072,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_15.setContentsMargins(1, 1, 1, 1)
         self.stackedWidget = QStackedWidget(self.pagesContainer)
         self.stackedWidget.setObjectName(u"stackedWidget")
-        self.stackedWidget.setStyleSheet(u"background: transparent;")
+        self.stackedWidget.setEnabled(True)
         self.webcam_page = QWidget()
         self.webcam_page.setObjectName(u"webcam_page")
         self.gridLayout_344 = QGridLayout(self.webcam_page)
@@ -1348,7 +1413,7 @@ class Ui_MainWindow(object):
 
         self.btn_import = QPushButton(self.gridLayoutWidget)
         self.btn_import.setObjectName(u"btn_import")
-        self.btn_import.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        self.btn_import.setStyleSheet(u"")
 
         self.gridLayout_5.addWidget(self.btn_import, 1, 0, 1, 1)
 
@@ -1360,115 +1425,17 @@ class Ui_MainWindow(object):
         self.gridLayout_7.setContentsMargins(9, 9, 9, 9)
         self.btn_mapping = QPushButton(self.gridLayoutWidget_2)
         self.btn_mapping.setObjectName(u"btn_mapping")
+        self.btn_mapping.setEnabled(True)
         self.btn_mapping.setMinimumSize(QSize(0, 45))
-        self.btn_mapping.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        self.btn_mapping.setStyleSheet(u"")
 
         self.gridLayout_7.addWidget(self.btn_mapping, 0, 1, 1, 1)
 
         self.btn_export = QPushButton(self.gridLayoutWidget_2)
         self.btn_export.setObjectName(u"btn_export")
         self.btn_export.setMinimumSize(QSize(0, 45))
-        self.btn_export.setStyleSheet(u"background-color: rgb(52, 59, 72);")
 
         self.gridLayout_7.addWidget(self.btn_export, 0, 0, 1, 1)
-
-        self.layoutWidget1 = QWidget(self.generator)
-        self.layoutWidget1.setObjectName(u"layoutWidget1")
-        self.layoutWidget1.setGeometry(QRect(420, 0, 411, 531))
-        self.gridLayout_4 = QGridLayout(self.layoutWidget1)
-        self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.gridLayout_4.setHorizontalSpacing(9)
-        self.gridLayout_4.setContentsMargins(9, 9, 9, 9)
-        self.btn_clear = QPushButton(self.layoutWidget1)
-        self.btn_clear.setObjectName(u"btn_clear")
-        self.btn_clear.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-
-        self.gridLayout_4.addWidget(self.btn_clear, 8, 1, 1, 1)
-
-        self.comboBox_finger = QComboBox(self.layoutWidget1)
-        self.comboBox_finger.addItem("")
-        self.comboBox_finger.addItem("")
-        self.comboBox_finger.addItem("")
-        self.comboBox_finger.addItem("")
-        self.comboBox_finger.setObjectName(u"comboBox_finger")
-        self.comboBox_finger.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-
-        self.gridLayout_4.addWidget(self.comboBox_finger, 1, 0, 1, 1)
-
-        self.list_config = QListWidget(self.layoutWidget1)
-        self.list_config.setObjectName(u"list_config")
-        self.list_config.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-
-        self.gridLayout_4.addWidget(self.list_config, 6, 0, 1, 5)
-
-        self.label_3 = QLabel(self.layoutWidget1)
-        self.label_3.setObjectName(u"label_3")
-
-        self.gridLayout_4.addWidget(self.label_3, 3, 0, 1, 5)
-
-        self.comboBox_microgesture = QComboBox(self.layoutWidget1)
-        self.comboBox_microgesture.addItem("")
-        self.comboBox_microgesture.addItem("")
-        self.comboBox_microgesture.addItem("")
-        self.comboBox_microgesture.addItem("")
-        self.comboBox_microgesture.setObjectName(u"comboBox_microgesture")
-        self.comboBox_microgesture.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-
-        self.gridLayout_4.addWidget(self.comboBox_microgesture, 1, 1, 1, 1)
-
-        self.comboBox_charac = QComboBox(self.layoutWidget1)
-        self.comboBox_charac.addItem("")
-        self.comboBox_charac.addItem("")
-        self.comboBox_charac.addItem("")
-        self.comboBox_charac.addItem("")
-        self.comboBox_charac.addItem("")
-        self.comboBox_charac.setObjectName(u"comboBox_charac")
-        self.comboBox_charac.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-
-        self.gridLayout_4.addWidget(self.comboBox_charac, 1, 2, 1, 1)
-
-        self.label = QLabel(self.layoutWidget1)
-        self.label.setObjectName(u"label")
-        sizePolicy3.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy3)
-
-        self.gridLayout_4.addWidget(self.label, 0, 0, 1, 5)
-
-        self.label_2 = QLabel(self.layoutWidget1)
-        self.label_2.setObjectName(u"label_2")
-        sizePolicy3.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy3)
-
-        self.gridLayout_4.addWidget(self.label_2, 5, 0, 1, 5)
-
-        self.btn_remove = QPushButton(self.layoutWidget1)
-        self.btn_remove.setObjectName(u"btn_remove")
-        self.btn_remove.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-
-        self.gridLayout_4.addWidget(self.btn_remove, 8, 0, 1, 1)
-
-        self.label_str_config = QLabel(self.layoutWidget1)
-        self.label_str_config.setObjectName(u"label_str_config")
-
-        self.gridLayout_4.addWidget(self.label_str_config, 4, 0, 1, 3)
-
-        self.btn_apply = QPushButton(self.layoutWidget1)
-        self.btn_apply.setObjectName(u"btn_apply")
-        self.btn_apply.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-
-        self.gridLayout_4.addWidget(self.btn_apply, 4, 3, 1, 2)
-
-        self.btn_add = QPushButton(self.layoutWidget1)
-        self.btn_add.setObjectName(u"btn_add")
-        self.btn_add.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-
-        self.gridLayout_4.addWidget(self.btn_add, 1, 4, 1, 1)
-
-        self.btn_reset = QPushButton(self.layoutWidget1)
-        self.btn_reset.setObjectName(u"btn_reset")
-        self.btn_reset.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-
-        self.gridLayout_4.addWidget(self.btn_reset, 8, 3, 1, 2)
 
         self.verticalLayoutWidget_2 = QWidget(self.generator)
         self.verticalLayoutWidget_2.setObjectName(u"verticalLayoutWidget_2")
@@ -1486,6 +1453,141 @@ class Ui_MainWindow(object):
         self.line_5.setFrameShape(QFrame.HLine)
 
         self.verticalLayout_21.addWidget(self.line_5)
+
+        self.mapping_frame = QFrame(self.generator)
+        self.mapping_frame.setObjectName(u"mapping_frame")
+        self.mapping_frame.setEnabled(False)
+        self.mapping_frame.setGeometry(QRect(420, 10, 411, 521))
+        self.mapping_frame.setFrameShape(QFrame.StyledPanel)
+        self.mapping_frame.setFrameShadow(QFrame.Raised)
+        self.gridLayout = QGridLayout(self.mapping_frame)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout_4 = QGridLayout()
+        self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.gridLayout_4.setHorizontalSpacing(9)
+        self.gridLayout_4.setContentsMargins(9, 9, 9, 9)
+        self.btn_clear = QPushButton(self.mapping_frame)
+        self.btn_clear.setObjectName(u"btn_clear")
+        self.btn_clear.setStyleSheet(u"")
+
+        self.gridLayout_4.addWidget(self.btn_clear, 8, 1, 1, 1)
+
+        self.comboBox_finger = QComboBox(self.mapping_frame)
+        self.comboBox_finger.addItem("")
+        self.comboBox_finger.addItem("")
+        self.comboBox_finger.addItem("")
+        self.comboBox_finger.addItem("")
+        self.comboBox_finger.setObjectName(u"comboBox_finger")
+
+        self.gridLayout_4.addWidget(self.comboBox_finger, 1, 0, 1, 1)
+
+        self.label_str_config = QLabel(self.mapping_frame)
+        self.label_str_config.setObjectName(u"label_str_config")
+
+        self.gridLayout_4.addWidget(self.label_str_config, 4, 0, 1, 3)
+
+        self.comboBox_microgesture = QComboBox(self.mapping_frame)
+        self.comboBox_microgesture.addItem("")
+        self.comboBox_microgesture.addItem("")
+        self.comboBox_microgesture.addItem("")
+        self.comboBox_microgesture.addItem("")
+        self.comboBox_microgesture.setObjectName(u"comboBox_microgesture")
+        self.comboBox_microgesture.setStyleSheet(u"")
+
+        self.gridLayout_4.addWidget(self.comboBox_microgesture, 2, 0, 1, 1)
+
+        self.comboBox_charac = QComboBox(self.mapping_frame)
+        self.comboBox_charac.addItem("")
+        self.comboBox_charac.addItem("")
+        self.comboBox_charac.addItem("")
+        self.comboBox_charac.addItem("")
+        self.comboBox_charac.addItem("")
+        self.comboBox_charac.setObjectName(u"comboBox_charac")
+        self.comboBox_charac.setStyleSheet(u"")
+
+        self.gridLayout_4.addWidget(self.comboBox_charac, 2, 1, 1, 1)
+
+        self.label_config_file = QLabel(self.mapping_frame)
+        self.label_config_file.setObjectName(u"label_config_file")
+
+        self.gridLayout_4.addWidget(self.label_config_file, 10, 0, 1, 2)
+
+        self.label_10 = QLabel(self.mapping_frame)
+        self.label_10.setObjectName(u"label_10")
+
+        self.gridLayout_4.addWidget(self.label_10, 9, 1, 1, 1)
+
+        self.btn_select = QPushButton(self.mapping_frame)
+        self.btn_select.setObjectName(u"btn_select")
+        self.btn_select.setStyleSheet(u"")
+
+        self.gridLayout_4.addWidget(self.btn_select, 11, 3, 1, 1)
+
+        self.btn_apply = QPushButton(self.mapping_frame)
+        self.btn_apply.setObjectName(u"btn_apply")
+        self.btn_apply.setStyleSheet(u"")
+
+        self.gridLayout_4.addWidget(self.btn_apply, 4, 3, 1, 1)
+
+        self.btn_add = QPushButton(self.mapping_frame)
+        self.btn_add.setObjectName(u"btn_add")
+        self.btn_add.setMinimumSize(QSize(0, 50))
+        self.btn_add.setStyleSheet(u"")
+
+        self.gridLayout_4.addWidget(self.btn_add, 1, 3, 2, 1)
+
+        self.list_config = QListWidget(self.mapping_frame)
+        self.list_config.setObjectName(u"list_config")
+
+        self.gridLayout_4.addWidget(self.list_config, 6, 0, 1, 4)
+
+        self.label = QLabel(self.mapping_frame)
+        self.label.setObjectName(u"label")
+        sizePolicy3.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_4.addWidget(self.label, 0, 0, 1, 4)
+
+        self.label_3 = QLabel(self.mapping_frame)
+        self.label_3.setObjectName(u"label_3")
+
+        self.gridLayout_4.addWidget(self.label_3, 3, 0, 1, 4)
+
+        self.btn_save_as = QPushButton(self.mapping_frame)
+        self.btn_save_as.setObjectName(u"btn_save_as")
+        self.btn_save_as.setStyleSheet(u"")
+
+        self.gridLayout_4.addWidget(self.btn_save_as, 8, 3, 1, 1)
+
+        self.label_2 = QLabel(self.mapping_frame)
+        self.label_2.setObjectName(u"label_2")
+        sizePolicy3.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_4.addWidget(self.label_2, 5, 0, 1, 3)
+
+        self.btn_remove = QPushButton(self.mapping_frame)
+        self.btn_remove.setObjectName(u"btn_remove")
+        self.btn_remove.setStyleSheet(u"")
+
+        self.gridLayout_4.addWidget(self.btn_remove, 5, 3, 1, 1)
+
+        self.btn_reset = QPushButton(self.mapping_frame)
+        self.btn_reset.setObjectName(u"btn_reset")
+        self.btn_reset.setStyleSheet(u"")
+
+        self.gridLayout_4.addWidget(self.btn_reset, 8, 0, 1, 1)
+
+        self.entry_config = QLineEdit(self.mapping_frame)
+        self.entry_config.setObjectName(u"entry_config")
+        self.entry_config.setEnabled(False)
+        self.entry_config.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.entry_config.setReadOnly(True)
+
+        self.gridLayout_4.addWidget(self.entry_config, 11, 0, 1, 3)
+
+
+        self.gridLayout.addLayout(self.gridLayout_4, 0, 0, 1, 1)
 
 
         self.gridLayout_364.addWidget(self.generator, 0, 0, 1, 1)
@@ -1628,7 +1730,16 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.styleSheet)
 
         self.retranslateUi(MainWindow)
-        self.btn_export.clicked.connect(self.generator.testSlot)
+        self.btn_select.clicked.connect(self.generator.selectFileConfig)
+        self.btn_save_as.clicked.connect(self.generator.saveConfigAsFile)
+        self.btn_clear.clicked.connect(self.generator.clearConfig)
+        self.btn_add.clicked.connect(self.generator.addMapping)
+        self.btn_apply.clicked.connect(self.generator.applyConfig)
+        self.btn_remove.clicked.connect(self.generator.removeConfig)
+        self.btn_reset.clicked.connect(self.generator.defaultConfig)
+        self.btn_mapping.clicked.connect(self.generator.lockMappings)
+        self.btn_import.clicked.connect(self.generator.importImage)
+        self.btn_export.clicked.connect(self.generator.exportImageWithMappings)
 
         self.stackedWidget.setCurrentIndex(5)
 
@@ -1727,15 +1838,16 @@ class Ui_MainWindow(object):
         self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"Next", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Export microgesture representations</span></p></body></html>", None))
         self.btn_import.setText(QCoreApplication.translate("MainWindow", u"Import a JPG ...", None))
-        self.btn_mapping.setText(QCoreApplication.translate("MainWindow", u"Change mapping", None))
-        self.btn_export.setText(QCoreApplication.translate("MainWindow", u"Export JPG with mapping", None))
+        self.btn_mapping.setText(QCoreApplication.translate("MainWindow", u"Unlock mappings", None))
+        self.btn_export.setText(QCoreApplication.translate("MainWindow", u"Export JPG with mappings", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Export microgesture representations</span></p></body></html>", None))
         self.btn_clear.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.comboBox_finger.setItemText(0, QCoreApplication.translate("MainWindow", u"Index", None))
         self.comboBox_finger.setItemText(1, QCoreApplication.translate("MainWindow", u"Middle", None))
         self.comboBox_finger.setItemText(2, QCoreApplication.translate("MainWindow", u"Ring", None))
         self.comboBox_finger.setItemText(3, QCoreApplication.translate("MainWindow", u"Pinky", None))
 
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Current configuration string :", None))
+        self.label_str_config.setText("")
         self.comboBox_microgesture.setItemText(0, QCoreApplication.translate("MainWindow", u"Tap", None))
         self.comboBox_microgesture.setItemText(1, QCoreApplication.translate("MainWindow", u"Hold", None))
         self.comboBox_microgesture.setItemText(2, QCoreApplication.translate("MainWindow", u"Swipe", None))
@@ -1747,14 +1859,18 @@ class Ui_MainWindow(object):
         self.comboBox_charac.setItemText(3, QCoreApplication.translate("MainWindow", u"Up", None))
         self.comboBox_charac.setItemText(4, QCoreApplication.translate("MainWindow", u"Down", None))
 
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Choose a gesture to add to the computation :", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Liste of choosen gesture :", None))
-        self.btn_remove.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
-        self.label_str_config.setText("")
+        self.label_config_file.setText(QCoreApplication.translate("MainWindow", u"Specific configuration file :", None))
+        self.label_10.setText("")
+        self.btn_select.setText(QCoreApplication.translate("MainWindow", u"Select file", None))
         self.btn_apply.setText(QCoreApplication.translate("MainWindow", u"Apply", None))
         self.btn_add.setText(QCoreApplication.translate("MainWindow", u"Add", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Choose a microgesture to add to the mapping :", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Current microgesture mapping :", None))
+        self.btn_save_as.setText(QCoreApplication.translate("MainWindow", u"Save as", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"List of microgesture mappings to consider :", None))
+        self.btn_remove.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
         self.btn_reset.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Export microgesture representations</span></p></body></html>", None))
+        self.entry_config.setPlaceholderText("")
         self.btn_author.setText(QCoreApplication.translate("MainWindow", u"Author", None))
         self.btn_related.setText(QCoreApplication.translate("MainWindow", u"Related works", None))
         self.creditsLabel.setText(QCoreApplication.translate("MainWindow", u"By: Vincent Lambert", None))

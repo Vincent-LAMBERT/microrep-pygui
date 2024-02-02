@@ -62,3 +62,6 @@ class AppFunctions(MainWindow):
 
         # Set to home page
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
+
+        # Set the ui to the generator
+        self.ui.generator.setUi(self.ui)

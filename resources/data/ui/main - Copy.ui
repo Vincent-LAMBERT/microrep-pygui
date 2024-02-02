@@ -55,10 +55,6 @@ QWidget{
 	font: 10pt &quot;Segoe UI&quot;;
 }
 
-QStackedWidget &gt; QWidget{
-	background : transparent;
-}
-
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 Tooltip */
 QToolTip {
@@ -208,6 +204,7 @@ Content App */
 }
 #contentBottom{
 	border-top: 3px solid rgb(44, 49, 58);
+	background: transparent;
 }
 
 /* Top Buttons */
@@ -439,14 +436,13 @@ QRadioButton::indicator:checked {
 /* /////////////////////////////////////////////////////////////////////////////////////////////////
 ComboBox */
 QComboBox{
-	background-color: rgb(52, 59, 72);
+	background-color: rgb(27, 29, 35);
 	border-radius: 5px;
-	border: 2px solid rgb(52, 59, 72);
+	border: 2px solid rgb(33, 37, 43);
 	padding: 5px;
 	padding-left: 10px;
 }
 QComboBox:hover{
-	background-color: rgb(57, 65, 80);
 	border: 2px solid rgb(64, 71, 88);
 }
 QComboBox::drop-down {
@@ -460,7 +456,7 @@ QComboBox::drop-down {
 	border-bottom-right-radius: 3px;	
 	background-image: url(:/icons/images/icons/cil-arrow-bottom.png);
 	background-position: center;
-	background-repeat: repeat;
+	background-repeat: no-reperat;
  }
 QComboBox QAbstractItemView {
 	color: #6cbfcf;	
@@ -549,67 +545,6 @@ Button */
 #pagesContainer QPushButton:pressed {	
 	background-color: rgb(35, 40, 49);
 	border: 2px solid rgb(43, 50, 61);
-}
-
-/* /////////////////////////////////////////////////////////////////////////////////////////////////
-ListWidget */
-#pagesContainer QListWidget {
-	background-color: rgb(33, 37, 43);
-	border-radius: 5px;
-	border: 2px solid rgb(33, 37, 43);
-	padding: 10px;
-}
-
-/* /////////////////////////////////////////////////////////////////////////////////////////////////
-Disabled */
-
-#pagesContainer QPushButton:disabled {
-	color: rgb(132, 134, 137);
-	background-color: rgb(59, 64, 75);
-}
-#pagesContainer QLabel:disabled {
-	color: rgb(132, 134, 137);
-}
-#pagesContainer QComboBox:disabled {
-	color: rgb(132, 134, 137);
-	background-color: rgb(59, 64, 75);
-}
-#pagesContainer QComboBox QAbstractItemView:disabled {
-	color: rgb(132, 134, 137);
-	background-color: rgb(59, 64, 75);
-}
-#pagesContainer QSlider:disabled {
-	background-color: rgb(59, 64, 75);
-}
-#pagesContainer QSlider::groove:disabled {
-	background-color: rgb(59, 64, 75);
-}
-#pagesContainer QSlider::handle:disabled {
-	background-color: rgb(59, 64, 75);
-}
-#pagesContainer QScrollBar:disabled {
-	background-color: rgb(59, 64, 75);
-}
-#pagesContainer QScrollBar::handle:disabled {
-	background-color: rgb(59, 64, 75);
-}
-#pagesContainer QCheckBox:disabled {
-	color: rgb(132, 134, 137);
-}
-#pagesContainer QRadioButton:disabled {
-	color: rgb(132, 134, 137);
-}
-#pagesContainer QPlainTextEdit:disabled {
-	color: rgb(132, 134, 137);
-	background-color: rgb(59, 64, 75);
-}
-#pagesContainer QLineEdit:disabled {
-	color: rgb(132, 134, 137);
-	background-color: rgb(59, 64, 75);
-}
-#pagesContainer QListWidget:disabled {
-	color: rgb(132, 134, 137);
-	background-color: rgb(59, 64, 75);
 }
 
 
@@ -1388,6 +1323,9 @@ background-repeat: no-repeat;</string>
                     <height>0</height>
                    </size>
                   </property>
+                  <property name="styleSheet">
+                   <string notr="true">background: transparent;</string>
+                  </property>
                   <property name="frameShape">
                    <enum>QFrame::NoFrame</enum>
                   </property>
@@ -1806,11 +1744,8 @@ p, li { white-space: pre-wrap; }
                    </property>
                    <item>
                     <widget class="QStackedWidget" name="stackedWidget">
-                     <property name="enabled">
-                      <bool>true</bool>
-                     </property>
                      <property name="currentIndex">
-                      <number>4</number>
+                      <number>0</number>
                      </property>
                      <widget class="QWidget" name="webcam_page">
                       <layout class="QGridLayout" name="gridLayout_344">
@@ -1965,8 +1900,8 @@ background-repeat: no-repeat;</string>
                          <widget class="QWidget" name="gridLayoutWidget_3">
                           <property name="geometry">
                            <rect>
-                            <x>0</x>
-                            <y>70</y>
+                            <x>400</x>
+                            <y>80</y>
                             <width>421</width>
                             <height>431</height>
                            </rect>
@@ -1985,7 +1920,7 @@ background-repeat: no-repeat;</string>
                             <number>9</number>
                            </property>
                            <item row="0" column="0">
-                            <widget class="QFrame" name="frame_mappings">
+                            <widget class="QFrame" name="frame">
                              <property name="frameShape">
                               <enum>QFrame::WinPanel</enum>
                              </property>
@@ -1994,7 +1929,7 @@ background-repeat: no-repeat;</string>
                              </property>
                              <layout class="QGridLayout" name="gridLayout_12">
                               <item row="0" column="0">
-                               <widget class="QWidget" name="frame_mappings_grid" native="true">
+                               <widget class="QWidget" name="widget_3" native="true">
                                 <property name="sizePolicy">
                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                                   <horstretch>0</horstretch>
@@ -2090,10 +2025,10 @@ background-repeat: no-repeat;</string>
                          <widget class="QWidget" name="layoutWidget2">
                           <property name="geometry">
                            <rect>
-                            <x>440</x>
-                            <y>360</y>
+                            <x>0</x>
+                            <y>70</y>
                             <width>391</width>
-                            <height>211</height>
+                            <height>531</height>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_8">
@@ -2109,7 +2044,27 @@ background-repeat: no-repeat;</string>
                            <property name="bottomMargin">
                             <number>9</number>
                            </property>
-                           <item row="5" column="0" colspan="2">
+                           <item row="2" column="0" colspan="2">
+                            <widget class="QLabel" name="label_5">
+                             <property name="text">
+                              <string>Choose path to export :</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="3" column="0" colspan="2">
+                            <widget class="QLineEdit" name="lineEdit_1">
+                             <property name="styleSheet">
+                              <string notr="true">background-color: rgb(33, 37, 43);</string>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="placeholderText">
+                              <string>Use an absolute path</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="4" column="0" colspan="2">
                             <widget class="Line" name="line">
                              <property name="frameShadow">
                               <enum>QFrame::Plain</enum>
@@ -2119,32 +2074,29 @@ background-repeat: no-repeat;</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="7" column="0">
-                            <widget class="QLabel" name="label_7">
+                           <item row="5" column="0">
+                            <widget class="QLabel" name="label_4">
                              <property name="text">
-                              <string>Export as...</string>
+                              <string>Prefix to add (optianal)</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="5" column="1">
+                            <widget class="QLineEdit" name="lineEdit_2">
+                             <property name="styleSheet">
+                              <string notr="true">background-color: rgb(33, 37, 43);</string>
                              </property>
                             </widget>
                            </item>
                            <item row="6" column="0">
-                            <widget class="QLabel" name="label_4">
+                            <widget class="QLabel" name="label_7">
                              <property name="text">
-                              <string>File prefix</string>
+                              <string>Export layer as ...</string>
                              </property>
                             </widget>
                            </item>
                            <item row="6" column="1">
-                            <widget class="QLineEdit" name="entry_prefix">
-                             <property name="styleSheet">
-                              <string notr="true">background-color: rgb(33, 37, 43);</string>
-                             </property>
-                             <property name="placeholderText">
-                              <string>ex : myrep_ (default: none)</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="7" column="1">
-                            <widget class="QComboBox" name="comboBox_export_type">
+                            <widget class="QComboBox" name="comboBox_2">
                              <property name="styleSheet">
                               <string notr="true">background-color: rgb(52, 59, 72);</string>
                              </property>
@@ -2170,7 +2122,79 @@ background-repeat: no-repeat;</string>
                              </item>
                             </widget>
                            </item>
+                           <item row="7" column="0">
+                            <widget class="QLabel" name="label_6">
+                             <property name="text">
+                              <string>Export DPI (if applicable)</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="7" column="1">
+                            <widget class="QDoubleSpinBox" name="doubleSpinBox">
+                             <property name="styleSheet">
+                              <string notr="true">background-color: rgb(33, 37, 43);</string>
+                             </property>
+                             <property name="decimals">
+                              <number>1</number>
+                             </property>
+                             <property name="maximum">
+                              <double>1000.000000000000000</double>
+                             </property>
+                             <property name="value">
+                              <double>100.000000000000000</double>
+                             </property>
+                            </widget>
+                           </item>
                            <item row="8" column="0" colspan="2">
+                            <widget class="Line" name="line_2">
+                             <property name="frameShadow">
+                              <enum>QFrame::Plain</enum>
+                             </property>
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="9" column="0" colspan="2">
+                            <widget class="QCheckBox" name="checkBox_config_file_choice">
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string>Use integreted configuration file</string>
+                             </property>
+                             <property name="checked">
+                              <bool>true</bool>
+                             </property>
+                             <property name="tristate">
+                              <bool>false</bool>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="10" column="0" colspan="2">
+                            <widget class="QLabel" name="label_config">
+                             <property name="enabled">
+                              <bool>false</bool>
+                             </property>
+                             <property name="text">
+                              <string>Export configuration file (computed only if CSV file) :</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="11" column="0" colspan="2">
+                            <widget class="QLineEdit" name="lineEdit_config">
+                             <property name="enabled">
+                              <bool>false</bool>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">background-color: rgb(33, 37, 43);</string>
+                             </property>
+                             <property name="placeholderText">
+                              <string>Use an absolute path</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="12" column="0" colspan="2">
                             <widget class="Line" name="line_3">
                              <property name="frameShadow">
                               <enum>QFrame::Plain</enum>
@@ -2180,21 +2204,63 @@ background-repeat: no-repeat;</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="2" column="0">
-                            <widget class="QLabel" name="label_5">
+                           <item row="13" column="0" colspan="2">
+                            <widget class="QCheckBox" name="checkBox_1">
                              <property name="text">
-                              <string>Export to folder...</string>
+                              <string>Show traces</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="9" column="0" colspan="2">
-                            <widget class="QPushButton" name="btn_apply_export">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>50</height>
-                              </size>
+                           <item row="14" column="0" colspan="2">
+                            <widget class="QCheckBox" name="checkBox_2">
+                             <property name="text">
+                              <string>Show command placeholders</string>
                              </property>
+                            </widget>
+                           </item>
+                           <item row="15" column="0" colspan="2">
+                            <widget class="QCheckBox" name="checkBox_3">
+                             <property name="text">
+                              <string>Only process one family</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="16" column="0" colspan="2">
+                            <widget class="QCheckBox" name="checkBox_4">
+                             <property name="text">
+                              <string>Only process four microgestures for each family</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="17" column="0" colspan="2">
+                            <widget class="QCheckBox" name="checkBox_5">
+                             <property name="text">
+                              <string>Debug mode (verbose logging)</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="18" column="0" colspan="2">
+                            <widget class="QCheckBox" name="checkBox_6">
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string>Dry run</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="19" column="0">
+                            <widget class="QPushButton" name="pushButton_2">
+                             <property name="styleSheet">
+                              <string notr="true">background-color: rgb(52, 59, 72);</string>
+                             </property>
+                             <property name="text">
+                              <string>Close</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="19" column="1">
+                            <widget class="QPushButton" name="pushButton_3">
                              <property name="styleSheet">
                               <string notr="true">background-color: rgb(52, 59, 72);</string>
                              </property>
@@ -2203,28 +2269,15 @@ background-repeat: no-repeat;</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="2" column="1">
-                            <widget class="QLineEdit" name="entry_export_path">
-                             <property name="styleSheet">
-                              <string notr="true">background-color: rgb(33, 37, 43);</string>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="placeholderText">
-                              <string>Use an absolute path</string>
-                             </property>
-                            </widget>
-                           </item>
                           </layout>
                          </widget>
                          <widget class="QWidget" name="gridLayoutWidget_4">
                           <property name="geometry">
                            <rect>
-                            <x>0</x>
-                            <y>500</y>
+                            <x>400</x>
+                            <y>510</y>
                             <width>421</width>
-                            <height>71</height>
+                            <height>91</height>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_14">
@@ -2238,11 +2291,11 @@ background-repeat: no-repeat;</string>
                              </property>
                              <layout class="QHBoxLayout" name="horizontalLayout_7">
                               <item>
-                               <widget class="QPushButton" name="btn_previous">
+                               <widget class="QPushButton" name="pushButton_6">
                                 <property name="minimumSize">
                                  <size>
                                   <width>0</width>
-                                  <height>50</height>
+                                  <height>60</height>
                                  </size>
                                 </property>
                                 <property name="styleSheet">
@@ -2254,11 +2307,11 @@ background-repeat: no-repeat;</string>
                                </widget>
                               </item>
                               <item>
-                               <widget class="QPushButton" name="btn_next">
+                               <widget class="QPushButton" name="pushButton_7">
                                 <property name="minimumSize">
                                  <size>
                                   <width>0</width>
-                                  <height>50</height>
+                                  <height>60</height>
                                  </size>
                                 </property>
                                 <property name="styleSheet">
@@ -2277,7 +2330,7 @@ background-repeat: no-repeat;</string>
                          <widget class="QWidget" name="verticalLayoutWidget_3">
                           <property name="geometry">
                            <rect>
-                            <x>10</x>
+                            <x>0</x>
                             <y>0</y>
                             <width>401</width>
                             <height>71</height>
@@ -2405,7 +2458,7 @@ background-repeat: no-repeat;</string>
                               <string notr="true"/>
                              </property>
                              <property name="text">
-                              <string>Unlock mappings</string>
+                              <string>Change mapping</string>
                              </property>
                             </widget>
                            </item>
@@ -2418,7 +2471,7 @@ background-repeat: no-repeat;</string>
                               </size>
                              </property>
                              <property name="text">
-                              <string>Export JPG with mappings</string>
+                              <string>Export JPG with mapping</string>
                              </property>
                             </widget>
                            </item>
@@ -2453,7 +2506,7 @@ background-repeat: no-repeat;</string>
                            </item>
                           </layout>
                          </widget>
-                         <widget class="QFrame" name="mapping_frame">
+                         <widget class="QFrame" name="frame_2">
                           <property name="enabled">
                            <bool>false</bool>
                           </property>
@@ -2473,7 +2526,7 @@ background-repeat: no-repeat;</string>
                           </property>
                           <layout class="QGridLayout" name="gridLayout">
                            <item row="0" column="0">
-                            <layout class="QGridLayout" name="frame_grid" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0" columnstretch="0,0,0,0" columnminimumwidth="0,0,0,0">
+                            <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0" columnstretch="0,0,0,0" columnminimumwidth="0,0,0,0">
                              <property name="leftMargin">
                               <number>9</number>
                              </property>
@@ -2590,7 +2643,10 @@ background-repeat: no-repeat;</string>
                               </widget>
                              </item>
                              <item row="10" column="0" colspan="2">
-                              <widget class="QLabel" name="label_config_file">
+                              <widget class="QLabel" name="label_config_2">
+                               <property name="enabled">
+                                <bool>false</bool>
+                               </property>
                                <property name="text">
                                 <string>Specific configuration file :</string>
                                </property>
@@ -2640,7 +2696,14 @@ background-repeat: no-repeat;</string>
                               </widget>
                              </item>
                              <item row="6" column="0" colspan="4">
-                              <widget class="QListWidget" name="list_config"/>
+                              <widget class="QListWidget" name="list_config">
+                               <property name="enabled">
+                                <bool>false</bool>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: rgb(33, 37, 43);</string>
+                               </property>
+                              </widget>
                              </item>
                              <item row="0" column="0" colspan="4">
                               <widget class="QLabel" name="label">
@@ -3089,22 +3152,6 @@ background-repeat: no-repeat;</string>
  </resources>
  <connections>
   <connection>
-   <sender>btn_select</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>selectFileConfig()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>843</x>
-     <y>582</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>905</x>
-     <y>558</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>btn_save_as</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
@@ -3117,6 +3164,22 @@ background-repeat: no-repeat;</string>
     <hint type="destinationlabel">
      <x>906</x>
      <y>481</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_select</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>selectFileConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>843</x>
+     <y>582</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>905</x>
+     <y>558</y>
     </hint>
    </hints>
   </connection>
@@ -3137,34 +3200,18 @@ background-repeat: no-repeat;</string>
    </hints>
   </connection>
   <connection>
-   <sender>btn_add</sender>
+   <sender>btn_reset</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>addMapping()</slot>
+   <slot>defaultConfig()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>871</x>
-     <y>167</y>
+     <x>531</x>
+     <y>508</y>
     </hint>
     <hint type="destinationlabel">
-     <x>894</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_apply</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>applyConfig()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>876</x>
-     <y>240</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>903</x>
-     <y>204</y>
+     <x>592</x>
+     <y>669</y>
     </hint>
    </hints>
   </connection>
@@ -3185,66 +3232,34 @@ background-repeat: no-repeat;</string>
    </hints>
   </connection>
   <connection>
-   <sender>btn_reset</sender>
+   <sender>btn_apply</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>defaultConfig()</slot>
+   <slot>applyConfig()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>531</x>
-     <y>508</y>
+     <x>876</x>
+     <y>240</y>
     </hint>
     <hint type="destinationlabel">
-     <x>592</x>
-     <y>669</y>
+     <x>903</x>
+     <y>204</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>btn_mapping</sender>
+   <sender>btn_add</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>lockMappings()</slot>
+   <slot>addMapping()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>795</x>
-     <y>637</y>
+     <x>871</x>
+     <y>167</y>
     </hint>
     <hint type="destinationlabel">
-     <x>818</x>
-     <y>670</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_import</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>importImage()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>349</x>
-     <y>589</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>367</x>
-     <y>606</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_export</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>exportImageWithMappings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>184</x>
-     <y>639</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>212</x>
-     <y>670</y>
+     <x>894</x>
+     <y>124</y>
     </hint>
    </hints>
   </connection>
