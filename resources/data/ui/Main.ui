@@ -1946,7 +1946,7 @@ background-repeat: no-repeat;</string>
                        </item>
                       </layout>
                      </widget>
-                     <widget class="QWidget" name="export_page">
+                     <widget class="QWidget" name="exporter_page">
                       <layout class="QGridLayout" name="gridLayout_343">
                        <property name="leftMargin">
                         <number>9</number>
@@ -1961,11 +1961,11 @@ background-repeat: no-repeat;</string>
                         <number>9</number>
                        </property>
                        <item row="0" column="0">
-                        <widget class="QWidget" name="export" native="true">
+                        <widget class="Exporter" name="exporter" native="true">
                          <widget class="QWidget" name="gridLayoutWidget_3">
                           <property name="geometry">
                            <rect>
-                            <x>0</x>
+                            <x>410</x>
                             <y>70</y>
                             <width>421</width>
                             <height>431</height>
@@ -2090,10 +2090,10 @@ background-repeat: no-repeat;</string>
                          <widget class="QWidget" name="layoutWidget2">
                           <property name="geometry">
                            <rect>
-                            <x>440</x>
-                            <y>360</y>
+                            <x>10</x>
+                            <y>160</y>
                             <width>391</width>
-                            <height>211</height>
+                            <height>221</height>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_8">
@@ -2109,8 +2109,8 @@ background-repeat: no-repeat;</string>
                            <property name="bottomMargin">
                             <number>9</number>
                            </property>
-                           <item row="5" column="0" colspan="2">
-                            <widget class="Line" name="line">
+                           <item row="10" column="0" colspan="2">
+                            <widget class="Line" name="line_3">
                              <property name="frameShadow">
                               <enum>QFrame::Plain</enum>
                              </property>
@@ -2119,31 +2119,7 @@ background-repeat: no-repeat;</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="7" column="0">
-                            <widget class="QLabel" name="label_7">
-                             <property name="text">
-                              <string>Export as...</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="6" column="0">
-                            <widget class="QLabel" name="label_4">
-                             <property name="text">
-                              <string>File prefix</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="6" column="1">
-                            <widget class="QLineEdit" name="entry_prefix">
-                             <property name="styleSheet">
-                              <string notr="true">background-color: rgb(33, 37, 43);</string>
-                             </property>
-                             <property name="placeholderText">
-                              <string>ex : myrep_ (default: none)</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="7" column="1">
+                           <item row="9" column="1">
                             <widget class="QComboBox" name="comboBox_export_type">
                              <property name="styleSheet">
                               <string notr="true">background-color: rgb(52, 59, 72);</string>
@@ -2170,40 +2146,54 @@ background-repeat: no-repeat;</string>
                              </item>
                             </widget>
                            </item>
-                           <item row="8" column="0" colspan="2">
-                            <widget class="Line" name="line_3">
-                             <property name="frameShadow">
-                              <enum>QFrame::Plain</enum>
+                           <item row="8" column="1">
+                            <widget class="QLineEdit" name="entry_prefix">
+                             <property name="styleSheet">
+                              <string notr="true">background-color: rgb(33, 37, 43);</string>
                              </property>
-                             <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
+                             <property name="placeholderText">
+                              <string>myRep_</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="2" column="0">
+                           <item row="9" column="0">
+                            <widget class="QLabel" name="label_7">
+                             <property name="text">
+                              <string>Export as...</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="8" column="0">
+                            <widget class="QLabel" name="label_4">
+                             <property name="text">
+                              <string>File prefix</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="0">
                             <widget class="QLabel" name="label_5">
                              <property name="text">
                               <string>Export to folder...</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="9" column="0" colspan="2">
-                            <widget class="QPushButton" name="btn_apply_export">
+                           <item row="6" column="0">
+                            <widget class="QPushButton" name="btn_apply_export_3">
                              <property name="minimumSize">
                               <size>
                                <width>0</width>
-                               <height>50</height>
+                               <height>0</height>
                               </size>
                              </property>
                              <property name="styleSheet">
                               <string notr="true">background-color: rgb(52, 59, 72);</string>
                              </property>
                              <property name="text">
-                              <string>Apply</string>
+                              <string>Select folder</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="2" column="1">
+                           <item row="6" column="1">
                             <widget class="QLineEdit" name="entry_export_path">
                              <property name="styleSheet">
                               <string notr="true">background-color: rgb(33, 37, 43);</string>
@@ -2212,19 +2202,65 @@ background-repeat: no-repeat;</string>
                               <string/>
                              </property>
                              <property name="placeholderText">
-                              <string>Use an absolute path</string>
+                              <string>C:\Users\USER_NAME\Downloads</string>
                              </property>
                             </widget>
+                           </item>
+                           <item row="7" column="0" colspan="2">
+                            <widget class="Line" name="line">
+                             <property name="frameShadow">
+                              <enum>QFrame::Plain</enum>
+                             </property>
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="12" column="1">
+                            <layout class="QHBoxLayout" name="horizontalLayout_8">
+                             <item>
+                              <widget class="QPushButton" name="btn_apply_export">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>0</width>
+                                 <height>50</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: rgb(52, 59, 72);</string>
+                               </property>
+                               <property name="text">
+                                <string>Export current</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QPushButton" name="btn_apply_export_2">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>0</width>
+                                 <height>50</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: rgb(52, 59, 72);</string>
+                               </property>
+                               <property name="text">
+                                <string>Export all</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
                            </item>
                           </layout>
                          </widget>
                          <widget class="QWidget" name="gridLayoutWidget_4">
                           <property name="geometry">
                            <rect>
-                            <x>0</x>
+                            <x>410</x>
                             <y>500</y>
                             <width>421</width>
-                            <height>71</height>
+                            <height>81</height>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_14">
@@ -2303,6 +2339,38 @@ background-repeat: no-repeat;</string>
                            </item>
                           </layout>
                          </widget>
+                         <widget class="QPushButton" name="btn_export_6">
+                          <property name="geometry">
+                           <rect>
+                            <x>150</x>
+                            <y>450</y>
+                            <width>91</width>
+                            <height>91</height>
+                           </rect>
+                          </property>
+                          <property name="minimumSize">
+                           <size>
+                            <width>0</width>
+                            <height>0</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">border-radius: 45%;</string>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                          <property name="icon">
+                           <iconset resource="resources.qrc">
+                            <normaloff>:/images/images/images/cil-arrow-circle-left.png</normaloff>:/images/images/images/cil-arrow-circle-left.png</iconset>
+                          </property>
+                          <property name="iconSize">
+                           <size>
+                            <width>80</width>
+                            <height>80</height>
+                           </size>
+                          </property>
+                         </widget>
                         </widget>
                        </item>
                       </layout>
@@ -2326,10 +2394,10 @@ background-repeat: no-repeat;</string>
                          <widget class="QWidget" name="gridLayoutWidget">
                           <property name="geometry">
                            <rect>
-                            <x>0</x>
+                            <x>20</x>
                             <y>70</y>
-                            <width>421</width>
-                            <height>461</height>
+                            <width>381</width>
+                            <height>411</height>
                            </rect>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_5">
@@ -2371,9 +2439,9 @@ background-repeat: no-repeat;</string>
                          <widget class="QWidget" name="gridLayoutWidget_2">
                           <property name="geometry">
                            <rect>
-                            <x>0</x>
-                            <y>530</y>
-                            <width>831</width>
+                            <x>420</x>
+                            <y>520</y>
+                            <width>411</width>
                             <height>71</height>
                            </rect>
                           </property>
@@ -2390,7 +2458,7 @@ background-repeat: no-repeat;</string>
                            <property name="bottomMargin">
                             <number>9</number>
                            </property>
-                           <item row="0" column="1">
+                           <item row="0" column="0">
                             <widget class="QPushButton" name="btn_mapping">
                              <property name="enabled">
                               <bool>true</bool>
@@ -2406,19 +2474,6 @@ background-repeat: no-repeat;</string>
                              </property>
                              <property name="text">
                               <string>Unlock mappings</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="0">
-                            <widget class="QPushButton" name="btn_export">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>45</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>Export JPG with mappings</string>
                              </property>
                             </widget>
                            </item>
@@ -2724,6 +2779,57 @@ background-repeat: no-repeat;</string>
                             </layout>
                            </item>
                           </layout>
+                         </widget>
+                         <widget class="QPushButton" name="btn_export_4">
+                          <property name="geometry">
+                           <rect>
+                            <x>40</x>
+                            <y>520</y>
+                            <width>231</width>
+                            <height>51</height>
+                           </rect>
+                          </property>
+                          <property name="minimumSize">
+                           <size>
+                            <width>0</width>
+                            <height>45</height>
+                           </size>
+                          </property>
+                          <property name="text">
+                           <string>Export SVG with mappings</string>
+                          </property>
+                         </widget>
+                         <widget class="QPushButton" name="btn_export_5">
+                          <property name="geometry">
+                           <rect>
+                            <x>290</x>
+                            <y>500</y>
+                            <width>91</width>
+                            <height>91</height>
+                           </rect>
+                          </property>
+                          <property name="minimumSize">
+                           <size>
+                            <width>0</width>
+                            <height>0</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">border-radius: 45%;</string>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                          <property name="icon">
+                           <iconset resource="resources.qrc">
+                            <normaloff>:/images/images/images/cil-arrow-circle-right.png</normaloff>:/images/images/images/cil-arrow-circle-right.png</iconset>
+                          </property>
+                          <property name="iconSize">
+                           <size>
+                            <width>80</width>
+                            <height>80</height>
+                           </size>
+                          </property>
                          </widget>
                         </widget>
                        </item>
@@ -3071,16 +3177,30 @@ background-repeat: no-repeat;</string>
    <header>modules.pages.generator</header>
    <container>1</container>
    <slots>
-    <slot>importImage()</slot>
-    <slot>lockMappings()</slot>
-    <slot>clearConfig()</slot>
-    <slot>removeConfig()</slot>
-    <slot>defaultConfig()</slot>
-    <slot>applyConfig()</slot>
-    <slot>addMapping()</slot>
-    <slot>exportImageWithMappings()</slot>
-    <slot>selectFileConfig()</slot>
-    <slot>saveConfigAsFile()</slot>
+    <slot>import_image()</slot>
+    <slot>lock_mappings()</slot>
+    <slot>clear_config()</slot>
+    <slot>remove_config()</slot>
+    <slot>default_config()</slot>
+    <slot>apply_config()</slot>
+    <slot>add_mapping()</slot>
+    <slot>export_image_with_mappings()</slot>
+    <slot>select_file_config()</slot>
+    <slot>save_config_as_file()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>Exporter</class>
+   <extends>QWidget</extends>
+   <header>modules.pages.exporter</header>
+   <container>1</container>
+   <slots>
+    <slot>previous_rep()</slot>
+    <slot>next_rep()</slot>
+    <slot>export_current()</slot>
+    <slot>export_all()</slot>
+    <slot>select_export_folder()</slot>
+    <slot>back_to_generator()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -3092,15 +3212,15 @@ background-repeat: no-repeat;</string>
    <sender>btn_select</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>selectFileConfig()</slot>
+   <slot>select_file_config()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>843</x>
-     <y>582</y>
+     <x>891</x>
+     <y>583</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>558</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3108,15 +3228,15 @@ background-repeat: no-repeat;</string>
    <sender>btn_save_as</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>saveConfigAsFile()</slot>
+   <slot>save_config_as_file()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>891</x>
      <y>508</y>
     </hint>
     <hint type="destinationlabel">
-     <x>906</x>
-     <y>481</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3124,15 +3244,15 @@ background-repeat: no-repeat;</string>
    <sender>btn_clear</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>clearConfig()</slot>
+   <slot>clear_config()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>705</x>
      <y>508</y>
     </hint>
     <hint type="destinationlabel">
-     <x>740</x>
-     <y>511</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3140,15 +3260,15 @@ background-repeat: no-repeat;</string>
    <sender>btn_add</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>addMapping()</slot>
+   <slot>add_mapping()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>871</x>
-     <y>167</y>
+     <x>891</x>
+     <y>187</y>
     </hint>
     <hint type="destinationlabel">
-     <x>894</x>
-     <y>124</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3156,15 +3276,15 @@ background-repeat: no-repeat;</string>
    <sender>btn_apply</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>applyConfig()</slot>
+   <slot>apply_config()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>876</x>
-     <y>240</y>
+     <x>891</x>
+     <y>251</y>
     </hint>
     <hint type="destinationlabel">
-     <x>903</x>
-     <y>204</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3172,15 +3292,15 @@ background-repeat: no-repeat;</string>
    <sender>btn_remove</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>removeConfig()</slot>
+   <slot>remove_config()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>849</x>
-     <y>267</y>
+     <x>891</x>
+     <y>279</y>
     </hint>
     <hint type="destinationlabel">
-     <x>905</x>
-     <y>324</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3188,15 +3308,15 @@ background-repeat: no-repeat;</string>
    <sender>btn_reset</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>defaultConfig()</slot>
+   <slot>default_config()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>531</x>
+     <x>607</x>
      <y>508</y>
     </hint>
     <hint type="destinationlabel">
-     <x>592</x>
-     <y>669</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3204,15 +3324,15 @@ background-repeat: no-repeat;</string>
    <sender>btn_mapping</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>lockMappings()</slot>
+   <slot>lock_mappings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>795</x>
-     <y>637</y>
+     <x>590</x>
+     <y>628</y>
     </hint>
     <hint type="destinationlabel">
-     <x>818</x>
-     <y>670</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3220,31 +3340,143 @@ background-repeat: no-repeat;</string>
    <sender>btn_import</sender>
    <signal>clicked()</signal>
    <receiver>generator</receiver>
-   <slot>importImage()</slot>
+   <slot>import_image()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>349</x>
-     <y>589</y>
+     <x>279</x>
+     <y>544</y>
     </hint>
     <hint type="destinationlabel">
-     <x>367</x>
-     <y>606</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>btn_export</sender>
+   <sender>btn_previous</sender>
    <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>exportImageWithMappings()</slot>
+   <receiver>exporter</receiver>
+   <slot>previous_rep()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>184</x>
-     <y>639</y>
+     <x>500</x>
+     <y>637</y>
     </hint>
     <hint type="destinationlabel">
-     <x>212</x>
-     <y>670</y>
+     <x>258</x>
+     <y>644</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_next</sender>
+   <signal>clicked()</signal>
+   <receiver>exporter</receiver>
+   <slot>next_rep()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>704</x>
+     <y>637</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>409</x>
+     <y>656</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_apply_export</sender>
+   <signal>clicked()</signal>
+   <receiver>exporter</receiver>
+   <slot>export_current()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>334</x>
+     <y>443</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>720</x>
+     <y>648</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_apply_export_2</sender>
+   <signal>clicked()</signal>
+   <receiver>exporter</receiver>
+   <slot>export_all()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>470</x>
+     <y>443</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>848</x>
+     <y>668</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_apply_export_3</sender>
+   <signal>clicked()</signal>
+   <receiver>exporter</receiver>
+   <slot>select_export_folder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>196</x>
+     <y>298</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>666</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_export_4</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>export_image_with_mappings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>290</x>
+     <y>643</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>170</x>
+     <y>93</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_export_5</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>export_image_with_mappings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>432</x>
+     <y>641</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>345</x>
+     <y>666</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_export_6</sender>
+   <signal>clicked()</signal>
+   <receiver>exporter</receiver>
+   <slot>back_to_generator()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>298</x>
+     <y>576</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>614</y>
     </hint>
    </hints>
   </connection>

@@ -25,6 +25,7 @@ SVG_FOLDER_PATH=getFilePath(RESOURCES_PATH, "images/svg/")
 DESIGN_FILE=SVG_FOLDER_PATH+"families.svg"
 TEMP_FOLDER_PATH=getFilePath(SVG_FOLDER_PATH, "temp/")
 TEMP_FILE_PATH=TEMP_FOLDER_PATH+"temp.svg"
+TEMP_CONFIG_PATH=TEMP_FOLDER_PATH+"tempConfig.csv"
 TEMP_LIVE_VIDEO_PATH=TEMP_FOLDER_PATH+"tempLiveVideo.mp4"
 TEMP_AT_FILE_PATH=TEMP_FOLDER_PATH+"tempAT.svg"
 TEMP_REP_FILE_PATH=TEMP_FOLDER_PATH+"tempRep.svg"
@@ -68,7 +69,7 @@ def getUI(fileName) :
     # Get the config tree
     return getFilePath(__file__, RESOURCES_PATH+'/data/ui/'+fileName)
 
-def getConfig(fileName) : 
+def get_config(fileName) : 
     # Get the config tree
     return getFilePath(__file__, RESOURCES_PATH+'data/config/'+fileName)
 

@@ -15,12 +15,13 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBox,
-    QFrame, QGridLayout, QHBoxLayout, QLabel,
-    QLineEdit, QListWidget, QListWidgetItem, QMainWindow,
-    QPushButton, QSizePolicy, QSpacerItem, QStackedWidget,
-    QTextEdit, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+    QHBoxLayout, QLabel, QLineEdit, QListWidget,
+    QListWidgetItem, QMainWindow, QPushButton, QSizePolicy,
+    QSpacerItem, QStackedWidget, QTextEdit, QVBoxLayout,
+    QWidget)
 
+from modules.pages.exporter import Exporter
 from modules.pages.generator import Generator
 from widgets.image_viewer.ImageViewer import ImageViewer
 from .resources_rc import *
@@ -1132,33 +1133,33 @@ class Ui_MainWindow(object):
         self.gridLayout_342.addWidget(self.home, 0, 0, 1, 1)
 
         self.stackedWidget.addWidget(self.home_page)
-        self.export_page = QWidget()
-        self.export_page.setObjectName(u"export_page")
-        self.gridLayout_343 = QGridLayout(self.export_page)
+        self.exporter_page = QWidget()
+        self.exporter_page.setObjectName(u"exporter_page")
+        self.gridLayout_343 = QGridLayout(self.exporter_page)
         self.gridLayout_343.setObjectName(u"gridLayout_343")
         self.gridLayout_343.setContentsMargins(9, 9, 9, 9)
-        self.export = QWidget(self.export_page)
-        self.export.setObjectName(u"export")
-        self.gridLayoutWidget_3 = QWidget(self.export)
+        self.exporter = Exporter(self.exporter_page)
+        self.exporter.setObjectName(u"exporter")
+        self.gridLayoutWidget_3 = QWidget(self.exporter)
         self.gridLayoutWidget_3.setObjectName(u"gridLayoutWidget_3")
-        self.gridLayoutWidget_3.setGeometry(QRect(400, 80, 421, 431))
+        self.gridLayoutWidget_3.setGeometry(QRect(410, 70, 421, 431))
         self.gridLayout_11 = QGridLayout(self.gridLayoutWidget_3)
         self.gridLayout_11.setObjectName(u"gridLayout_11")
         self.gridLayout_11.setContentsMargins(9, 9, 9, 9)
-        self.frame = QFrame(self.gridLayoutWidget_3)
-        self.frame.setObjectName(u"frame")
-        self.frame.setFrameShape(QFrame.WinPanel)
-        self.frame.setLineWidth(2)
-        self.gridLayout_12 = QGridLayout(self.frame)
+        self.frame_mappings = QFrame(self.gridLayoutWidget_3)
+        self.frame_mappings.setObjectName(u"frame_mappings")
+        self.frame_mappings.setFrameShape(QFrame.WinPanel)
+        self.frame_mappings.setLineWidth(2)
+        self.gridLayout_12 = QGridLayout(self.frame_mappings)
         self.gridLayout_12.setObjectName(u"gridLayout_12")
-        self.widget_3 = QWidget(self.frame)
-        self.widget_3.setObjectName(u"widget_3")
+        self.frame_mappings_grid = QWidget(self.frame_mappings)
+        self.frame_mappings_grid.setObjectName(u"frame_mappings_grid")
         sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.widget_3.sizePolicy().hasHeightForWidth())
-        self.widget_3.setSizePolicy(sizePolicy3)
-        self.gridLayout_13 = QGridLayout(self.widget_3)
+        sizePolicy3.setHeightForWidth(self.frame_mappings_grid.sizePolicy().hasHeightForWidth())
+        self.frame_mappings_grid.setSizePolicy(sizePolicy3)
+        self.gridLayout_13 = QGridLayout(self.frame_mappings_grid)
         self.gridLayout_13.setObjectName(u"gridLayout_13")
         self.horizontalSpacer_4 = QSpacerItem(40, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -1172,7 +1173,7 @@ class Ui_MainWindow(object):
 
         self.gridLayout_13.addItem(self.horizontalSpacer_6, 1, 2, 1, 1)
 
-        self.im_index_2 = QLabel(self.widget_3)
+        self.im_index_2 = QLabel(self.frame_mappings_grid)
         self.im_index_2.setObjectName(u"im_index_2")
         sizePolicy3.setHeightForWidth(self.im_index_2.sizePolicy().hasHeightForWidth())
         self.im_index_2.setSizePolicy(sizePolicy3)
@@ -1181,7 +1182,7 @@ class Ui_MainWindow(object):
 
         self.gridLayout_13.addWidget(self.im_index_2, 0, 2, 1, 1)
 
-        self.im_name_2 = QLabel(self.widget_3)
+        self.im_name_2 = QLabel(self.frame_mappings_grid)
         self.im_name_2.setObjectName(u"im_name_2")
         sizePolicy3.setHeightForWidth(self.im_name_2.sizePolicy().hasHeightForWidth())
         self.im_name_2.setSizePolicy(sizePolicy3)
@@ -1191,188 +1192,127 @@ class Ui_MainWindow(object):
         self.gridLayout_13.addWidget(self.im_name_2, 0, 0, 1, 2)
 
 
-        self.gridLayout_12.addWidget(self.widget_3, 0, 0, 1, 1)
+        self.gridLayout_12.addWidget(self.frame_mappings_grid, 0, 0, 1, 1)
 
 
-        self.gridLayout_11.addWidget(self.frame, 0, 0, 1, 1)
+        self.gridLayout_11.addWidget(self.frame_mappings, 0, 0, 1, 1)
 
-        self.layoutWidget2 = QWidget(self.export)
+        self.layoutWidget2 = QWidget(self.exporter)
         self.layoutWidget2.setObjectName(u"layoutWidget2")
-        self.layoutWidget2.setGeometry(QRect(0, 70, 391, 531))
+        self.layoutWidget2.setGeometry(QRect(10, 160, 391, 221))
         self.gridLayout_8 = QGridLayout(self.layoutWidget2)
         self.gridLayout_8.setObjectName(u"gridLayout_8")
         self.gridLayout_8.setContentsMargins(9, 9, 9, 9)
+        self.line_3 = QFrame(self.layoutWidget2)
+        self.line_3.setObjectName(u"line_3")
+        self.line_3.setFrameShadow(QFrame.Plain)
+        self.line_3.setFrameShape(QFrame.HLine)
+
+        self.gridLayout_8.addWidget(self.line_3, 10, 0, 1, 2)
+
+        self.comboBox_export_type = QComboBox(self.layoutWidget2)
+        self.comboBox_export_type.addItem("")
+        self.comboBox_export_type.addItem("")
+        self.comboBox_export_type.addItem("")
+        self.comboBox_export_type.addItem("")
+        self.comboBox_export_type.setObjectName(u"comboBox_export_type")
+        self.comboBox_export_type.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+
+        self.gridLayout_8.addWidget(self.comboBox_export_type, 9, 1, 1, 1)
+
+        self.entry_prefix = QLineEdit(self.layoutWidget2)
+        self.entry_prefix.setObjectName(u"entry_prefix")
+        self.entry_prefix.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+
+        self.gridLayout_8.addWidget(self.entry_prefix, 8, 1, 1, 1)
+
+        self.label_7 = QLabel(self.layoutWidget2)
+        self.label_7.setObjectName(u"label_7")
+
+        self.gridLayout_8.addWidget(self.label_7, 9, 0, 1, 1)
+
+        self.label_4 = QLabel(self.layoutWidget2)
+        self.label_4.setObjectName(u"label_4")
+
+        self.gridLayout_8.addWidget(self.label_4, 8, 0, 1, 1)
+
         self.label_5 = QLabel(self.layoutWidget2)
         self.label_5.setObjectName(u"label_5")
 
-        self.gridLayout_8.addWidget(self.label_5, 2, 0, 1, 2)
+        self.gridLayout_8.addWidget(self.label_5, 0, 0, 1, 1)
 
-        self.lineEdit_1 = QLineEdit(self.layoutWidget2)
-        self.lineEdit_1.setObjectName(u"lineEdit_1")
-        self.lineEdit_1.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.btn_apply_export_3 = QPushButton(self.layoutWidget2)
+        self.btn_apply_export_3.setObjectName(u"btn_apply_export_3")
+        self.btn_apply_export_3.setMinimumSize(QSize(0, 0))
+        self.btn_apply_export_3.setStyleSheet(u"background-color: rgb(52, 59, 72);")
 
-        self.gridLayout_8.addWidget(self.lineEdit_1, 3, 0, 1, 2)
+        self.gridLayout_8.addWidget(self.btn_apply_export_3, 6, 0, 1, 1)
+
+        self.entry_export_path = QLineEdit(self.layoutWidget2)
+        self.entry_export_path.setObjectName(u"entry_export_path")
+        self.entry_export_path.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+
+        self.gridLayout_8.addWidget(self.entry_export_path, 6, 1, 1, 1)
 
         self.line = QFrame(self.layoutWidget2)
         self.line.setObjectName(u"line")
         self.line.setFrameShadow(QFrame.Plain)
         self.line.setFrameShape(QFrame.HLine)
 
-        self.gridLayout_8.addWidget(self.line, 4, 0, 1, 2)
+        self.gridLayout_8.addWidget(self.line, 7, 0, 1, 2)
 
-        self.label_4 = QLabel(self.layoutWidget2)
-        self.label_4.setObjectName(u"label_4")
+        self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.btn_apply_export = QPushButton(self.layoutWidget2)
+        self.btn_apply_export.setObjectName(u"btn_apply_export")
+        self.btn_apply_export.setMinimumSize(QSize(0, 50))
+        self.btn_apply_export.setStyleSheet(u"background-color: rgb(52, 59, 72);")
 
-        self.gridLayout_8.addWidget(self.label_4, 5, 0, 1, 1)
+        self.horizontalLayout_8.addWidget(self.btn_apply_export)
 
-        self.lineEdit_2 = QLineEdit(self.layoutWidget2)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
-        self.lineEdit_2.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.btn_apply_export_2 = QPushButton(self.layoutWidget2)
+        self.btn_apply_export_2.setObjectName(u"btn_apply_export_2")
+        self.btn_apply_export_2.setMinimumSize(QSize(0, 50))
+        self.btn_apply_export_2.setStyleSheet(u"background-color: rgb(52, 59, 72);")
 
-        self.gridLayout_8.addWidget(self.lineEdit_2, 5, 1, 1, 1)
+        self.horizontalLayout_8.addWidget(self.btn_apply_export_2)
 
-        self.label_7 = QLabel(self.layoutWidget2)
-        self.label_7.setObjectName(u"label_7")
 
-        self.gridLayout_8.addWidget(self.label_7, 6, 0, 1, 1)
+        self.gridLayout_8.addLayout(self.horizontalLayout_8, 12, 1, 1, 1)
 
-        self.comboBox_2 = QComboBox(self.layoutWidget2)
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.setObjectName(u"comboBox_2")
-        self.comboBox_2.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-
-        self.gridLayout_8.addWidget(self.comboBox_2, 6, 1, 1, 1)
-
-        self.label_6 = QLabel(self.layoutWidget2)
-        self.label_6.setObjectName(u"label_6")
-
-        self.gridLayout_8.addWidget(self.label_6, 7, 0, 1, 1)
-
-        self.doubleSpinBox = QDoubleSpinBox(self.layoutWidget2)
-        self.doubleSpinBox.setObjectName(u"doubleSpinBox")
-        self.doubleSpinBox.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-        self.doubleSpinBox.setDecimals(1)
-        self.doubleSpinBox.setMaximum(1000.000000000000000)
-        self.doubleSpinBox.setValue(100.000000000000000)
-
-        self.gridLayout_8.addWidget(self.doubleSpinBox, 7, 1, 1, 1)
-
-        self.line_2 = QFrame(self.layoutWidget2)
-        self.line_2.setObjectName(u"line_2")
-        self.line_2.setFrameShadow(QFrame.Plain)
-        self.line_2.setFrameShape(QFrame.HLine)
-
-        self.gridLayout_8.addWidget(self.line_2, 8, 0, 1, 2)
-
-        self.checkBox_config_file_choice = QCheckBox(self.layoutWidget2)
-        self.checkBox_config_file_choice.setObjectName(u"checkBox_config_file_choice")
-        self.checkBox_config_file_choice.setStyleSheet(u"")
-        self.checkBox_config_file_choice.setChecked(True)
-        self.checkBox_config_file_choice.setTristate(False)
-
-        self.gridLayout_8.addWidget(self.checkBox_config_file_choice, 9, 0, 1, 2)
-
-        self.label_config = QLabel(self.layoutWidget2)
-        self.label_config.setObjectName(u"label_config")
-        self.label_config.setEnabled(False)
-
-        self.gridLayout_8.addWidget(self.label_config, 10, 0, 1, 2)
-
-        self.lineEdit_config = QLineEdit(self.layoutWidget2)
-        self.lineEdit_config.setObjectName(u"lineEdit_config")
-        self.lineEdit_config.setEnabled(False)
-        self.lineEdit_config.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-
-        self.gridLayout_8.addWidget(self.lineEdit_config, 11, 0, 1, 2)
-
-        self.line_3 = QFrame(self.layoutWidget2)
-        self.line_3.setObjectName(u"line_3")
-        self.line_3.setFrameShadow(QFrame.Plain)
-        self.line_3.setFrameShape(QFrame.HLine)
-
-        self.gridLayout_8.addWidget(self.line_3, 12, 0, 1, 2)
-
-        self.checkBox_1 = QCheckBox(self.layoutWidget2)
-        self.checkBox_1.setObjectName(u"checkBox_1")
-
-        self.gridLayout_8.addWidget(self.checkBox_1, 13, 0, 1, 2)
-
-        self.checkBox_2 = QCheckBox(self.layoutWidget2)
-        self.checkBox_2.setObjectName(u"checkBox_2")
-
-        self.gridLayout_8.addWidget(self.checkBox_2, 14, 0, 1, 2)
-
-        self.checkBox_3 = QCheckBox(self.layoutWidget2)
-        self.checkBox_3.setObjectName(u"checkBox_3")
-
-        self.gridLayout_8.addWidget(self.checkBox_3, 15, 0, 1, 2)
-
-        self.checkBox_4 = QCheckBox(self.layoutWidget2)
-        self.checkBox_4.setObjectName(u"checkBox_4")
-
-        self.gridLayout_8.addWidget(self.checkBox_4, 16, 0, 1, 2)
-
-        self.checkBox_5 = QCheckBox(self.layoutWidget2)
-        self.checkBox_5.setObjectName(u"checkBox_5")
-
-        self.gridLayout_8.addWidget(self.checkBox_5, 17, 0, 1, 2)
-
-        self.checkBox_6 = QCheckBox(self.layoutWidget2)
-        self.checkBox_6.setObjectName(u"checkBox_6")
-        self.checkBox_6.setStyleSheet(u"")
-
-        self.gridLayout_8.addWidget(self.checkBox_6, 18, 0, 1, 2)
-
-        self.pushButton_2 = QPushButton(self.layoutWidget2)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-
-        self.gridLayout_8.addWidget(self.pushButton_2, 19, 0, 1, 1)
-
-        self.pushButton_3 = QPushButton(self.layoutWidget2)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        self.pushButton_3.setStyleSheet(u"background-color: rgb(52, 59, 72);")
-
-        self.gridLayout_8.addWidget(self.pushButton_3, 19, 1, 1, 1)
-
-        self.gridLayoutWidget_4 = QWidget(self.export)
+        self.gridLayoutWidget_4 = QWidget(self.exporter)
         self.gridLayoutWidget_4.setObjectName(u"gridLayoutWidget_4")
-        self.gridLayoutWidget_4.setGeometry(QRect(400, 510, 421, 91))
+        self.gridLayoutWidget_4.setGeometry(QRect(410, 500, 421, 81))
         self.gridLayout_14 = QGridLayout(self.gridLayoutWidget_4)
         self.gridLayout_14.setObjectName(u"gridLayout_14")
-        self.gridLayout_14.setContentsMargins(0, 0, 0, 0)
         self.widget = QWidget(self.gridLayoutWidget_4)
         self.widget.setObjectName(u"widget")
         sizePolicy3.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
         self.widget.setSizePolicy(sizePolicy3)
         self.horizontalLayout_7 = QHBoxLayout(self.widget)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.pushButton_6 = QPushButton(self.widget)
-        self.pushButton_6.setObjectName(u"pushButton_6")
-        self.pushButton_6.setMinimumSize(QSize(0, 60))
-        self.pushButton_6.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        self.btn_previous = QPushButton(self.widget)
+        self.btn_previous.setObjectName(u"btn_previous")
+        self.btn_previous.setMinimumSize(QSize(0, 50))
+        self.btn_previous.setStyleSheet(u"background-color: rgb(52, 59, 72);")
 
-        self.horizontalLayout_7.addWidget(self.pushButton_6)
+        self.horizontalLayout_7.addWidget(self.btn_previous)
 
-        self.pushButton_7 = QPushButton(self.widget)
-        self.pushButton_7.setObjectName(u"pushButton_7")
-        self.pushButton_7.setMinimumSize(QSize(0, 60))
-        self.pushButton_7.setStyleSheet(u"background-color: rgb(52, 59, 72);")
+        self.btn_next = QPushButton(self.widget)
+        self.btn_next.setObjectName(u"btn_next")
+        self.btn_next.setMinimumSize(QSize(0, 50))
+        self.btn_next.setStyleSheet(u"background-color: rgb(52, 59, 72);")
 
-        self.horizontalLayout_7.addWidget(self.pushButton_7)
+        self.horizontalLayout_7.addWidget(self.btn_next)
 
 
         self.gridLayout_14.addWidget(self.widget, 0, 0, 1, 1)
 
-        self.verticalLayoutWidget_3 = QWidget(self.export)
+        self.verticalLayoutWidget_3 = QWidget(self.exporter)
         self.verticalLayoutWidget_3.setObjectName(u"verticalLayoutWidget_3")
-        self.verticalLayoutWidget_3.setGeometry(QRect(0, 0, 401, 71))
+        self.verticalLayoutWidget_3.setGeometry(QRect(10, 0, 401, 71))
         self.verticalLayout_22 = QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
-        self.verticalLayout_22.setContentsMargins(0, 0, 0, 0)
         self.label_9 = QLabel(self.verticalLayoutWidget_3)
         self.label_9.setObjectName(u"label_9")
 
@@ -1385,10 +1325,19 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_22.addWidget(self.line_6)
 
+        self.btn_export_6 = QPushButton(self.exporter)
+        self.btn_export_6.setObjectName(u"btn_export_6")
+        self.btn_export_6.setGeometry(QRect(150, 450, 91, 91))
+        self.btn_export_6.setMinimumSize(QSize(0, 0))
+        self.btn_export_6.setStyleSheet(u"border-radius: 45%;")
+        icon4 = QIcon()
+        icon4.addFile(u":/images/images/images/cil-arrow-circle-left.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_export_6.setIcon(icon4)
+        self.btn_export_6.setIconSize(QSize(80, 80))
 
-        self.gridLayout_343.addWidget(self.export, 0, 0, 1, 1)
+        self.gridLayout_343.addWidget(self.exporter, 0, 0, 1, 1)
 
-        self.stackedWidget.addWidget(self.export_page)
+        self.stackedWidget.addWidget(self.exporter_page)
         self.generator_page = QWidget()
         self.generator_page.setObjectName(u"generator_page")
         self.gridLayout_364 = QGridLayout(self.generator_page)
@@ -1398,7 +1347,7 @@ class Ui_MainWindow(object):
         self.generator.setObjectName(u"generator")
         self.gridLayoutWidget = QWidget(self.generator)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(0, 70, 421, 461))
+        self.gridLayoutWidget.setGeometry(QRect(20, 70, 381, 411))
         self.gridLayout_5 = QGridLayout(self.gridLayoutWidget)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
         self.gridLayout_5.setContentsMargins(9, 9, 9, 9)
@@ -1419,7 +1368,7 @@ class Ui_MainWindow(object):
 
         self.gridLayoutWidget_2 = QWidget(self.generator)
         self.gridLayoutWidget_2.setObjectName(u"gridLayoutWidget_2")
-        self.gridLayoutWidget_2.setGeometry(QRect(0, 530, 831, 71))
+        self.gridLayoutWidget_2.setGeometry(QRect(420, 520, 411, 71))
         self.gridLayout_7 = QGridLayout(self.gridLayoutWidget_2)
         self.gridLayout_7.setObjectName(u"gridLayout_7")
         self.gridLayout_7.setContentsMargins(9, 9, 9, 9)
@@ -1429,13 +1378,7 @@ class Ui_MainWindow(object):
         self.btn_mapping.setMinimumSize(QSize(0, 45))
         self.btn_mapping.setStyleSheet(u"")
 
-        self.gridLayout_7.addWidget(self.btn_mapping, 0, 1, 1, 1)
-
-        self.btn_export = QPushButton(self.gridLayoutWidget_2)
-        self.btn_export.setObjectName(u"btn_export")
-        self.btn_export.setMinimumSize(QSize(0, 45))
-
-        self.gridLayout_7.addWidget(self.btn_export, 0, 0, 1, 1)
+        self.gridLayout_7.addWidget(self.btn_mapping, 0, 0, 1, 1)
 
         self.verticalLayoutWidget_2 = QWidget(self.generator)
         self.verticalLayoutWidget_2.setObjectName(u"verticalLayoutWidget_2")
@@ -1462,15 +1405,15 @@ class Ui_MainWindow(object):
         self.mapping_frame.setFrameShadow(QFrame.Raised)
         self.gridLayout = QGridLayout(self.mapping_frame)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout_4 = QGridLayout()
-        self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.gridLayout_4.setHorizontalSpacing(9)
-        self.gridLayout_4.setContentsMargins(9, 9, 9, 9)
+        self.frame_grid = QGridLayout()
+        self.frame_grid.setObjectName(u"frame_grid")
+        self.frame_grid.setHorizontalSpacing(9)
+        self.frame_grid.setContentsMargins(9, 9, 9, 9)
         self.btn_clear = QPushButton(self.mapping_frame)
         self.btn_clear.setObjectName(u"btn_clear")
         self.btn_clear.setStyleSheet(u"")
 
-        self.gridLayout_4.addWidget(self.btn_clear, 8, 1, 1, 1)
+        self.frame_grid.addWidget(self.btn_clear, 8, 1, 1, 1)
 
         self.comboBox_finger = QComboBox(self.mapping_frame)
         self.comboBox_finger.addItem("")
@@ -1479,12 +1422,12 @@ class Ui_MainWindow(object):
         self.comboBox_finger.addItem("")
         self.comboBox_finger.setObjectName(u"comboBox_finger")
 
-        self.gridLayout_4.addWidget(self.comboBox_finger, 1, 0, 1, 1)
+        self.frame_grid.addWidget(self.comboBox_finger, 1, 0, 1, 1)
 
         self.label_str_config = QLabel(self.mapping_frame)
         self.label_str_config.setObjectName(u"label_str_config")
 
-        self.gridLayout_4.addWidget(self.label_str_config, 4, 0, 1, 3)
+        self.frame_grid.addWidget(self.label_str_config, 4, 0, 1, 3)
 
         self.comboBox_microgesture = QComboBox(self.mapping_frame)
         self.comboBox_microgesture.addItem("")
@@ -1494,7 +1437,7 @@ class Ui_MainWindow(object):
         self.comboBox_microgesture.setObjectName(u"comboBox_microgesture")
         self.comboBox_microgesture.setStyleSheet(u"")
 
-        self.gridLayout_4.addWidget(self.comboBox_microgesture, 2, 0, 1, 1)
+        self.frame_grid.addWidget(self.comboBox_microgesture, 2, 0, 1, 1)
 
         self.comboBox_charac = QComboBox(self.mapping_frame)
         self.comboBox_charac.addItem("")
@@ -1505,78 +1448,78 @@ class Ui_MainWindow(object):
         self.comboBox_charac.setObjectName(u"comboBox_charac")
         self.comboBox_charac.setStyleSheet(u"")
 
-        self.gridLayout_4.addWidget(self.comboBox_charac, 2, 1, 1, 1)
+        self.frame_grid.addWidget(self.comboBox_charac, 2, 1, 1, 1)
 
         self.label_config_file = QLabel(self.mapping_frame)
         self.label_config_file.setObjectName(u"label_config_file")
 
-        self.gridLayout_4.addWidget(self.label_config_file, 10, 0, 1, 2)
+        self.frame_grid.addWidget(self.label_config_file, 10, 0, 1, 2)
 
         self.label_10 = QLabel(self.mapping_frame)
         self.label_10.setObjectName(u"label_10")
 
-        self.gridLayout_4.addWidget(self.label_10, 9, 1, 1, 1)
+        self.frame_grid.addWidget(self.label_10, 9, 1, 1, 1)
 
         self.btn_select = QPushButton(self.mapping_frame)
         self.btn_select.setObjectName(u"btn_select")
         self.btn_select.setStyleSheet(u"")
 
-        self.gridLayout_4.addWidget(self.btn_select, 11, 3, 1, 1)
+        self.frame_grid.addWidget(self.btn_select, 11, 3, 1, 1)
 
         self.btn_apply = QPushButton(self.mapping_frame)
         self.btn_apply.setObjectName(u"btn_apply")
         self.btn_apply.setStyleSheet(u"")
 
-        self.gridLayout_4.addWidget(self.btn_apply, 4, 3, 1, 1)
+        self.frame_grid.addWidget(self.btn_apply, 4, 3, 1, 1)
 
         self.btn_add = QPushButton(self.mapping_frame)
         self.btn_add.setObjectName(u"btn_add")
         self.btn_add.setMinimumSize(QSize(0, 50))
         self.btn_add.setStyleSheet(u"")
 
-        self.gridLayout_4.addWidget(self.btn_add, 1, 3, 2, 1)
+        self.frame_grid.addWidget(self.btn_add, 1, 3, 2, 1)
 
         self.list_config = QListWidget(self.mapping_frame)
         self.list_config.setObjectName(u"list_config")
 
-        self.gridLayout_4.addWidget(self.list_config, 6, 0, 1, 4)
+        self.frame_grid.addWidget(self.list_config, 6, 0, 1, 4)
 
         self.label = QLabel(self.mapping_frame)
         self.label.setObjectName(u"label")
         sizePolicy3.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy3)
 
-        self.gridLayout_4.addWidget(self.label, 0, 0, 1, 4)
+        self.frame_grid.addWidget(self.label, 0, 0, 1, 4)
 
         self.label_3 = QLabel(self.mapping_frame)
         self.label_3.setObjectName(u"label_3")
 
-        self.gridLayout_4.addWidget(self.label_3, 3, 0, 1, 4)
+        self.frame_grid.addWidget(self.label_3, 3, 0, 1, 4)
 
         self.btn_save_as = QPushButton(self.mapping_frame)
         self.btn_save_as.setObjectName(u"btn_save_as")
         self.btn_save_as.setStyleSheet(u"")
 
-        self.gridLayout_4.addWidget(self.btn_save_as, 8, 3, 1, 1)
+        self.frame_grid.addWidget(self.btn_save_as, 8, 3, 1, 1)
 
         self.label_2 = QLabel(self.mapping_frame)
         self.label_2.setObjectName(u"label_2")
         sizePolicy3.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
         self.label_2.setSizePolicy(sizePolicy3)
 
-        self.gridLayout_4.addWidget(self.label_2, 5, 0, 1, 3)
+        self.frame_grid.addWidget(self.label_2, 5, 0, 1, 3)
 
         self.btn_remove = QPushButton(self.mapping_frame)
         self.btn_remove.setObjectName(u"btn_remove")
         self.btn_remove.setStyleSheet(u"")
 
-        self.gridLayout_4.addWidget(self.btn_remove, 5, 3, 1, 1)
+        self.frame_grid.addWidget(self.btn_remove, 5, 3, 1, 1)
 
         self.btn_reset = QPushButton(self.mapping_frame)
         self.btn_reset.setObjectName(u"btn_reset")
         self.btn_reset.setStyleSheet(u"")
 
-        self.gridLayout_4.addWidget(self.btn_reset, 8, 0, 1, 1)
+        self.frame_grid.addWidget(self.btn_reset, 8, 0, 1, 1)
 
         self.entry_config = QLineEdit(self.mapping_frame)
         self.entry_config.setObjectName(u"entry_config")
@@ -1584,11 +1527,24 @@ class Ui_MainWindow(object):
         self.entry_config.setStyleSheet(u"background-color: rgb(33, 37, 43);")
         self.entry_config.setReadOnly(True)
 
-        self.gridLayout_4.addWidget(self.entry_config, 11, 0, 1, 3)
+        self.frame_grid.addWidget(self.entry_config, 11, 0, 1, 3)
 
 
-        self.gridLayout.addLayout(self.gridLayout_4, 0, 0, 1, 1)
+        self.gridLayout.addLayout(self.frame_grid, 0, 0, 1, 1)
 
+        self.btn_export_4 = QPushButton(self.generator)
+        self.btn_export_4.setObjectName(u"btn_export_4")
+        self.btn_export_4.setGeometry(QRect(40, 520, 231, 51))
+        self.btn_export_4.setMinimumSize(QSize(0, 45))
+        self.btn_export_5 = QPushButton(self.generator)
+        self.btn_export_5.setObjectName(u"btn_export_5")
+        self.btn_export_5.setGeometry(QRect(290, 500, 91, 91))
+        self.btn_export_5.setMinimumSize(QSize(0, 0))
+        self.btn_export_5.setStyleSheet(u"border-radius: 45%;")
+        icon5 = QIcon()
+        icon5.addFile(u":/images/images/images/cil-arrow-circle-right.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_export_5.setIcon(icon5)
+        self.btn_export_5.setIconSize(QSize(80, 80))
 
         self.gridLayout_364.addWidget(self.generator, 0, 0, 1, 1)
 
@@ -1730,18 +1686,25 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.styleSheet)
 
         self.retranslateUi(MainWindow)
-        self.btn_select.clicked.connect(self.generator.selectFileConfig)
-        self.btn_save_as.clicked.connect(self.generator.saveConfigAsFile)
-        self.btn_clear.clicked.connect(self.generator.clearConfig)
-        self.btn_add.clicked.connect(self.generator.addMapping)
-        self.btn_apply.clicked.connect(self.generator.applyConfig)
-        self.btn_remove.clicked.connect(self.generator.removeConfig)
-        self.btn_reset.clicked.connect(self.generator.defaultConfig)
-        self.btn_mapping.clicked.connect(self.generator.lockMappings)
-        self.btn_import.clicked.connect(self.generator.importImage)
-        self.btn_export.clicked.connect(self.generator.exportImageWithMappings)
+        self.btn_select.clicked.connect(self.generator.select_file_config)
+        self.btn_save_as.clicked.connect(self.generator.save_config_as_file)
+        self.btn_clear.clicked.connect(self.generator.clear_config)
+        self.btn_add.clicked.connect(self.generator.add_mapping)
+        self.btn_apply.clicked.connect(self.generator.apply_config)
+        self.btn_remove.clicked.connect(self.generator.remove_config)
+        self.btn_reset.clicked.connect(self.generator.default_config)
+        self.btn_mapping.clicked.connect(self.generator.lock_mappings)
+        self.btn_import.clicked.connect(self.generator.import_image)
+        self.btn_previous.clicked.connect(self.exporter.previous_rep)
+        self.btn_next.clicked.connect(self.exporter.next_rep)
+        self.btn_apply_export.clicked.connect(self.exporter.export_current)
+        self.btn_apply_export_2.clicked.connect(self.exporter.export_all)
+        self.btn_apply_export_3.clicked.connect(self.exporter.select_export_folder)
+        self.btn_export_4.clicked.connect(self.generator.export_image_with_mappings)
+        self.btn_export_5.clicked.connect(self.generator.export_image_with_mappings)
+        self.btn_export_6.clicked.connect(self.exporter.back_to_generator)
 
-        self.stackedWidget.setCurrentIndex(5)
+        self.stackedWidget.setCurrentIndex(4)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1812,34 +1775,26 @@ class Ui_MainWindow(object):
         self.label_markers.setProperty("text", "")
         self.im_index_2.setText("")
         self.im_name_2.setText("")
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Choose path to export :", None))
-        self.lineEdit_1.setText("")
-        self.lineEdit_1.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Use an absolute path", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Prefix to add (optianal)", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Export layer as ...", None))
-        self.comboBox_2.setItemText(0, QCoreApplication.translate("MainWindow", u"SVG", None))
-        self.comboBox_2.setItemText(1, QCoreApplication.translate("MainWindow", u"PNG", None))
-        self.comboBox_2.setItemText(2, QCoreApplication.translate("MainWindow", u"JPG", None))
-        self.comboBox_2.setItemText(3, QCoreApplication.translate("MainWindow", u"PDF", None))
+        self.comboBox_export_type.setItemText(0, QCoreApplication.translate("MainWindow", u"SVG", None))
+        self.comboBox_export_type.setItemText(1, QCoreApplication.translate("MainWindow", u"PNG", None))
+        self.comboBox_export_type.setItemText(2, QCoreApplication.translate("MainWindow", u"JPG", None))
+        self.comboBox_export_type.setItemText(3, QCoreApplication.translate("MainWindow", u"PDF", None))
 
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Export DPI (if applicable)", None))
-        self.checkBox_config_file_choice.setText(QCoreApplication.translate("MainWindow", u"Use integreted configuration file", None))
-        self.label_config.setText(QCoreApplication.translate("MainWindow", u"Export configuration file (computed only if CSV file) :", None))
-        self.lineEdit_config.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Use an absolute path", None))
-        self.checkBox_1.setText(QCoreApplication.translate("MainWindow", u"Show traces", None))
-        self.checkBox_2.setText(QCoreApplication.translate("MainWindow", u"Show command placeholders", None))
-        self.checkBox_3.setText(QCoreApplication.translate("MainWindow", u"Only process one family", None))
-        self.checkBox_4.setText(QCoreApplication.translate("MainWindow", u"Only process four microgestures for each family", None))
-        self.checkBox_5.setText(QCoreApplication.translate("MainWindow", u"Debug mode (verbose logging)", None))
-        self.checkBox_6.setText(QCoreApplication.translate("MainWindow", u"Dry run", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Close", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"Apply", None))
-        self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"Previous", None))
-        self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"Next", None))
+        self.entry_prefix.setPlaceholderText(QCoreApplication.translate("MainWindow", u"myRep_", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Export as...", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"File prefix", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Export to folder...", None))
+        self.btn_apply_export_3.setText(QCoreApplication.translate("MainWindow", u"Select folder", None))
+        self.entry_export_path.setText("")
+        self.entry_export_path.setPlaceholderText(QCoreApplication.translate("MainWindow", u"C:\\Users\\USER_NAME\\Downloads", None))
+        self.btn_apply_export.setText(QCoreApplication.translate("MainWindow", u"Export current", None))
+        self.btn_apply_export_2.setText(QCoreApplication.translate("MainWindow", u"Export all", None))
+        self.btn_previous.setText(QCoreApplication.translate("MainWindow", u"Previous", None))
+        self.btn_next.setText(QCoreApplication.translate("MainWindow", u"Next", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Export microgesture representations</span></p></body></html>", None))
+        self.btn_export_6.setText("")
         self.btn_import.setText(QCoreApplication.translate("MainWindow", u"Import a JPG ...", None))
         self.btn_mapping.setText(QCoreApplication.translate("MainWindow", u"Unlock mappings", None))
-        self.btn_export.setText(QCoreApplication.translate("MainWindow", u"Export JPG with mappings", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Export microgesture representations</span></p></body></html>", None))
         self.btn_clear.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.comboBox_finger.setItemText(0, QCoreApplication.translate("MainWindow", u"Index", None))
@@ -1871,6 +1826,8 @@ class Ui_MainWindow(object):
         self.btn_remove.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
         self.btn_reset.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
         self.entry_config.setPlaceholderText("")
+        self.btn_export_4.setText(QCoreApplication.translate("MainWindow", u"Export SVG with mappings", None))
+        self.btn_export_5.setText("")
         self.btn_author.setText(QCoreApplication.translate("MainWindow", u"Author", None))
         self.btn_related.setText(QCoreApplication.translate("MainWindow", u"Related works", None))
         self.creditsLabel.setText(QCoreApplication.translate("MainWindow", u"By: Vincent Lambert", None))

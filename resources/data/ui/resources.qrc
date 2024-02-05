@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="images">
+    <file>../../images/images/cil-arrow-circle-right.png</file>
+    <file>../../images/images/cil-arrow-circle-left.png</file>
     <file>../../images/images/microRep.png</file>
     <file>../../images/images/microRep_vertical.png</file>
     <file>../../images/images/microRep_horizontal.png</file>

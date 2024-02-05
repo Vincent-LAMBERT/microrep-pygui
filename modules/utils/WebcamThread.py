@@ -28,7 +28,10 @@ os.environ["QT_LOGGING_RULES"] = '*.debug=false;qt.accessibility.cache.warning=f
 # Classe QThread personnalisée pour la capture vidéo
 class WebcamThread(QThread):
     is_running = True
+
+    first_computed = False
     webcam_on = False
+
     image_data = Signal(np.ndarray)
     dic = get_microgest_xml()
 
@@ -40,16 +43,15 @@ class WebcamThread(QThread):
     
     tree = None
     frame_count = 0
-    resize_done = False
     markers_tree = None
     
     detector = create_detector()
     dic = get_microgest_xml()
     
-    def __init__(self, label_live_file, label_markers, label_rep, label_commands, live_compute, frame_rate=60, frame_skip=1, mp_result_max_size=3):
+    def __init__(self, label_live_file, label_markers, label_rep, label_commands, microrep_compute, frame_rate=60, frame_skip=1, mp_result_max_size=3):
         super(WebcamThread, self).__init__()
         
-        self.lc = live_compute
+        self.mgc = microrep_compute
         self.frame_rate = frame_rate
         self.frame_skip = frame_skip
         
@@ -74,7 +76,7 @@ class WebcamThread(QThread):
                 cap = cv2.VideoCapture(0)
                 prev = 0
                 while cap.isOpened() and self.webcam_on:
-                    self.lc.update_running_info()
+                    self.mgc.update_running_info()
                     time_elapsed = time.time() - prev
                     success, image = cap.read()
                     if not success:
@@ -91,7 +93,7 @@ class WebcamThread(QThread):
                 if cap.isOpened():
                     cap.release()
             else :
-                self.lc.update_running_info()
+                self.mgc.update_running_info()
         # self.quit()
 
     def start(self) -> None:
@@ -102,12 +104,13 @@ class WebcamThread(QThread):
     def stop(self) -> None:
         self.is_running = False
     
-    def stopWebcam(self):
+    def stopLive(self):
         self.webcam_on = False
         print("Stopping the camera")
 
-    def restartWebcam(self):
+    def restartLive(self):
         self.webcam_on = True
+        self.first_computed = False
 
     #####################################################
     ############## UPDATE FUNCTIONS #####################
@@ -115,9 +118,9 @@ class WebcamThread(QThread):
 
     # Fonction gerant la mise a jour de l'affichage
     def update_image(self, image):
-        if not self.resize_done :
-            self.lc.resizeDesign(image)
-            self.resize_done = True
+        if not self.first_computed :
+            self.mgc.resize_design(image)
+            self.first_computed = True
 
         back_thread = threading.Thread(target=self.update_background, args=(image,))
         back_thread.start()
@@ -142,13 +145,13 @@ class WebcamThread(QThread):
             self.back_pixmap = None
 
     def update_all(self, image):
-        mp_results = self.lc.detect(image)
+        mp_results = self.mgc.detect(image)
 
         if mp_results.hand_landmarks != [] :
             markers_tree = self.update_markers(mp_results)
 
-            rep_tree = self.lc.copyDesign()
-            new_rep_tree = self.update_representation(rep_tree, self.lc.fmc_combinations, markers_tree)
+            rep_tree = self.mgc.copy_design()
+            new_rep_tree = self.update_representation(rep_tree, self.mgc.fmc_combinations, markers_tree)
             # self.update_commands(rep_tree, combi)
         else :
             self.markers_canva = None
@@ -156,18 +159,18 @@ class WebcamThread(QThread):
 
     def update_markers(self, mp_results):
         markers_tree = get_markers_tree()
-        resized_tree = family_resize(markers_tree, mp_results, self.lc.img_height, self.lc.img_width)
+        resized_tree = family_resize(markers_tree, mp_results, self.mgc.img_height, self.mgc.img_width)
 
-        tree = move_rep_markers(mp_results, resized_tree, self.lc.img_height, self.lc.img_width, self.dic)
+        tree = move_rep_markers(mp_results, resized_tree, self.mgc.img_height, self.mgc.img_width, self.dic)
         
-        self.markers_canva = svg_to_pixmap(tree, self.lc.img_height, self.lc.img_width)
+        self.markers_canva = svg_to_pixmap(tree, self.mgc.img_height, self.mgc.img_width)
         return tree
 
     def update_representation(self, rep_tree, combi, markers_tree):
         new_rep_tree = move_rep(rep_tree, markers_tree, combi)
         svg_tree = stroke_to_path(new_rep_tree, markers_tree, combi)
         
-        self.rep_canva = svg_to_pixmap(svg_tree, self.lc.img_height, self.lc.img_width)
+        self.rep_canva = svg_to_pixmap(svg_tree, self.mgc.img_height, self.mgc.img_width)
         return new_rep_tree
 
     def update_commands(self):

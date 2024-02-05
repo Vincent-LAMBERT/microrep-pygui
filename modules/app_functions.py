@@ -20,7 +20,7 @@ import threading
 import cv2
 from main import *
 from modules.utils.AppUtils import TEMP_FOLDER_PATH, createFolder, deleteFolder
-from modules.utils.LiveCompute import LiveCompute
+from modules.utils.MicroRepThread import MicroRepThread
 from modules.utils.WebcamThread import WebcamThread
 
 from PySide6.QtMultimedia import QMediaDevices
@@ -51,17 +51,18 @@ class AppFunctions(MainWindow):
         deleteFolder(TEMP_FOLDER_PATH)
         createFolder(TEMP_FOLDER_PATH)
 
-        self.live_compute = LiveCompute("live_config.csv", running_info=self.ui.runningInfo)
+        self.microrep_thread = MicroRepThread(running_info=self.ui.runningInfo)
 
         label_live_file = self.ui.label_live_file
         label_markers = self.ui.label_markers
         label_rep = self.ui.label_rep
         label_commands = self.ui.label_commands
         
-        self.webcam_thread = WebcamThread(label_live_file, label_markers, label_rep, label_commands, live_compute=self.live_compute, frame_rate=30, frame_skip=2)
+        self.webcam_thread = WebcamThread(label_live_file, label_markers, label_rep, label_commands, microrep_compute=self.microrep_thread, frame_rate=30, frame_skip=2)
 
         # Set to home page
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
 
-        # Set the ui to the generator
-        self.ui.generator.setUi(self.ui)
+        # Give the ui to the children widgets
+        self.ui.generator.configure(self.ui, self.microrep_thread)
+        self.ui.exporter.configure(self.ui, self.microrep_thread)

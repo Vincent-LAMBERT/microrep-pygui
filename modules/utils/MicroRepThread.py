@@ -13,30 +13,22 @@ from lxml import etree
 import numpy as np
 
 from .HandDetection import create_detector, input_treatement, update_mp_results
-from .DesignManagement import read_file, write_file, remove_invisible_layers, export_representations, get_markers_tree
+from .DesignManagement import read_file, write_file, remove_invisible_layers, get_markers_tree
 from .AppUtils import *
 
 
 import time, numpy,cv2, subprocess, copy
 import threading
 
-class LiveCompute(QThread):
+class MicroRepThread(QThread):
 
     resized_done = False
     detector = create_detector()
     fmc_combinations = None
     rep_tree = None
 
-    def __init__(self, config_file_name, running_info=None, mp_result_max_size=3):
-        super(LiveCompute, self).__init__()
-
-        self.config_path = getConfig(config_file_name)
-        combinations = get_combinations_from_file(self.config_path)
-        self.fmc_combinations = get_fmc_combination(combinations)
-
-        # Compute the design
-        self.compute_design()
-
+    def __init__(self, running_info=None, mp_result_max_size=3):
+        super(MicroRepThread, self).__init__()
         # Creation de la liste des mp_results et de sa taille max
         # (pour fluidification de la détection)
         self.mp_result_list = []
@@ -44,28 +36,40 @@ class LiveCompute(QThread):
 
         self.running_info = running_info
 
+    def set_config(self, config_file):
+        # Check if absolute path
+        if os.path.isabs(config_file):
+            self.config_path = config_file
+        else:
+            self.config_path = get_config(config_file)
+        combinations = get_combinations_from_file(self.config_path)
+        self.fmc_combinations = get_fmc_combination(combinations)
+
     def update_running_info(self):
         label = f"Running threads : {threading.active_count()}"
         self.running_info.setText(label)
 
-    def compute_design(self):
+    def recompute_design(self):
         tree = get_markers_tree()
 
         # Check if the path exists
         if os.path.exists(TEMP_LIVE_FOLDER_PATH):
             deleteFolder(TEMP_LIVE_FOLDER_PATH)
         createFolder(TEMP_LIVE_FOLDER_PATH)
+
         write_file(tree, TEMP_FILE_PATH)
+        # Export the representations with the dedicated module
         export_representations(self.config_path)
 
         base_tree = read_file(TEMP_REP_FILE_PATH)
         self.base_tree = remove_invisible_layers(base_tree)
+        os.remove(TEMP_REP_FILE_PATH)
 
     #####################################################
     ############## UPDATE FUNCTIONS #####################
     #####################################################
 
-    def resizeDesign(self, image):
+    def resize_design(self, image):
         self.img_height, self.img_width, channel = image.shape
         self.base_tree.getroot().attrib["width"] = f"{self.img_width}"
         self.base_tree.getroot().attrib["height"] = f"{self.img_height}"
@@ -83,7 +87,7 @@ class LiveCompute(QThread):
 
         return mp_results
     
-    def copyDesign(self):
+    def copy_design(self):
         # Copy the representation tree
         random_int = np.random.randint(0, 100000)
         write_file(self.base_tree, TEMP_AT_FILE_PATH+str(random_int))
@@ -91,3 +95,27 @@ class LiveCompute(QThread):
         os.remove(TEMP_AT_FILE_PATH+str(random_int))
 
         return rep_tree
+
+def export_representations(config_path, export_filetype="svg", dpi=90, traces=False, show_command=False, one_family=False, four_gesture=False, debug=False, dry=False, prefix="export_") :
+    path_str = f"--path={TEMP_REP_FOLDER_PATH}"
+    filetype_str = f"--filetype={export_filetype}"
+    dpi_str = f"--dpi={dpi}"
+    traces_str = f"--traces={traces}"
+    command_str = f"--command={show_command}"
+    one_str = f"--one={one_family}"
+    four_str = f"--four={four_gesture}"
+    debug_str = f"--debug={debug}"
+    dry_str = f"--dry={dry}"
+    prefix_str = f"--prefix={prefix}"
+    config_str = f"--config={config_path}"
+    
+    export_rep = CreateRepresentations()
+    export_rep.run(args=[TEMP_FILE_PATH, path_str, filetype_str, dpi_str, traces_str, command_str, one_str, four_str, debug_str, dry_str, prefix_str, config_str])
+    
+    family_name = "AandB"
+    # Keep the one and only file in TEMP_REP_FOLDER_PATH with the family_name in its name
+    for file in os.listdir(TEMP_REP_FOLDER_PATH) :
+        if not family_name in file :
+            os.remove(TEMP_REP_FOLDER_PATH+file)
+        else :
+            os.rename(TEMP_REP_FOLDER_PATH+file, TEMP_REP_FILE_PATH)

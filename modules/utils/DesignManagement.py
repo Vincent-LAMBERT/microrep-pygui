@@ -160,45 +160,7 @@ def move_rep_marker(fingerCombo, mgCombo, characCombo, markerTypeCombo, coord_x,
     marker.attrib['cy'] = str(coord_y)
     return tree
 
-def export_representations(config_path, export_filetype="svg", dpi=90, traces=False, show_command=False, one_family=False, four_gesture=False, debug=False, dry=False, prefix="export_") :
-    # Call the extension
-    # cmd_string = f"python3 {CREATE_REP_EXTENSION} --path {TEMP_REP_FOLDER_PATH} --filetype {export_filetype} --dpi {dpi} --traces {traces} --command {show_command} --one {one_family} --four {four_gesture} --debug {debug} --dry {dry} "
-    # if prefix != "":
-    #     cmd_string += f"--prefix {prefix} "
-    # if config_path != "" :
-    #     if "~" in config_path :
-    #         print("Please choose an absolute config path")
-    #         return
-    #     cmd_string += f"--config {config_path} "
-    # cmd_string += f"{TEMP_FILE_PATH}"
-    # os.system(cmd_string)
-
-    path_str = f"--path={TEMP_REP_FOLDER_PATH}"
-    filetype_str = f"--filetype={export_filetype}"
-    dpi_str = f"--dpi={dpi}"
-    traces_str = f"--traces={traces}"
-    command_str = f"--command={show_command}"
-    one_str = f"--one={one_family}"
-    four_str = f"--four={four_gesture}"
-    debug_str = f"--debug={debug}"
-    dry_str = f"--dry={dry}"
-    prefix_str = f"--prefix={prefix}"
-    config_str = f"--config={config_path}"
-    
-    export_rep = CreateRepresentations()
-    export_rep.run(args=[TEMP_FILE_PATH, path_str, filetype_str, dpi_str, traces_str, command_str, one_str, four_str, debug_str, dry_str, prefix_str, config_str])
-    
-    family_name = "AandB"
-    # Keep the one and only file in TEMP_REP_FOLDER_PATH with the family_name in its name
-    for file in os.listdir(TEMP_REP_FOLDER_PATH) :
-        if not family_name in file :
-            os.remove(TEMP_REP_FOLDER_PATH+file)
-        else :
-            os.rename(TEMP_REP_FOLDER_PATH+file, TEMP_REP_FILE_PATH)
-
 def move_rep(rep_tree, markers_tree, fmc_combinations) :
-    # Get the fmc_combinations given the config path
-    
     # Get a dictionnary of each exported family with their
     # element layers also put in a dictionnary corresponding 
     # to the element considered
