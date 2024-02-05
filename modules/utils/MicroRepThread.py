@@ -5,7 +5,7 @@ import os
 from PySide6.QtCore import Signal, Qt, QBuffer, QThread
 from PySide6.QtGui import QPixmap,QImage
 import cv2
-from microrep.core.utils import TRAJ_END, TRAJ_START, get_fmc_combination
+from microrep.core.utils import TRAJ_END, TRAJ_START, get_fmc_combination, get_combination_from_name
 from microrep.create_representations.create_representations.configuration_file import get_combinations_from_file
 import PIL as pix
 
@@ -13,7 +13,7 @@ from lxml import etree
 import numpy as np
 
 from .HandDetection import create_detector, input_treatement, update_mp_results
-from .DesignManagement import read_file, write_file, remove_invisible_layers, get_markers_tree
+from .DesignManagement import family_resize, move_rep, move_rep_markers, read_file, stroke_to_path, write_file, remove_invisible_layers, get_markers_tree
 from .AppUtils import *
 
 
@@ -53,9 +53,9 @@ class MicroRepThread(QThread):
         tree = get_markers_tree()
 
         # Check if the path exists
-        if os.path.exists(TEMP_LIVE_FOLDER_PATH):
-            deleteFolder(TEMP_LIVE_FOLDER_PATH)
-        createFolder(TEMP_LIVE_FOLDER_PATH)
+        if os.path.exists(TEMP_REP_FOLDER_PATH):
+            deleteFolder(TEMP_REP_FOLDER_PATH)
+        createFolder(TEMP_REP_FOLDER_PATH)
 
         write_file(tree, TEMP_FILE_PATH)
         # Export the representations with the dedicated module
@@ -63,7 +63,24 @@ class MicroRepThread(QThread):
 
         base_tree = read_file(TEMP_REP_FILE_PATH)
         self.base_tree = remove_invisible_layers(base_tree)
-        os.remove(TEMP_REP_FILE_PATH)
+
+    def update_markers(self, mp_results, dic, img_height, img_width):
+        markers_tree = get_markers_tree()
+        resized_tree = family_resize(markers_tree, mp_results, img_height, img_width)
+
+        tree = move_rep_markers(mp_results, resized_tree, img_height, img_width, dic)
+        pixmap = svg_to_pixmap(tree, img_height, img_width)
+        return tree, pixmap
+
+    def update_representation(self, rep_tree, markers_tree, combi, img_height, img_width):
+        new_rep_tree = move_rep(rep_tree, markers_tree, combi)
+
+        tree = stroke_to_path(new_rep_tree, markers_tree, combi)
+        pixmap = svg_to_pixmap(tree, img_height, img_width)
+        return tree, pixmap
+
+    def update_commands(self):
+        pass
 
     #####################################################
     ############## UPDATE FUNCTIONS #####################
@@ -95,6 +112,16 @@ class MicroRepThread(QThread):
         os.remove(TEMP_AT_FILE_PATH+str(random_int))
 
         return rep_tree
+    
+    def getRep(self, index):
+        files = os.listdir(TEMP_REP_FOLDER_PATH)
+        file = files[index%len(files)]
+        file_path = TEMP_REP_FOLDER_PATH+file
+
+        fmc_combination = get_combination_from_name(file)
+        # fmc_combination = None
+
+        return read_file(file_path), fmc_combination
 
 def export_representations(config_path, export_filetype="svg", dpi=90, traces=False, show_command=False, one_family=False, four_gesture=False, debug=False, dry=False, prefix="export_") :
     path_str = f"--path={TEMP_REP_FOLDER_PATH}"
@@ -111,11 +138,22 @@ def export_representations(config_path, export_filetype="svg", dpi=90, traces=Fa
     
     export_rep = CreateRepresentations()
     export_rep.run(args=[TEMP_FILE_PATH, path_str, filetype_str, dpi_str, traces_str, command_str, one_str, four_str, debug_str, dry_str, prefix_str, config_str])
+
+    # Copy a random file in TEMP_REP_FOLDER_PATH to TEMP_REP_FILE_PATH
+    index = random.randint(0, len(os.listdir(TEMP_REP_FOLDER_PATH))-1)
+    random_file_name = os.listdir(TEMP_REP_FOLDER_PATH)[index]
     
-    family_name = "AandB"
-    # Keep the one and only file in TEMP_REP_FOLDER_PATH with the family_name in its name
-    for file in os.listdir(TEMP_REP_FOLDER_PATH) :
-        if not family_name in file :
-            os.remove(TEMP_REP_FOLDER_PATH+file)
-        else :
-            os.rename(TEMP_REP_FOLDER_PATH+file, TEMP_REP_FILE_PATH)
+    if os.path.exists(TEMP_REP_FILE_PATH) :
+        os.remove(TEMP_REP_FILE_PATH)
+    os.rename(TEMP_REP_FOLDER_PATH+random_file_name, TEMP_REP_FILE_PATH)
+    
+    # family_name = "AandB"
+    # # Keep the one and only file in TEMP_REP_FOLDER_PATH with the family_name in its name
+    # for file in os.listdir(TEMP_REP_FOLDER_PATH) :
+    #     if not family_name in file :
+    #         os.remove(TEMP_REP_FOLDER_PATH+file)
+    #     else :
+    #         if os.path.exists(TEMP_REP_FILE_PATH) :
+    #             os.remove(TEMP_REP_FILE_PATH)
+    #         os.rename(TEMP_REP_FOLDER_PATH+file, TEMP_REP_FILE_PATH)
+

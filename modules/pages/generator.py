@@ -16,17 +16,15 @@ class Generator(QWidget) :
 
     def configure(self, ui, microrep_thread) :
         self.ui = ui
-        self.microrep_thread = microrep_thread
+        self.mgc = microrep_thread
         self.default_config()
 
         # Création des labels
         self.label_file = ImageViewer()
-        self.label_markers = ImageViewer()
 
         # Permet la superposition des labels/images
         frame_layout = self.ui.frame_img.layout()
         frame_layout.addWidget(self.label_file,0,0)
-        frame_layout.addWidget(self.label_markers,0,0)
 
     ################################################################
     #################### SLOT FUNCTIONS ############################
@@ -141,11 +139,13 @@ class Generator(QWidget) :
             with open(u.TEMP_CONFIG_PATH, "w") as temp_config_path :
                 temp_config_path.write('\n'.join(self.list_config))
 
-            self.microrep_thread.set_config(u.TEMP_CONFIG_PATH)
-            self.microrep_thread.recompute_design()
+            self.mgc.set_config(u.TEMP_CONFIG_PATH)
+            self.mgc.recompute_design()
             # Show export page
+            self.ui.exporter.update_background(self.image)
+            self.ui.exporter.update_image()
             self.ui.stackedWidget.setCurrentWidget(self.ui.exporter_page)
-
+        
     ################################################################
     #################### WORKING FUNCTIONS #########################
     ################################################################

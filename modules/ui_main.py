@@ -18,8 +18,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
     QHBoxLayout, QLabel, QLineEdit, QListWidget,
     QListWidgetItem, QMainWindow, QPushButton, QSizePolicy,
-    QSpacerItem, QStackedWidget, QTextEdit, QVBoxLayout,
-    QWidget)
+    QStackedWidget, QTextEdit, QVBoxLayout, QWidget)
 
 from modules.pages.exporter import Exporter
 from modules.pages.generator import Generator
@@ -1152,48 +1151,6 @@ class Ui_MainWindow(object):
         self.frame_mappings.setLineWidth(2)
         self.gridLayout_12 = QGridLayout(self.frame_mappings)
         self.gridLayout_12.setObjectName(u"gridLayout_12")
-        self.frame_mappings_grid = QWidget(self.frame_mappings)
-        self.frame_mappings_grid.setObjectName(u"frame_mappings_grid")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.frame_mappings_grid.sizePolicy().hasHeightForWidth())
-        self.frame_mappings_grid.setSizePolicy(sizePolicy3)
-        self.gridLayout_13 = QGridLayout(self.frame_mappings_grid)
-        self.gridLayout_13.setObjectName(u"gridLayout_13")
-        self.horizontalSpacer_4 = QSpacerItem(40, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_13.addItem(self.horizontalSpacer_4, 1, 0, 1, 1)
-
-        self.horizontalSpacer_5 = QSpacerItem(40, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_13.addItem(self.horizontalSpacer_5, 1, 1, 1, 1)
-
-        self.horizontalSpacer_6 = QSpacerItem(40, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_13.addItem(self.horizontalSpacer_6, 1, 2, 1, 1)
-
-        self.im_index_2 = QLabel(self.frame_mappings_grid)
-        self.im_index_2.setObjectName(u"im_index_2")
-        sizePolicy3.setHeightForWidth(self.im_index_2.sizePolicy().hasHeightForWidth())
-        self.im_index_2.setSizePolicy(sizePolicy3)
-        self.im_index_2.setScaledContents(True)
-        self.im_index_2.setAlignment(Qt.AlignCenter)
-
-        self.gridLayout_13.addWidget(self.im_index_2, 0, 2, 1, 1)
-
-        self.im_name_2 = QLabel(self.frame_mappings_grid)
-        self.im_name_2.setObjectName(u"im_name_2")
-        sizePolicy3.setHeightForWidth(self.im_name_2.sizePolicy().hasHeightForWidth())
-        self.im_name_2.setSizePolicy(sizePolicy3)
-        self.im_name_2.setScaledContents(True)
-        self.im_name_2.setAlignment(Qt.AlignCenter)
-
-        self.gridLayout_13.addWidget(self.im_name_2, 0, 0, 1, 2)
-
-
-        self.gridLayout_12.addWidget(self.frame_mappings_grid, 0, 0, 1, 1)
-
 
         self.gridLayout_11.addWidget(self.frame_mappings, 0, 0, 1, 1)
 
@@ -1287,6 +1244,9 @@ class Ui_MainWindow(object):
         self.gridLayout_14.setObjectName(u"gridLayout_14")
         self.widget = QWidget(self.gridLayoutWidget_4)
         self.widget.setObjectName(u"widget")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
         self.widget.setSizePolicy(sizePolicy3)
         self.horizontalLayout_7 = QHBoxLayout(self.widget)
@@ -1532,13 +1492,9 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addLayout(self.frame_grid, 0, 0, 1, 1)
 
-        self.btn_export_4 = QPushButton(self.generator)
-        self.btn_export_4.setObjectName(u"btn_export_4")
-        self.btn_export_4.setGeometry(QRect(40, 520, 231, 51))
-        self.btn_export_4.setMinimumSize(QSize(0, 45))
         self.btn_export_5 = QPushButton(self.generator)
         self.btn_export_5.setObjectName(u"btn_export_5")
-        self.btn_export_5.setGeometry(QRect(290, 500, 91, 91))
+        self.btn_export_5.setGeometry(QRect(160, 500, 91, 91))
         self.btn_export_5.setMinimumSize(QSize(0, 0))
         self.btn_export_5.setStyleSheet(u"border-radius: 45%;")
         icon5 = QIcon()
@@ -1700,11 +1656,10 @@ class Ui_MainWindow(object):
         self.btn_apply_export.clicked.connect(self.exporter.export_current)
         self.btn_apply_export_2.clicked.connect(self.exporter.export_all)
         self.btn_apply_export_3.clicked.connect(self.exporter.select_export_folder)
-        self.btn_export_4.clicked.connect(self.generator.export_image_with_mappings)
         self.btn_export_5.clicked.connect(self.generator.export_image_with_mappings)
         self.btn_export_6.clicked.connect(self.exporter.back_to_generator)
 
-        self.stackedWidget.setCurrentIndex(4)
+        self.stackedWidget.setCurrentIndex(5)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1773,8 +1728,6 @@ class Ui_MainWindow(object):
         self.label_commands.setProperty("text", "")
         self.label_rep.setProperty("text", "")
         self.label_markers.setProperty("text", "")
-        self.im_index_2.setText("")
-        self.im_name_2.setText("")
         self.comboBox_export_type.setItemText(0, QCoreApplication.translate("MainWindow", u"SVG", None))
         self.comboBox_export_type.setItemText(1, QCoreApplication.translate("MainWindow", u"PNG", None))
         self.comboBox_export_type.setItemText(2, QCoreApplication.translate("MainWindow", u"JPG", None))
@@ -1793,7 +1746,7 @@ class Ui_MainWindow(object):
         self.btn_next.setText(QCoreApplication.translate("MainWindow", u"Next", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Export microgesture representations</span></p></body></html>", None))
         self.btn_export_6.setText("")
-        self.btn_import.setText(QCoreApplication.translate("MainWindow", u"Import a JPG ...", None))
+        self.btn_import.setText(QCoreApplication.translate("MainWindow", u"Import JPG...", None))
         self.btn_mapping.setText(QCoreApplication.translate("MainWindow", u"Unlock mappings", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Export microgesture representations</span></p></body></html>", None))
         self.btn_clear.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
@@ -1826,7 +1779,6 @@ class Ui_MainWindow(object):
         self.btn_remove.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
         self.btn_reset.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
         self.entry_config.setPlaceholderText("")
-        self.btn_export_4.setText(QCoreApplication.translate("MainWindow", u"Export SVG with mappings", None))
         self.btn_export_5.setText("")
         self.btn_author.setText(QCoreApplication.translate("MainWindow", u"Author", None))
         self.btn_related.setText(QCoreApplication.translate("MainWindow", u"Related works", None))

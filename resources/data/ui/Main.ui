@@ -1810,7 +1810,7 @@ p, li { white-space: pre-wrap; }
                       <bool>true</bool>
                      </property>
                      <property name="currentIndex">
-                      <number>4</number>
+                      <number>5</number>
                      </property>
                      <widget class="QWidget" name="webcam_page">
                       <layout class="QGridLayout" name="gridLayout_344">
@@ -1992,97 +1992,7 @@ background-repeat: no-repeat;</string>
                              <property name="lineWidth">
                               <number>2</number>
                              </property>
-                             <layout class="QGridLayout" name="gridLayout_12">
-                              <item row="0" column="0">
-                               <widget class="QWidget" name="frame_mappings_grid" native="true">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <layout class="QGridLayout" name="gridLayout_13">
-                                 <item row="1" column="0">
-                                  <spacer name="horizontalSpacer_4">
-                                   <property name="orientation">
-                                    <enum>Qt::Horizontal</enum>
-                                   </property>
-                                   <property name="sizeHint" stdset="0">
-                                    <size>
-                                     <width>40</width>
-                                     <height>0</height>
-                                    </size>
-                                   </property>
-                                  </spacer>
-                                 </item>
-                                 <item row="1" column="1">
-                                  <spacer name="horizontalSpacer_5">
-                                   <property name="orientation">
-                                    <enum>Qt::Horizontal</enum>
-                                   </property>
-                                   <property name="sizeHint" stdset="0">
-                                    <size>
-                                     <width>40</width>
-                                     <height>0</height>
-                                    </size>
-                                   </property>
-                                  </spacer>
-                                 </item>
-                                 <item row="1" column="2">
-                                  <spacer name="horizontalSpacer_6">
-                                   <property name="orientation">
-                                    <enum>Qt::Horizontal</enum>
-                                   </property>
-                                   <property name="sizeHint" stdset="0">
-                                    <size>
-                                     <width>40</width>
-                                     <height>0</height>
-                                    </size>
-                                   </property>
-                                  </spacer>
-                                 </item>
-                                 <item row="0" column="2">
-                                  <widget class="QLabel" name="im_index_2">
-                                   <property name="sizePolicy">
-                                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                     <horstretch>0</horstretch>
-                                     <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                   </property>
-                                   <property name="text">
-                                    <string/>
-                                   </property>
-                                   <property name="scaledContents">
-                                    <bool>true</bool>
-                                   </property>
-                                   <property name="alignment">
-                                    <set>Qt::AlignCenter</set>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item row="0" column="0" colspan="2">
-                                  <widget class="QLabel" name="im_name_2">
-                                   <property name="sizePolicy">
-                                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                     <horstretch>0</horstretch>
-                                     <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                   </property>
-                                   <property name="text">
-                                    <string/>
-                                   </property>
-                                   <property name="scaledContents">
-                                    <bool>true</bool>
-                                   </property>
-                                   <property name="alignment">
-                                    <set>Qt::AlignCenter</set>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                </layout>
-                               </widget>
-                              </item>
-                             </layout>
+                             <layout class="QGridLayout" name="gridLayout_12"/>
                             </widget>
                            </item>
                           </layout>
@@ -2430,7 +2340,7 @@ background-repeat: no-repeat;</string>
                               <string notr="true"/>
                              </property>
                              <property name="text">
-                              <string>Import a JPG ...</string>
+                              <string>Import JPG...</string>
                              </property>
                             </widget>
                            </item>
@@ -2780,29 +2690,10 @@ background-repeat: no-repeat;</string>
                            </item>
                           </layout>
                          </widget>
-                         <widget class="QPushButton" name="btn_export_4">
-                          <property name="geometry">
-                           <rect>
-                            <x>40</x>
-                            <y>520</y>
-                            <width>231</width>
-                            <height>51</height>
-                           </rect>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>0</width>
-                            <height>45</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string>Export SVG with mappings</string>
-                          </property>
-                         </widget>
                          <widget class="QPushButton" name="btn_export_5">
                           <property name="geometry">
                            <rect>
-                            <x>290</x>
+                            <x>160</x>
                             <y>500</y>
                             <width>91</width>
                             <height>91</height>
@@ -3429,22 +3320,6 @@ background-repeat: no-repeat;</string>
     <hint type="destinationlabel">
      <x>540</x>
      <y>666</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_export_4</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>export_image_with_mappings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>290</x>
-     <y>643</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>93</y>
     </hint>
    </hints>
   </connection>

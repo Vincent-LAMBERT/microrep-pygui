@@ -6,6 +6,10 @@ import modules.utils.AppUtils as u
 from lxml import etree
 
 class Exporter(QWidget) :
+    index = 0
+    dic = hd.get_microgest_xml()
+
+    markers_tree = None
 
     def __init__(self, parent=None) :
         super().__init__(parent)
@@ -14,28 +18,51 @@ class Exporter(QWidget) :
 
     def configure(self, ui, microrep_thread) :
         self.ui = ui
-        self.microrep_thread = microrep_thread
+        self.mgc = microrep_thread
         
         self.ui.entry_export_path.setText(self.download_folder_path)
 
-        # # Création des labels
-        # self.label_file = ImageViewer()
-        # self.label_markers = ImageViewer()
+        # Création des labels
+        self.label_file = ImageViewer()
+        self.label_rep = ImageViewer()
 
-        # # Permet la superposition des labels/images
-        # frame_layout = self.ui.frame_img.layout()
-        # frame_layout.addWidget(self.label_file,0,0)
-        # frame_layout.addWidget(self.label_markers,0,0)
+        # Permet la superposition des labels/images
+        frame_layout = self.ui.frame_mappings.layout()
+        frame_layout.addWidget(self.label_file,0,0)
+        frame_layout.addWidget(self.label_rep,0,0)
+
+    def update_background(self, background) :
+        self.background = background
+        self.label_file.setPixmap(QPixmap(background))
+
+        image = cv2.imread(background)
+        self.mgc.resize_design(image)
+        mp_results = self.mgc.detect(image)
+        
+        if mp_results.hand_landmarks != [] :
+            self.markers_tree, markers_pixmap = self.mgc.update_markers(mp_results, self.dic, self.mgc.img_height, self.mgc.img_width)
+    
+    def update_image(self) :
+        if self.markers_tree :
+            rep_tree, fmc_combination = self.mgc.getRep(self.index)
+            if rep_tree is not None :
+                # In that case, the fmc_combinations contains ALL THE POSSIBLE COMBINATIONS
+                # We need to fetch the right one corresponding to the current representation
+                tree, rep_pixmap = self.mgc.update_representation(rep_tree, self.markers_tree, fmc_combination, self.mgc.img_height, self.mgc.img_width)
+
+                self.label_rep.setPixmap(rep_pixmap)
 
     ################################################################
     #################### SLOT FUNCTIONS ############################
     ################################################################
 
     def previous_rep(self) :
-        print("previous_rep")
+        self.index -= 1
+        self.update_image()
 
     def next_rep(self) :
-        print("next_rep")
+        self.index += 1
+        self.update_image()
 
     def export_current(self) :
         print("export_current")

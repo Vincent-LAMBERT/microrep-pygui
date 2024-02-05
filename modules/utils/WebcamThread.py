@@ -33,7 +33,6 @@ class WebcamThread(QThread):
     webcam_on = False
 
     image_data = Signal(np.ndarray)
-    dic = get_microgest_xml()
 
     # Crating the variables
     back_pixmap = None
@@ -45,7 +44,6 @@ class WebcamThread(QThread):
     frame_count = 0
     markers_tree = None
     
-    detector = create_detector()
     dic = get_microgest_xml()
     
     def __init__(self, label_live_file, label_markers, label_rep, label_commands, microrep_compute, frame_rate=60, frame_skip=1, mp_result_max_size=3):
@@ -148,33 +146,14 @@ class WebcamThread(QThread):
         mp_results = self.mgc.detect(image)
 
         if mp_results.hand_landmarks != [] :
-            markers_tree = self.update_markers(mp_results)
+            markers_tree, self.markers_canva = self.mgc.update_markers(mp_results, self.dic, self.mgc.img_height, self.mgc.img_width)
 
             rep_tree = self.mgc.copy_design()
-            new_rep_tree = self.update_representation(rep_tree, self.mgc.fmc_combinations, markers_tree)
+            new_rep_tree, self.rep_canva = self.mgc.update_representation(rep_tree, markers_tree, self.mgc.fmc_combinations, self.mgc.img_height, self.mgc.img_width)
             # self.update_commands(rep_tree, combi)
         else :
             self.markers_canva = None
             self.rep_canva = None
-
-    def update_markers(self, mp_results):
-        markers_tree = get_markers_tree()
-        resized_tree = family_resize(markers_tree, mp_results, self.mgc.img_height, self.mgc.img_width)
-
-        tree = move_rep_markers(mp_results, resized_tree, self.mgc.img_height, self.mgc.img_width, self.dic)
-        
-        self.markers_canva = svg_to_pixmap(tree, self.mgc.img_height, self.mgc.img_width)
-        return tree
-
-    def update_representation(self, rep_tree, combi, markers_tree):
-        new_rep_tree = move_rep(rep_tree, markers_tree, combi)
-        svg_tree = stroke_to_path(new_rep_tree, markers_tree, combi)
-        
-        self.rep_canva = svg_to_pixmap(svg_tree, self.mgc.img_height, self.mgc.img_width)
-        return new_rep_tree
-
-    def update_commands(self):
-        pass
 
     def update_labels(self):
         self.label_live_file.setPixmap(self.back_pixmap)
