@@ -1,9 +1,12 @@
+import threading
 from main import *
 
 import modules.utils.HandDetection as hd
 import modules.utils.DesignManagement as dm
 import modules.utils.AppUtils as u
 from lxml import etree
+
+from qroundprogressbar import QRoundProgressBar
 
 class Generator(QWidget) :
 
@@ -139,8 +142,9 @@ class Generator(QWidget) :
             with open(u.TEMP_CONFIG_PATH, "w") as temp_config_path :
                 temp_config_path.write('\n'.join(self.list_config))
 
-            # Prepare and show exporter
-            self.ui.exporter.configure(self.ui, self.mgc, u.TEMP_CONFIG_PATH, self.image)
+            # Prepare and show exporter            
+            image_computer = threading.Thread(target=self.ui.exporter.start, args=(u.TEMP_CONFIG_PATH, self.image, ))
+            image_computer.start()
             self.ui.stackedWidget.setCurrentWidget(self.ui.exporter_page)
         
     ################################################################

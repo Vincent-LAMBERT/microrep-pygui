@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 import base64
 from main import *
+import threading
 
 import modules.utils.HandDetection as hd
 import modules.utils.DesignManagement as dm
@@ -21,13 +22,14 @@ class Exporter(QWidget) :
     dic = hd.get_microgest_xml()
 
     markers_tree = None
+    images_computed = False
 
     def __init__(self, parent=None) :
         super().__init__(parent)
 
         self.download_folder_path = os.path.join(os.path.expanduser("~"), "Downloads")
 
-    def configure(self, ui, microrep_thread, config_path, image) :
+    def configure(self, ui, microrep_thread) :
         self.ui = ui
         self.mgc = microrep_thread
         
@@ -41,17 +43,25 @@ class Exporter(QWidget) :
         frame_layout = self.ui.frame_mappings.layout()
         frame_layout.addWidget(self.label_file,0,0)
         frame_layout.addWidget(self.label_rep,0,0)
-        
+
+    def start(self, config_path, image) :
         self.mgc.set_config(config_path)
         self.mgc.recompute_design()
-        self.ui.exporter.update_background(image)
-        self.ui.exporter.compute_images()
-        self.ui.exporter.update_image()
+        self.background = image
+        self.setup_images(self.background)
+        self.compute_images()  
+        self.update_background()
+        self.update_image()
 
-    def update_background(self, background) :
-        self.background = background
-        self.label_file.setPixmap(QPixmap(background))
+        self.ui.btn_export_current.setEnabled(True)
+        self.ui.btn_export_all.setEnabled(True)
+        self.ui.btn_previous.setEnabled(True)
+        self.ui.btn_next.setEnabled(True)
 
+    def update_background(self) :
+        self.label_file.setPixmap(QPixmap(self.background))
+
+    def setup_images(self, background) :
         image = cv2.imread(background)
         self.mgc.resize_design(image)
 
@@ -98,7 +108,6 @@ class Exporter(QWidget) :
         self.update_image()
 
     def export_rep(self, i) :
-        # self.background
         rep_tree = self.representations[TREE].get(i%self.nbr_representations)
         # Create a svg element from the background image
         # and add it to the representation tree

@@ -65,3 +65,4 @@ class AppFunctions(MainWindow):
 
         # Give the ui to the children widgets
         self.ui.generator.configure(self.ui, self.microrep_thread)
+        self.ui.exporter.configure(self.ui, self.microrep_thread)
