@@ -1208,6 +1208,7 @@ class Ui_MainWindow(object):
         self.entry_export_path = QLineEdit(self.layoutWidget2)
         self.entry_export_path.setObjectName(u"entry_export_path")
         self.entry_export_path.setStyleSheet(u"background-color: rgb(33, 37, 43);")
+        self.entry_export_path.setReadOnly(True)
 
         self.gridLayout_8.addWidget(self.entry_export_path, 6, 1, 1, 1)
 
@@ -1659,7 +1660,7 @@ class Ui_MainWindow(object):
         self.btn_export_5.clicked.connect(self.generator.export_image_with_mappings)
         self.btn_export_6.clicked.connect(self.exporter.back_to_generator)
 
-        self.stackedWidget.setCurrentIndex(5)
+        self.stackedWidget.setCurrentIndex(4)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

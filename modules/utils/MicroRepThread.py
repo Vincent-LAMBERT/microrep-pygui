@@ -67,15 +67,15 @@ class MicroRepThread(QThread):
     def update_markers(self, mp_results, dic, img_height, img_width):
         markers_tree = get_markers_tree()
         resized_tree = family_resize(markers_tree, mp_results, img_height, img_width)
-
         tree = move_rep_markers(mp_results, resized_tree, img_height, img_width, dic)
+
         pixmap = svg_to_pixmap(tree, img_height, img_width)
         return tree, pixmap
 
     def update_representation(self, rep_tree, markers_tree, combi, img_height, img_width):
         new_rep_tree = move_rep(rep_tree, markers_tree, combi)
-
         tree = stroke_to_path(new_rep_tree, markers_tree, combi)
+
         pixmap = svg_to_pixmap(tree, img_height, img_width)
         return tree, pixmap
 
@@ -88,9 +88,7 @@ class MicroRepThread(QThread):
 
     def resize_design(self, image):
         self.img_height, self.img_width, channel = image.shape
-        self.base_tree.getroot().attrib["width"] = f"{self.img_width}"
-        self.base_tree.getroot().attrib["height"] = f"{self.img_height}"
-        self.base_tree.getroot().attrib["viewBox"] = f"0 0 {self.img_width} {self.img_height}"
+        resize_tree(self.base_tree, self.img_height, self.img_width)
 
     def detect(self, image):
         image_numpy, mp_results = input_treatement(image, self.detector)
@@ -118,10 +116,16 @@ class MicroRepThread(QThread):
         file = files[index%len(files)]
         file_path = TEMP_REP_FOLDER_PATH+file
 
+        tree = read_file(file_path)
         fmc_combination = get_combination_from_name(file)
-        # fmc_combination = None
 
-        return read_file(file_path), fmc_combination
+        return tree, fmc_combination, file
+
+def resize_tree(tree, img_height, img_width):
+    tree.getroot().attrib["width"] = f"{img_width}"
+    tree.getroot().attrib["height"] = f"{img_height}"
+    tree.getroot().attrib["viewBox"] = f"0 0 {img_width} {img_height}"
+    return tree
 
 def export_representations(config_path, export_filetype="svg", dpi=90, traces=False, show_command=False, one_family=False, four_gesture=False, debug=False, dry=False, prefix="export_") :
     path_str = f"--path={TEMP_REP_FOLDER_PATH}"

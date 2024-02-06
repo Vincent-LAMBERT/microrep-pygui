@@ -139,11 +139,8 @@ class Generator(QWidget) :
             with open(u.TEMP_CONFIG_PATH, "w") as temp_config_path :
                 temp_config_path.write('\n'.join(self.list_config))
 
-            self.mgc.set_config(u.TEMP_CONFIG_PATH)
-            self.mgc.recompute_design()
-            # Show export page
-            self.ui.exporter.update_background(self.image)
-            self.ui.exporter.update_image()
+            # Prepare and show exporter
+            self.ui.exporter.configure(self.ui, self.mgc, u.TEMP_CONFIG_PATH, self.image)
             self.ui.stackedWidget.setCurrentWidget(self.ui.exporter_page)
         
     ################################################################

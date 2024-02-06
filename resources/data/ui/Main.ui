@@ -1810,7 +1810,7 @@ p, li { white-space: pre-wrap; }
                       <bool>true</bool>
                      </property>
                      <property name="currentIndex">
-                      <number>5</number>
+                      <number>4</number>
                      </property>
                      <widget class="QWidget" name="webcam_page">
                       <layout class="QGridLayout" name="gridLayout_344">
@@ -2110,6 +2110,9 @@ background-repeat: no-repeat;</string>
                              </property>
                              <property name="text">
                               <string/>
+                             </property>
+                             <property name="readOnly">
+                              <bool>true</bool>
                              </property>
                              <property name="placeholderText">
                               <string>C:\Users\USER_NAME\Downloads</string>

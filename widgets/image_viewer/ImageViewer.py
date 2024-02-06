@@ -24,6 +24,9 @@ class ImageViewer(QLabel):
                 self._sizeHint = QSize()
             self.updateGeometry()
             self.updateScaled()
+    
+    def getPixmap(self):
+        return self.pixmap
 
     def setAspectRatio(self, ratio):
         if self.ratio != ratio:

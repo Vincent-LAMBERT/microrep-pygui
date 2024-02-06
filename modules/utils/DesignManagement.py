@@ -172,7 +172,7 @@ def move_rep(rep_tree, markers_tree, fmc_combinations) :
     markers_tree_layers_refs = get_layer_refs(markers_tree, visible_only=True)
     marker_layer_refs = get_marker_layer_refs(markers_tree_layers_refs)
     markers = get_markers_pos(marker_layer_refs, fmc_combinations)
-    
+
     for finger, mg, charac in fmc_combinations :
         if mg in microgesture_layer_refs[finger] and charac in microgesture_layer_refs[finger][mg]: 
             specific_markers = markers[finger][mg][charac]
