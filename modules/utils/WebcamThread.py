@@ -15,7 +15,7 @@ import numpy as np
 from widgets.image_viewer.ImageViewer import ImageViewer
 
 from .HandDetection import create_detector, get_microgest_xml
-from .DesignManagement import get_markers_tree, move_rep_markers, move_rep, stroke_to_path, family_resize
+from .DesignManagement import get_markers_tree, move_rep_markers, move_rep, stroke_to_path
 from .AppUtils import *
 import time, numpy,cv2, subprocess, copy
 import threading
@@ -115,7 +115,7 @@ class WebcamThread(QThread):
     #####################################################
 
     # Fonction gerant la mise a jour de l'affichage
-    def update_image(self, image):
+    def update_image(self, image, ratio=0.1):
         if not self.first_computed :
             self.mgc.resize_design(image)
             self.first_computed = True
@@ -124,8 +124,7 @@ class WebcamThread(QThread):
         back_thread.start()
 
         if self.frame_count % (self.frame_skip+1) == 0 :
-            reduced_image = cv2.resize(image, (0, 0), fx=0.1, fy=0.1)
-            thread = threading.Thread(target=self.update_all, args=(reduced_image,))
+            thread = threading.Thread(target=self.update_all, args=(image, ratio,))
             thread.start()
 
         self.update_labels()
@@ -142,8 +141,10 @@ class WebcamThread(QThread):
         else :
             self.back_pixmap = None
 
-    def update_all(self, image):
-        mp_results = self.mgc.detect(image)
+    def update_all(self, image, ratio=0.1):
+        reduced_image = cv2.resize(image, (0, 0), fx=ratio, fy=ratio)
+
+        mp_results = self.mgc.detect(reduced_image)
 
         if mp_results.hand_landmarks != [] :
             markers_tree, self.markers_canva = self.mgc.update_markers(mp_results, self.dic, self.mgc.img_height, self.mgc.img_width)

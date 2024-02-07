@@ -28,15 +28,15 @@ TEMP_FILE_PATH=TEMP_FOLDER_PATH+"temp.svg"
 TEMP_CONFIG_PATH=TEMP_FOLDER_PATH+"tempConfig.csv"
 TEMP_LIVE_VIDEO_PATH=TEMP_FOLDER_PATH+"tempLiveVideo.mp4"
 TEMP_AT_FILE_PATH=TEMP_FOLDER_PATH+"tempAT.svg"
+TEMP_COPY_FILE_PATH=TEMP_FOLDER_PATH+"tempCopy.svg"
+TEMP_DESIGN_FILE_PATH=TEMP_FOLDER_PATH+"tempDesign.svg"
 TEMP_REP_FILE_PATH=TEMP_FOLDER_PATH+"tempRep.svg"
 TEMP_LIVE_FILE_PATH=TEMP_FOLDER_PATH+"tempLive.svg"
 TEMP_REP_FOLDER_PATH=getFilePath(TEMP_FOLDER_PATH, "reps/")
 TEMP_LIVE_FOLDER_PATH=getFilePath(TEMP_FOLDER_PATH, "live/")
 
-APPLY_TRANSFORM_PATH="applytransforms/applytransform.py"
 CREATE_REP_PATH="create_representations/create_representations.py"
 # CREATE_REP_PATH="inkscape_create_representations/create_representations/create_representations.py"
-APPLY_TRANSFORM_EXTENSION=getFilePath(__file__, '../../imports/'+APPLY_TRANSFORM_PATH)
 CREATE_REP_EXTENSION=getFilePath(__file__, '../../imports/'+CREATE_REP_PATH)
 
 # MediaPipe hands model

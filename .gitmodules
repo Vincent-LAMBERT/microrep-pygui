@@ -1,3 +1,0 @@
-[submodule "modules/utils/applytransforms"]
-	path = modules/utils/applytransforms
-	url = git@github.com:Klowner/inkscape-applytransforms.git

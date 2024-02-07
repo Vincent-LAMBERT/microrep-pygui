@@ -1256,6 +1256,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.btn_previous = QPushButton(self.widget)
         self.btn_previous.setObjectName(u"btn_previous")
+        self.btn_previous.setEnabled(False)
         self.btn_previous.setMinimumSize(QSize(0, 50))
         self.btn_previous.setStyleSheet(u"background-color: rgb(52, 59, 72);")
 
@@ -1263,6 +1264,7 @@ class Ui_MainWindow(object):
 
         self.btn_next = QPushButton(self.widget)
         self.btn_next.setObjectName(u"btn_next")
+        self.btn_next.setEnabled(False)
         self.btn_next.setMinimumSize(QSize(0, 50))
         self.btn_next.setStyleSheet(u"background-color: rgb(52, 59, 72);")
 

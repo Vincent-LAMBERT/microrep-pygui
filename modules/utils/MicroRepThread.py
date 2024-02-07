@@ -2,6 +2,7 @@
 import threading
 import time
 import os
+import svgutils.transform as sg
 from PySide6.QtCore import Signal, Qt, QBuffer, QThread
 from PySide6.QtGui import QPixmap,QImage
 import cv2
@@ -13,7 +14,7 @@ from lxml import etree
 import numpy as np
 
 from .HandDetection import create_detector, input_treatement, update_mp_results
-from .DesignManagement import family_resize, move_rep, move_rep_markers, read_file, stroke_to_path, write_file, remove_invisible_layers, get_markers_tree
+from .DesignManagement import get_resize_ratio, move_rep, move_rep_markers, read_file, scale_children, stroke_to_path, write_file, remove_invisible_layers, get_markers_tree
 from .AppUtils import *
 
 
@@ -61,13 +62,21 @@ class MicroRepThread(QThread):
         # Export the representations with the dedicated module
         export_representations(self.config_path)
 
-        base_tree = read_file(TEMP_REP_FILE_PATH)
-        self.base_tree = remove_invisible_layers(base_tree)
+        self.resized_done = False
+
+        self.base_tree = read_file(TEMP_REP_FILE_PATH)
+        # self.base_tree = remove_invisible_layers(base_tree)
 
     def update_markers(self, mp_results, dic, img_height, img_width):
         markers_tree = get_markers_tree()
-        resized_tree = family_resize(markers_tree, mp_results, img_height, img_width)
-        tree = move_rep_markers(mp_results, resized_tree, img_height, img_width, dic)
+        # resized_tree = family_resize(markers_tree, mp_results)
+
+        # Setup the svt size for displaying markers at the right position
+        markers_tree.getroot().attrib["width"] = f"{img_width}"
+        markers_tree.getroot().attrib["height"] = f"{img_height}"
+        markers_tree.getroot().attrib["viewBox"] = f"0 0 {img_width} {img_height}"
+
+        tree = move_rep_markers(mp_results, markers_tree, img_height, img_width, dic)
 
         pixmap = svg_to_pixmap(tree, img_height, img_width)
         return tree, pixmap
@@ -100,15 +109,37 @@ class MicroRepThread(QThread):
         if mp_results.hand_landmarks != [] :
             mp_results = update_mp_results(mp_results, self.mp_result_list, self.mp_result_max_size) # Ensure stability whereas the more stable the representation, the more the delay because of the multiple detections (a max size of 3 is fine)
 
+            if not self.resized_done :
+                # tree = family_resize(self.base_tree, mp_results)
+
+                ratio = get_resize_ratio(self.base_tree, mp_results)
+                # print(f"ratio : {ratio}")
+                # size = (str(self.img_width*ratio), str(self.img_height*ratio))
+
+                # write_file(self.base_tree, TEMP_DESIGN_FILE_PATH)
+                # sg_tree = sg.fromfile(TEMP_DESIGN_FILE_PATH)
+                # print(f"sg_tree size : {sg_tree.get_size()}")
+                # sg_tree.set_size(size)
+                # print(f"sg_tree NEW size : {sg_tree.get_size()}")
+                # sg_tree.save(TEMP_DESIGN_FILE_PATH)
+                # self.base_tree = read_file(TEMP_DESIGN_FILE_PATH)
+
+                self.base_tree = scale_children(self.base_tree, ratio)
+                # self.base_tree = apply_transform_to_element(self.base_tree)
+                write_file(self.base_tree, TEMP_DESIGN_FILE_PATH)
+
+                self.resized_done = True
+
         return mp_results
     
     def copy_design(self):
         # Copy the representation tree
         random_int = np.random.randint(0, 100000)
-        write_file(self.base_tree, TEMP_AT_FILE_PATH+str(random_int))
-        rep_tree = read_file(TEMP_AT_FILE_PATH+str(random_int))
-        os.remove(TEMP_AT_FILE_PATH+str(random_int))
+        write_file(self.base_tree, TEMP_COPY_FILE_PATH+str(random_int))
+        rep_tree = read_file(TEMP_COPY_FILE_PATH+str(random_int))
+        os.remove(TEMP_COPY_FILE_PATH+str(random_int))
 
+        # return rep_tree
         return rep_tree
     
     def getRep(self, index):
@@ -125,6 +156,7 @@ def resize_tree(tree, img_height, img_width):
     tree.getroot().attrib["width"] = f"{img_width}"
     tree.getroot().attrib["height"] = f"{img_height}"
     tree.getroot().attrib["viewBox"] = f"0 0 {img_width} {img_height}"
+
     return tree
 
 def export_representations(config_path, export_filetype="svg", dpi=90, traces=False, show_command=False, one_family=False, four_gesture=False, debug=False, dry=False, prefix="export_") :

@@ -7,7 +7,9 @@ import random
 import cv2
 import svg.path
 from inkex import PathElement
+from inkex.styles import Style
 import numpy as np
+import math
 
 from microrep.core.mg_maths import apply_matrix_to_path, compute_translation, convert_from_complex, get_rotation_matrix
 from microrep.core.ref_and_specs import LayerRef, get_layer_refs, get_mg_layer_refs, get_marker_layer_refs, get_markers_pos
@@ -15,11 +17,16 @@ from microrep.create_representations.create_representations.create_representatio
 from microrep.core.utils import TRAJ_END, TRAJ_START, get_fmc_combination
 from microrep.create_representations.create_representations.configuration_file import get_combinations_from_file
 from microrep.create_representations.create_representations.create_mg_rep import create_mg_rep, move_element, move_path
+
+from inkex.paths import CubicSuperPath, Path
 # from imports.create_representations.create_representations import CreateRepresentations
 from .HandDetection import list_coord_marks, get_microgest_xml
 from .AppUtils import *
 from lxml import etree
 import inkex
+from inkex.transforms import Transform
+
+NULL_TRANSFORM = Transform([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
 
 from inkex.base import SvgOutputMixin, SvgInputMixin
 
@@ -53,83 +60,188 @@ def set_only_markers_visible(tree) :
 
     return tree
 
-def family_resize(tree, mp_results, height, width) :  # --> super long
-    # Method to resize family to the right size
-    if len(mp_results.hand_landmarks) > 0:
-        index_metacarpal_position = mp_results.hand_landmarks[0][INDEX_METACARPAL]
-        wrist_position = mp_results.hand_landmarks[0][WRIST]
+def get_resize_ratio(tree, mp_results) :
+    index_metacarpal_position = mp_results.hand_landmarks[0][INDEX_METACARPAL]
+    wrist_position = mp_results.hand_landmarks[0][WRIST]
 
-        # Getting the palm lenght
-        palm_length_squared = np.sqrt((index_metacarpal_position.x - wrist_position.x)**2 + (index_metacarpal_position.y - wrist_position.y)**2)
-        # Convert to mm (mediapipe gives the position in meters)
-        palm_length_squared *= 1000
+    # Getting the palm length
+    palm_length_squared = np.sqrt((index_metacarpal_position.x - wrist_position.x)**2 + (index_metacarpal_position.y - wrist_position.y)**2)
+    # Convert to mm (mediapipe gives the position in meters)
+    palm_length_squared *= 1000
+    
+    # Getting the layers with the attribute 'mgrep-scale-marker'
+    svg_layers = tree.xpath('//svg:g[@inkscape:groupmode="layer"]', namespaces=inkex.NSS)
+    scale_marker_layers = [layer for layer in svg_layers if layer.attrib.get('mgrep-scale-marker') is not None]
+    
+    assert(len(scale_marker_layers) == 2)
+    scale_markers = [scale_marker_layers[0][0], scale_marker_layers[1][0]]
+    
+    # Get the length of the segment between the two markers
+    scale_markers_length_squared = np.sqrt((float(scale_markers[0].attrib['cx']) - float(scale_markers[1].attrib['cx']))**2 + (float(scale_markers[0].attrib['cy']) - float(scale_markers[1].attrib['cy']))**2)
+
+    # Get the scale factor
+    return palm_length_squared / scale_markers_length_squared
+
+# def family_resize(tree, mp_results) :  # --> super long
+#     # Method to resize family to the right size
+#     if len(mp_results.hand_landmarks) > 0:
+#         index_metacarpal_position = mp_results.hand_landmarks[0][INDEX_METACARPAL]
+#         wrist_position = mp_results.hand_landmarks[0][WRIST]
+
+#         # Getting the palm lenght
+#         palm_length_squared = np.sqrt((index_metacarpal_position.x - wrist_position.x)**2 + (index_metacarpal_position.y - wrist_position.y)**2)
+#         # Convert to mm (mediapipe gives the position in meters)
+#         palm_length_squared *= 1000
         
-        # Getting the layers with the attribute 'mgrep-scale-marker'
-        svg_layers = tree.xpath('//svg:g[@inkscape:groupmode="layer"]', namespaces=inkex.NSS)
-        scale_marker_layers = [layer for layer in svg_layers if layer.attrib.get('mgrep-scale-marker') is not None]
-        assert(len(scale_marker_layers) == 2)
-        scale_markers = [scale_marker_layers[0][0], scale_marker_layers[1][0]]
+#         # Getting the layers with the attribute 'mgrep-scale-marker'
+#         svg_layers = tree.xpath('//svg:g[@inkscape:groupmode="layer"]', namespaces=inkex.NSS)
+#         scale_marker_layers = [layer for layer in svg_layers if layer.attrib.get('mgrep-scale-marker') is not None]
+#         assert(len(scale_marker_layers) == 2)
+#         scale_markers = [scale_marker_layers[0][0], scale_marker_layers[1][0]]
         
-        # Get the length of the segment between the two markers
-        scale_markers_length_squared = np.sqrt((float(scale_markers[0].attrib['cx']) - float(scale_markers[1].attrib['cx']))**2 + (float(scale_markers[0].attrib['cy']) - float(scale_markers[1].attrib['cy']))**2)
+#         # Get the length of the segment between the two markers
+#         scale_markers_length_squared = np.sqrt((float(scale_markers[0].attrib['cx']) - float(scale_markers[1].attrib['cx']))**2 + (float(scale_markers[0].attrib['cy']) - float(scale_markers[1].attrib['cy']))**2)
 
-        # Get the scale factor
-        scale_factor = palm_length_squared / scale_markers_length_squared
+#         # Get the scale factor
+#         scale_factor = palm_length_squared / scale_markers_length_squared
 
-        # Scale the families_tree
-        tree.getroot().attrib["width"] = f"{width}"
-        tree.getroot().attrib["height"] = f"{height}"
-        tree.getroot().attrib["viewBox"] = f"0 0 {width} {height}"
-
-        # Scale the children of the root
-        # tree = scale_children(tree, scale_factor)
-        # tree = apply_transform(tree)  # --> super long
+#         # Scale the whole tree
+#         tree = scale_children(tree, scale_factor)
         
-        return tree
-    else:
-        print("No hand detected")
-        return
+#         return tree
+#     else:
+#         print("No hand detected")
+#         return
 
 def scale_children(tree, scale_factor) :
     # (the root cannot be scaled correctly)
-    for child in tree.getroot():
+    # for child in tree.getroot():
+        # print(f"child label : {child.attrib.get('id')}")
         # Check that the child has the attribute style
-        if child.attrib.get("style") is None:
-            continue
-        if child.attrib.get("id") != "markers-layer":
+        # if child.attrib.get("style") is None :
+        #     continue
+        # else :
             # Scale the whole layer for the designs
-            child.attrib['transform'] = f"scale({scale_factor})"
-        else : 
-            # Get each circle being a child of the current child and scale it
-            circles = child.findall(".//svg:circle", namespaces=inkex.NSS)
-            for circle in circles :
-                circle.attrib['r'] = str(float(circle.attrib['r']) * scale_factor)
+        
+    layers = tree.xpath('//svg:g[@inkscape:groupmode="layer"]', namespaces=inkex.NSS)
+    design_elements = [child for layer in layers for child in layer if child.attrib.get('mgrep-path-element') == 'design']
+    
+    for element in design_elements :
+        element.attrib['transform'] = f"scale({scale_factor})"
+        apply_transform_to_element(tree, element)
+        # if child.attrib.get("id") == "markers-layer": 
+        #     # Get each circle being a child of the current child and scale it
+        #     circles = child.findall(".//svg:circle", namespaces=inkex.NSS)
+        #     for circle in circles :
+        #         circle.attrib['r'] = str(float(circle.attrib['r']) * scale_factor)
             
     return tree
 
-# def apply_transform(tree) :
-#     random_nbr = str(np.random.randint(0, 1000000))
-#     # Save as temp.svg
-#     with open(TEMP_FILE_PATH+random_nbr, "wb") as f:
-#         f.write(etree.tostring(tree))
+def apply_transform_to_element(svg_doc, node):
+
+    transf = Transform(node.get('transform'))
+
+    if transf == NULL_TRANSFORM:
+        # Don't do anything if there is effectively no transform applied
+        # reduces alerts for unsupported nodes
+        pass
+    elif 'd' in node.attrib:
+        d = node.get('d')
+        p = CubicSuperPath(d)
+        p = Path(p).to_absolute().transform(transf, True)
+        node.set('d', str(Path(CubicSuperPath(p).to_path())))
+
+        scaleStrokeWidth(svg_doc, node, transf)
+
+    elif node.tag in [inkex.addNS('polygon', 'svg'),
+                        inkex.addNS('polyline', 'svg')]:
+        points = node.get('points')
+        points = points.strip().split(' ')
+        for k, p in enumerate(points):
+            if ',' in p:
+                p = p.split(',')
+                p = [float(p[0]), float(p[1])]
+                p = transf.apply_to_point(p)
+                p = [str(p[0]), str(p[1])]
+                p = ','.join(p)
+                points[k] = p
+        points = ' '.join(points)
+        node.set('points', points)
+
+        scaleStrokeWidth(svg_doc, node, transf)
+
+    elif node.tag in [inkex.addNS("ellipse", "svg"), inkex.addNS("circle", "svg")]:
+
+        def isequal(a, b):
+            return abs(a - b) <= transf.absolute_tolerance
+
+        if node.TAG == "ellipse":
+            rx = float(node.get("rx"))
+            ry = float(node.get("ry"))
+        else:
+            rx = float(node.get("r"))
+            ry = rx
+
+        cx = float(node.get("cx"))
+        cy = float(node.get("cy"))
+        sqxy1 = (cx - rx, cy - ry)
+        sqxy2 = (cx + rx, cy - ry)
+        sqxy3 = (cx + rx, cy + ry)
+        newxy1 = transf.apply_to_point(sqxy1)
+        newxy2 = transf.apply_to_point(sqxy2)
+        newxy3 = transf.apply_to_point(sqxy3)
+
+        node.set("cx", (newxy1[0] + newxy3[0]) / 2)
+        node.set("cy", (newxy1[1] + newxy3[1]) / 2)
+        edgex = math.sqrt(
+            abs(newxy1[0] - newxy2[0]) ** 2 + abs(newxy1[1] - newxy2[1]) ** 2
+        )
+        edgey = math.sqrt(
+            abs(newxy2[0] - newxy3[0]) ** 2 + abs(newxy2[1] - newxy3[1]) ** 2
+        )
+
+        if not isequal(edgex, edgey) and (
+            node.TAG == "circle"
+            or not isequal(newxy2[0], newxy3[0])
+            or not isequal(newxy1[1], newxy2[1])
+        ):
+            inkex.utils.errormsg(f"Warning: Shape {node.TAG} ({node.get('id')}) is approximate only, try Object to path first for better results")
+
+        if node.TAG == "ellipse":
+            node.set("rx", edgex / 2)
+            node.set("ry", edgey / 2)
+        else:
+            node.set("r", edgex / 2)
+
+    elif node.tag in [inkex.addNS('rect', 'svg'),
+                        inkex.addNS('text', 'svg'),
+                        inkex.addNS('image', 'svg'),
+                        inkex.addNS('use', 'svg')]:
+        node.attrib['transform'] = str(transf)
+        inkex.utils.errormsg(f"Shape {node.TAG} ({node.get('id')}) not yet supported. Not all transforms will be applied. Try Object to path first")
+
+    else:
+        # e.g. <g style="...">
+        scaleStrokeWidth(svg_doc, node, transf)
         
-#     # cmd_string = f"python3 {APPLY_TRANSFORM_EXTENSION} {TEMP_FILE_PATH} > {TEMP_AT_FILE_PATH}"
-#     # print(cmd_string)
-#     # os.system(cmd_string)
+def scaleStrokeWidth(svg_doc, node, transf):
+    if 'style' in node.attrib:
+        style = node.attrib.get('style')
+        style = dict(Style.parse_str(style))
+        update = False
 
-#     aply = ApplyTransform()
-#     aply.run([TEMP_FILE_PATH+random_nbr], output=TEMP_AT_FILE_PATH+random_nbr)
+        if 'stroke-width' in style:
+            try:
+                stroke_width = svg_doc.unittouu(style.get('stroke-width')) / svg_doc.unittouu("1px")
+                stroke_width *= math.sqrt(abs(transf.a * transf.d - transf.b * transf.c))
+                style['stroke-width'] = str(stroke_width)
+                update = True
+            except AttributeError as e:
+                pass
 
-#     # Get the new tree
-#     families_tree = etree.parse(TEMP_AT_FILE_PATH+random_nbr)
+        if update:
+            node.attrib['style'] = Style(style).to_str()
 
-#     # Remove the temporary file
-#     os.system(f"rm {TEMP_FILE_PATH+random_nbr}")
-#     # Remove the temporary file
-#     os.system(f"rm {TEMP_AT_FILE_PATH+random_nbr}")
-
-#     return families_tree
-    
 def move_rep_markers(mp_results, tree, img_height, img_width, dic=get_microgest_xml()) :
     for hand_landmarks in mp_results.hand_landmarks:
         # Fill list with x, y and z positions of each landmark
