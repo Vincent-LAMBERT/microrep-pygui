@@ -69,4 +69,4 @@ class Webcam(QWidget) :
             self.active = f"{self.prefix}{selected_family}_{mapping_name}.svg"
             
             self.mgc.set_active(self.active)
-            self.wt.restartLive()
+            self.wt.resetComputing()

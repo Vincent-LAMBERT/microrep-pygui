@@ -110,6 +110,9 @@ class WebcamThread(QThread):
 
     def restartLive(self):
         self.webcam_on = True
+        self.resetComputing()
+    
+    def resetComputing(self):
         self.first_computed = False
 
     #####################################################

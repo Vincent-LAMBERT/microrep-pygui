@@ -4,6 +4,7 @@ from lxml import etree
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
+from mediapipe.tasks.python.components.containers.landmark import NormalizedLandmark
 import subprocess
 
 from .AppUtils import *
@@ -29,6 +30,8 @@ def input_treatement(image_name, detector) :
 
     return image_numpy, detector.detect(image)
 
+detected_hands = {"Left" : None, "Right" : None}
+
 def update_mp_results(mp_results, list, max_size) :
     if len(list) == max_size :
         list.pop(0)
@@ -46,6 +49,17 @@ def compute_mean_mp_results(list) :
         for i in range(1, len(list)) :
             for hand_index, hand_landmarks in enumerate(list[i].hand_landmarks):
                 for landmark_index, landmark in enumerate(hand_landmarks):
+                    
+                    if hand_index >= len(mean_mp_result.hand_landmarks) :
+                        normalizedLandmarkList = [NormalizedLandmark for i in range(21)]
+                        # Set x, y and z to 0 for each landmark
+                        for i in range(21) :
+                            normalizedLandmarkList[i].x = 0
+                            normalizedLandmarkList[i].y = 0
+                            normalizedLandmarkList[i].z = 0
+                        
+                        mean_mp_result.hand_landmarks.append(normalizedLandmarkList)
+
                     mean_mp_result.hand_landmarks[hand_index][landmark_index].x += landmark.x
                     mean_mp_result.hand_landmarks[hand_index][landmark_index].y += landmark.y
                     mean_mp_result.hand_landmarks[hand_index][landmark_index].z += landmark.z
@@ -97,6 +111,9 @@ def angle(vector1, vector2) :
     dotProduct = vector1[0]*vector2[0] + vector1[1]*vector2[1] + vector1[2]*vector2[2]
     magnitude1 = math.sqrt(vector1[0]**2 + vector1[1]**2 + vector1[2]**2)
     magnitude2 = math.sqrt(vector2[0]**2 + vector2[1]**2 + vector2[2]**2)
+
+    if (magnitude1*magnitude2) == 0 :
+        return 0
     return math.acos(dotProduct/(magnitude1*magnitude2)) * 180/math.pi
 
 def list_coord_marks(handLandmarks, height, width) :
@@ -109,9 +126,15 @@ def list_coord_marks(handLandmarks, height, width) :
     # For the marker next to  the thumb   
         # Give a fix position relative to the thumb
     dist_under_mark = (math.sqrt(((handLandmarks[13][0]-handLandmarks[9][0]))**2+((handLandmarks[13][1]-handLandmarks[9][1]))**2)*math.sin(math.radians(45)))/math.sin(math.radians(180-60-45))
-        # Correct the orientationof the marks
-    side_hand = (handLandmarks[0][0]-handLandmarks[1][0])/abs(handLandmarks[0][0]-handLandmarks[1][0])
-        # Give the possibility to move marks to match the position of the thumb
+
+
+    # Correct the orientationof the marks
+    if handLandmarks[0][0]-handLandmarks[1][0] != 0 :
+        side_hand = (handLandmarks[0][0]-handLandmarks[1][0])/abs(handLandmarks[0][0]-handLandmarks[1][0])
+    else :
+        side_hand = 1
+
+    # Give the possibility to move marks to match the position of the thumb
     v1 = [handLandmarks[4][0]-handLandmarks[0][0], handLandmarks[4][1]-handLandmarks[0][1], handLandmarks[4][2]-handLandmarks[0][2]]
     v2 = [handLandmarks[5][0]-handLandmarks[0][0], handLandmarks[5][1]-handLandmarks[0][1], handLandmarks[5][2]-handLandmarks[0][2]]
     angle_thumb = math.radians(angle(v1,v2))
