@@ -14,7 +14,7 @@ from lxml import etree
 import numpy as np
 
 from .HandDetection import create_detector, input_treatement, update_mp_results
-from .DesignManagement import get_resize_ratio, move_rep, move_rep_markers, read_file, scale_children, stroke_to_path, write_file, remove_invisible_layers, get_markers_tree
+from .DesignManagement import apply_transforms, flip_tree, get_resize_ratio, move_rep, move_rep_markers, read_file, scale_children, stroke_to_path, write_file, remove_invisible_layers, get_markers_tree
 from .AppUtils import *
 
 
@@ -23,10 +23,12 @@ import threading
 
 class MicroRepThread(QThread):
 
-    resized_done = False
+    resized_done = 0
     detector = create_detector()
     fmc_combinations = None
     rep_tree = None
+
+    active = None
 
     def __init__(self, running_info=None, mp_result_max_size=3):
         super(MicroRepThread, self).__init__()
@@ -50,6 +52,10 @@ class MicroRepThread(QThread):
         label = f"Running threads : {threading.active_count()}"
         self.running_info.setText(label)
 
+    def set_active(self, active):
+        self.active = active
+        self.recompute_design()
+
     def recompute_design(self):
         tree = get_markers_tree()
 
@@ -62,10 +68,25 @@ class MicroRepThread(QThread):
         # Export the representations with the dedicated module
         export_representations(self.config_path)
 
-        self.resized_done = False
+        # Select the first file
+        if self.active not in os.listdir(TEMP_REP_FOLDER_PATH):
+            self.active = os.listdir(TEMP_REP_FOLDER_PATH)[0]
+    
+        if os.path.exists(TEMP_REP_FILE_PATH) :
+            os.remove(TEMP_REP_FILE_PATH)
+        os.rename(TEMP_REP_FOLDER_PATH+self.active, TEMP_REP_FILE_PATH)
 
-        self.base_tree = read_file(TEMP_REP_FILE_PATH)
+        self.resized_done = 0
+
         # self.base_tree = remove_invisible_layers(base_tree)
+
+        self.base_tree_left = read_file(TEMP_REP_FILE_PATH)
+
+        self.base_tree_right = read_file(TEMP_REP_FILE_PATH)
+        self.base_tree_right = flip_tree(self.base_tree_right)
+        self.base_tree_right = apply_transforms(self.base_tree_right)
+        
+        self.base_tree = self.base_tree_left
 
     def update_markers(self, mp_results, dic, img_height, img_width):
         markers_tree = get_markers_tree()
@@ -95,9 +116,10 @@ class MicroRepThread(QThread):
     ############## UPDATE FUNCTIONS #####################
     #####################################################
 
-    def resize_design(self, image):
+    def update_frame_size(self, image):
         self.img_height, self.img_width, channel = image.shape
-        resize_tree(self.base_tree, self.img_height, self.img_width)
+        resize_tree(self.base_tree_left, self.img_height, self.img_width)
+        resize_tree(self.base_tree_right, self.img_height, self.img_width)
 
     def detect(self, image):
         image_numpy, mp_results = input_treatement(image, self.detector)
@@ -109,7 +131,15 @@ class MicroRepThread(QThread):
         if mp_results.hand_landmarks != [] :
             mp_results = update_mp_results(mp_results, self.mp_result_list, self.mp_result_max_size) # Ensure stability whereas the more stable the representation, the more the delay because of the multiple detections (a max size of 3 is fine)
 
-            if not self.resized_done :
+            # If it is a left hand, we need to flip the base_tree
+            if mp_results.handedness[0][0].category_name == "Left" :
+                self.base_tree = self.base_tree_left
+                write_file(self.base_tree, TEMP_DESIGN_FILE_PATH[:-4]+"left.svg")
+            else :
+                self.base_tree = self.base_tree_right
+                write_file(self.base_tree, TEMP_DESIGN_FILE_PATH[:-4]+"right.svg")
+
+            if self.resized_done%5 == 0:
                 # tree = family_resize(self.base_tree, mp_results)
 
                 ratio = get_resize_ratio(self.base_tree, mp_results)
@@ -124,18 +154,20 @@ class MicroRepThread(QThread):
                 # sg_tree.save(TEMP_DESIGN_FILE_PATH)
                 # self.base_tree = read_file(TEMP_DESIGN_FILE_PATH)
 
-                self.base_tree = scale_children(self.base_tree, ratio)
+                self.resized_tree = scale_children(self.base_tree, ratio)
                 # self.base_tree = apply_transform_to_element(self.base_tree)
-                write_file(self.base_tree, TEMP_DESIGN_FILE_PATH)
+                self.resized_tree = apply_transforms(self.resized_tree)
 
-                self.resized_done = True
+                write_file(self.resized_tree, TEMP_DESIGN_FILE_PATH)
+
+            self.resized_done += 1
 
         return mp_results
     
     def copy_design(self):
         # Copy the representation tree
         random_int = np.random.randint(0, 100000)
-        write_file(self.base_tree, TEMP_COPY_FILE_PATH+str(random_int))
+        write_file(self.resized_tree, TEMP_COPY_FILE_PATH+str(random_int))
         rep_tree = read_file(TEMP_COPY_FILE_PATH+str(random_int))
         os.remove(TEMP_COPY_FILE_PATH+str(random_int))
 
@@ -175,13 +207,9 @@ def export_representations(config_path, export_filetype="svg", dpi=90, traces=Fa
     export_rep = CreateRepresentations()
     export_rep.run(args=[TEMP_FILE_PATH, path_str, filetype_str, dpi_str, traces_str, command_str, one_str, four_str, debug_str, dry_str, prefix_str, config_str])
 
-    # Copy a random file in TEMP_REP_FOLDER_PATH to TEMP_REP_FILE_PATH
-    index = random.randint(0, len(os.listdir(TEMP_REP_FOLDER_PATH))-1)
-    random_file_name = os.listdir(TEMP_REP_FOLDER_PATH)[index]
-    
-    if os.path.exists(TEMP_REP_FILE_PATH) :
-        os.remove(TEMP_REP_FILE_PATH)
-    os.rename(TEMP_REP_FOLDER_PATH+random_file_name, TEMP_REP_FILE_PATH)
+    # # Copy a random file in TEMP_REP_FOLDER_PATH to TEMP_REP_FILE_PATH
+    # index = random.randint(0, len(os.listdir(TEMP_REP_FOLDER_PATH))-1)
+    # random_file_name = os.listdir(TEMP_REP_FOLDER_PATH)[index]
     
     # family_name = "AandB"
     # # Keep the one and only file in TEMP_REP_FOLDER_PATH with the family_name in its name

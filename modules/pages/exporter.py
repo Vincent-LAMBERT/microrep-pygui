@@ -63,7 +63,7 @@ class Exporter(QWidget) :
 
     def setup_images(self, background) :
         image = cv2.imread(background)
-        self.mgc.resize_design(image)
+        self.mgc.update_frame_size(image)
 
         mp_results = self.mgc.detect(image)
         

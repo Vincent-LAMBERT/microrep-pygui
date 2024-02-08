@@ -86,6 +86,8 @@ class WebcamThread(QThread):
                         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                         # Upscale the image by 450%
                         image = cv2.resize(image, None, fx=2.28, fy=2.28, interpolation=cv2.INTER_LANCZOS4)
+                        # Flip the image horizontally
+                        image = cv2.flip(image, 1)
                         self.image_data.emit(image)
 
                 if cap.isOpened():
@@ -117,7 +119,7 @@ class WebcamThread(QThread):
     # Fonction gerant la mise a jour de l'affichage
     def update_image(self, image, ratio=0.1):
         if not self.first_computed :
-            self.mgc.resize_design(image)
+            self.mgc.update_frame_size(image)
             self.first_computed = True
 
         back_thread = threading.Thread(target=self.update_background, args=(image,))

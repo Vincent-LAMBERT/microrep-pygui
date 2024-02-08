@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
 
 from modules.pages.exporter import Exporter
 from modules.pages.generator import Generator
+from modules.pages.webcam import Webcam
 from widgets.image_viewer.ImageViewer import ImageViewer
 from .resources_rc import *
 
@@ -1078,20 +1079,36 @@ class Ui_MainWindow(object):
         self.gridLayout_344 = QGridLayout(self.webcam_page)
         self.gridLayout_344.setObjectName(u"gridLayout_344")
         self.gridLayout_344.setContentsMargins(9, 9, 9, 9)
-        self.webcam = QWidget(self.webcam_page)
+        self.webcam = Webcam(self.webcam_page)
         self.webcam.setObjectName(u"webcam")
-        self.label_live_file = ImageViewer(self.webcam)
+        self.verticalLayoutWidget = QWidget(self.webcam)
+        self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
+        self.verticalLayoutWidget.setGeometry(QRect(10, -10, 811, 551))
+        self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.widget_3 = QWidget(self.verticalLayoutWidget)
+        self.widget_3.setObjectName(u"widget_3")
+        self.label_live_file = ImageViewer(self.widget_3)
         self.label_live_file.setObjectName(u"label_live_file")
-        self.label_live_file.setGeometry(QRect(9, 9, 804, 565))
-        self.label_commands = ImageViewer(self.webcam)
-        self.label_commands.setObjectName(u"label_commands")
-        self.label_commands.setGeometry(QRect(9, 9, 804, 565))
-        self.label_rep = ImageViewer(self.webcam)
-        self.label_rep.setObjectName(u"label_rep")
-        self.label_rep.setGeometry(QRect(9, 9, 804, 565))
-        self.label_markers = ImageViewer(self.webcam)
+        self.label_live_file.setGeometry(QRect(0, 0, 840, 560))
+        self.label_markers = ImageViewer(self.widget_3)
         self.label_markers.setObjectName(u"label_markers")
-        self.label_markers.setGeometry(QRect(9, 9, 804, 565))
+        self.label_markers.setGeometry(QRect(0, 0, 840, 560))
+        self.label_rep = ImageViewer(self.widget_3)
+        self.label_rep.setObjectName(u"label_rep")
+        self.label_rep.setGeometry(QRect(0, 0, 840, 560))
+        self.label_commands = ImageViewer(self.widget_3)
+        self.label_commands.setObjectName(u"label_commands")
+        self.label_commands.setGeometry(QRect(0, 0, 840, 560))
+
+        self.verticalLayout.addWidget(self.widget_3)
+
+        self.comboBox_family = QComboBox(self.webcam)
+        self.comboBox_family.setObjectName(u"comboBox_family")
+        self.comboBox_family.setGeometry(QRect(30, 560, 158, 34))
+        self.comboBox_config = QComboBox(self.webcam)
+        self.comboBox_config.setObjectName(u"comboBox_config")
+        self.comboBox_config.setGeometry(QRect(210, 560, 591, 31))
 
         self.gridLayout_344.addWidget(self.webcam, 0, 0, 1, 1)
 
@@ -1650,24 +1667,10 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.styleSheet)
 
         self.retranslateUi(MainWindow)
-        self.btn_select.clicked.connect(self.generator.select_file_config)
-        self.btn_save_as.clicked.connect(self.generator.save_config_as_file)
-        self.btn_clear.clicked.connect(self.generator.clear_config)
-        self.btn_add.clicked.connect(self.generator.add_mapping)
-        self.btn_apply.clicked.connect(self.generator.apply_config)
-        self.btn_remove.clicked.connect(self.generator.remove_config)
-        self.btn_reset.clicked.connect(self.generator.default_config)
-        self.btn_mapping.clicked.connect(self.generator.lock_mappings)
-        self.btn_import.clicked.connect(self.generator.import_image)
-        self.btn_previous.clicked.connect(self.exporter.previous_rep)
-        self.btn_next.clicked.connect(self.exporter.next_rep)
-        self.btn_export_current.clicked.connect(self.exporter.export_current)
-        self.btn_export_all.clicked.connect(self.exporter.export_all)
-        self.btn_apply_export_3.clicked.connect(self.exporter.select_export_folder)
-        self.btn_export_5.clicked.connect(self.generator.export_image_with_mappings)
-        self.btn_export_6.clicked.connect(self.exporter.back_to_generator)
+        self.comboBox_family.currentIndexChanged.connect(self.webcam.selectFamily)
+        self.comboBox_config.currentIndexChanged.connect(self.webcam.selectMapping)
 
-        self.stackedWidget.setCurrentIndex(4)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1733,9 +1736,9 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.closeAppBtn.setText("")
         self.label_live_file.setProperty("text", "")
-        self.label_commands.setProperty("text", "")
-        self.label_rep.setProperty("text", "")
         self.label_markers.setProperty("text", "")
+        self.label_rep.setProperty("text", "")
+        self.label_commands.setProperty("text", "")
         self.comboBox_export_type.setItemText(0, QCoreApplication.translate("MainWindow", u"SVG", None))
         self.comboBox_export_type.setItemText(1, QCoreApplication.translate("MainWindow", u"PNG", None))
         self.comboBox_export_type.setItemText(2, QCoreApplication.translate("MainWindow", u"JPG", None))

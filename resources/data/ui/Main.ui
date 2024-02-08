@@ -1810,7 +1810,7 @@ p, li { white-space: pre-wrap; }
                       <bool>true</bool>
                      </property>
                      <property name="currentIndex">
-                      <number>4</number>
+                      <number>0</number>
                      </property>
                      <widget class="QWidget" name="webcam_page">
                       <layout class="QGridLayout" name="gridLayout_344">
@@ -1827,57 +1827,93 @@ p, li { white-space: pre-wrap; }
                         <number>9</number>
                        </property>
                        <item row="0" column="0">
-                        <widget class="QWidget" name="webcam" native="true">
-                         <widget class="ImageViewer" name="label_live_file" native="true">
+                        <widget class="Webcam" name="webcam" native="true">
+                         <widget class="QWidget" name="verticalLayoutWidget">
                           <property name="geometry">
                            <rect>
-                            <x>9</x>
-                            <y>9</y>
-                            <width>804</width>
-                            <height>565</height>
+                            <x>10</x>
+                            <y>-10</y>
+                            <width>811</width>
+                            <height>551</height>
                            </rect>
                           </property>
-                          <property name="text" stdset="0">
-                           <string/>
+                          <layout class="QVBoxLayout" name="verticalLayout">
+                           <item>
+                            <widget class="QWidget" name="widget_3" native="true">
+                             <widget class="ImageViewer" name="label_live_file" native="true">
+                              <property name="geometry">
+                               <rect>
+                                <x>0</x>
+                                <y>0</y>
+                                <width>840</width>
+                                <height>560</height>
+                               </rect>
+                              </property>
+                              <property name="text" stdset="0">
+                               <string/>
+                              </property>
+                             </widget>
+                             <widget class="ImageViewer" name="label_markers" native="true">
+                              <property name="geometry">
+                               <rect>
+                                <x>0</x>
+                                <y>0</y>
+                                <width>840</width>
+                                <height>560</height>
+                               </rect>
+                              </property>
+                              <property name="text" stdset="0">
+                               <string/>
+                              </property>
+                             </widget>
+                             <widget class="ImageViewer" name="label_rep" native="true">
+                              <property name="geometry">
+                               <rect>
+                                <x>0</x>
+                                <y>0</y>
+                                <width>840</width>
+                                <height>560</height>
+                               </rect>
+                              </property>
+                              <property name="text" stdset="0">
+                               <string/>
+                              </property>
+                             </widget>
+                             <widget class="ImageViewer" name="label_commands" native="true">
+                              <property name="geometry">
+                               <rect>
+                                <x>0</x>
+                                <y>0</y>
+                                <width>840</width>
+                                <height>560</height>
+                               </rect>
+                              </property>
+                              <property name="text" stdset="0">
+                               <string/>
+                              </property>
+                             </widget>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                         <widget class="QComboBox" name="comboBox_family">
+                          <property name="geometry">
+                           <rect>
+                            <x>30</x>
+                            <y>560</y>
+                            <width>158</width>
+                            <height>34</height>
+                           </rect>
                           </property>
                          </widget>
-                         <widget class="ImageViewer" name="label_commands" native="true">
+                         <widget class="QComboBox" name="comboBox_config">
                           <property name="geometry">
                            <rect>
-                            <x>9</x>
-                            <y>9</y>
-                            <width>804</width>
-                            <height>565</height>
+                            <x>210</x>
+                            <y>560</y>
+                            <width>591</width>
+                            <height>31</height>
                            </rect>
-                          </property>
-                          <property name="text" stdset="0">
-                           <string/>
-                          </property>
-                         </widget>
-                         <widget class="ImageViewer" name="label_rep" native="true">
-                          <property name="geometry">
-                           <rect>
-                            <x>9</x>
-                            <y>9</y>
-                            <width>804</width>
-                            <height>565</height>
-                           </rect>
-                          </property>
-                          <property name="text" stdset="0">
-                           <string/>
-                          </property>
-                         </widget>
-                         <widget class="ImageViewer" name="label_markers" native="true">
-                          <property name="geometry">
-                           <rect>
-                            <x>9</x>
-                            <y>9</y>
-                            <width>804</width>
-                            <height>565</height>
-                           </rect>
-                          </property>
-                          <property name="text" stdset="0">
-                           <string/>
                           </property>
                          </widget>
                         </widget>
@@ -3119,264 +3155,50 @@ background-repeat: no-repeat;</string>
     <slot>back_to_generator()</slot>
    </slots>
   </customwidget>
+  <customwidget>
+   <class>Webcam</class>
+   <extends>QWidget</extends>
+   <header>modules.pages.webcam</header>
+   <container>1</container>
+   <slots>
+    <slot>selectFamily()</slot>
+    <slot>selectMapping()</slot>
+   </slots>
+  </customwidget>
  </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>
  <connections>
   <connection>
-   <sender>btn_select</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>select_file_config()</slot>
+   <sender>comboBox_family</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>webcam</receiver>
+   <slot>selectFamily()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>891</x>
-     <y>583</y>
+     <x>208</x>
+     <y>650</y>
     </hint>
     <hint type="destinationlabel">
-     <x>170</x>
-     <y>93</y>
+     <x>217</x>
+     <y>672</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>btn_save_as</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>save_config_as_file()</slot>
+   <sender>comboBox_config</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>webcam</receiver>
+   <slot>selectMapping()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>891</x>
-     <y>508</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>93</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_clear</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>clear_config()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>705</x>
-     <y>508</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>93</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_add</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>add_mapping()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>891</x>
-     <y>187</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>93</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_apply</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>apply_config()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>891</x>
-     <y>251</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>93</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_remove</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>remove_config()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>891</x>
-     <y>279</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>93</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_reset</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>default_config()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>607</x>
-     <y>508</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>93</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_mapping</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>lock_mappings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>590</x>
-     <y>628</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>93</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_import</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>import_image()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>279</x>
-     <y>544</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>93</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_previous</sender>
-   <signal>clicked()</signal>
-   <receiver>exporter</receiver>
-   <slot>previous_rep()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>500</x>
-     <y>637</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>258</x>
+     <x>353</x>
      <y>644</y>
     </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_next</sender>
-   <signal>clicked()</signal>
-   <receiver>exporter</receiver>
-   <slot>next_rep()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>704</x>
-     <y>637</y>
-    </hint>
     <hint type="destinationlabel">
-     <x>409</x>
-     <y>656</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_export_current</sender>
-   <signal>clicked()</signal>
-   <receiver>exporter</receiver>
-   <slot>export_current()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>334</x>
-     <y>443</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>720</x>
-     <y>648</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_export_all</sender>
-   <signal>clicked()</signal>
-   <receiver>exporter</receiver>
-   <slot>export_all()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>470</x>
-     <y>443</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>848</x>
-     <y>668</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_apply_export_3</sender>
-   <signal>clicked()</signal>
-   <receiver>exporter</receiver>
-   <slot>select_export_folder()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>196</x>
-     <y>298</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>540</x>
-     <y>666</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_export_5</sender>
-   <signal>clicked()</signal>
-   <receiver>generator</receiver>
-   <slot>export_image_with_mappings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>432</x>
-     <y>641</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>345</x>
-     <y>666</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_export_6</sender>
-   <signal>clicked()</signal>
-   <receiver>exporter</receiver>
-   <slot>back_to_generator()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>298</x>
-     <y>576</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>161</x>
-     <y>614</y>
+     <x>391</x>
+     <y>670</y>
     </hint>
    </hints>
   </connection>

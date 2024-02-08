@@ -142,7 +142,7 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
             
-            self.microrep_thread.set_config("live_config.csv")
+            self.ui.webcam.recompute_config()
             self.microrep_thread.recompute_design()
             self.webcam_thread.restartLive()
         else :

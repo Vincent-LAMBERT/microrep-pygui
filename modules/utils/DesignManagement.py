@@ -19,6 +19,8 @@ from microrep.create_representations.create_representations.configuration_file i
 from microrep.create_representations.create_representations.create_mg_rep import create_mg_rep, move_element, move_path
 
 from inkex.paths import CubicSuperPath, Path
+
+from modules.utils.applytransforms.applytransform import ApplyTransform
 # from imports.create_representations.create_representations import CreateRepresentations
 from .HandDetection import list_coord_marks, get_microgest_xml
 from .AppUtils import *
@@ -58,6 +60,13 @@ def set_only_markers_visible(tree) :
             # Replace "display:none" with "display:inline"
             child.attrib['style'] = child.attrib['style'].replace("display:none", "display:inline")
 
+    return tree
+
+def flip_tree(tree) :
+    for child in tree.getroot():
+        # The patterns must NOT be flipped
+        if child.attrib.get("id") == "designs-layer" :
+            child.attrib['transform'] = f"scale(-1, 1)"
     return tree
 
 def get_resize_ratio(tree, mp_results) :
@@ -113,134 +122,44 @@ def get_resize_ratio(tree, mp_results) :
 #         print("No hand detected")
 #         return
 
-def scale_children(tree, scale_factor) :
-    # (the root cannot be scaled correctly)
-    # for child in tree.getroot():
-        # print(f"child label : {child.attrib.get('id')}")
-        # Check that the child has the attribute style
-        # if child.attrib.get("style") is None :
-        #     continue
-        # else :
-            # Scale the whole layer for the designs
+def scale_children(tree, scale_factor) :    
+    # The patterns must be scaled too
+    for child in tree.getroot() :
+        child.attrib['transform'] = f"scale({scale_factor})"
         
-    layers = tree.xpath('//svg:g[@inkscape:groupmode="layer"]', namespaces=inkex.NSS)
-    design_elements = [child for layer in layers for child in layer if child.attrib.get('mgrep-path-element') == 'design']
-    
-    for element in design_elements :
-        element.attrib['transform'] = f"scale({scale_factor})"
-        apply_transform_to_element(tree, element)
-        # if child.attrib.get("id") == "markers-layer": 
-        #     # Get each circle being a child of the current child and scale it
-        #     circles = child.findall(".//svg:circle", namespaces=inkex.NSS)
-        #     for circle in circles :
-        #         circle.attrib['r'] = str(float(circle.attrib['r']) * scale_factor)
-            
     return tree
 
-def apply_transform_to_element(svg_doc, node):
+# def apply_transforms(tree) :
+#     write_file(tree, TEMP_DESIGN_FILE_PATH)
 
-    transf = Transform(node.get('transform'))
+#     # aply = ApplyTransform()
+#     # aply.run(args=[TEMP_DESIGN_FILE_PATH])
 
-    if transf == NULL_TRANSFORM:
-        # Don't do anything if there is effectively no transform applied
-        # reduces alerts for unsupported nodes
-        pass
-    elif 'd' in node.attrib:
-        d = node.get('d')
-        p = CubicSuperPath(d)
-        p = Path(p).to_absolute().transform(transf, True)
-        node.set('d', str(Path(CubicSuperPath(p).to_path())))
+#     cmd = "inkscape -f " + TEMP_DESIGN_FILE_PATH + " -l " + TEMP_DESIGN_FILE_PATH + " --select=mgrep-path-element --verb=EditSelectAll --verb=ObjectToPath --verb=FileSave --verb=FileClose"
 
-        scaleStrokeWidth(svg_doc, node, transf)
 
-    elif node.tag in [inkex.addNS('polygon', 'svg'),
-                        inkex.addNS('polyline', 'svg')]:
-        points = node.get('points')
-        points = points.strip().split(' ')
-        for k, p in enumerate(points):
-            if ',' in p:
-                p = p.split(',')
-                p = [float(p[0]), float(p[1])]
-                p = transf.apply_to_point(p)
-                p = [str(p[0]), str(p[1])]
-                p = ','.join(p)
-                points[k] = p
-        points = ' '.join(points)
-        node.set('points', points)
+def apply_transforms(tree) :
+    random_nbr = str(np.random.randint(0, 1000000))
+    # Save as temp.svg
 
-        scaleStrokeWidth(svg_doc, node, transf)
-
-    elif node.tag in [inkex.addNS("ellipse", "svg"), inkex.addNS("circle", "svg")]:
-
-        def isequal(a, b):
-            return abs(a - b) <= transf.absolute_tolerance
-
-        if node.TAG == "ellipse":
-            rx = float(node.get("rx"))
-            ry = float(node.get("ry"))
-        else:
-            rx = float(node.get("r"))
-            ry = rx
-
-        cx = float(node.get("cx"))
-        cy = float(node.get("cy"))
-        sqxy1 = (cx - rx, cy - ry)
-        sqxy2 = (cx + rx, cy - ry)
-        sqxy3 = (cx + rx, cy + ry)
-        newxy1 = transf.apply_to_point(sqxy1)
-        newxy2 = transf.apply_to_point(sqxy2)
-        newxy3 = transf.apply_to_point(sqxy3)
-
-        node.set("cx", (newxy1[0] + newxy3[0]) / 2)
-        node.set("cy", (newxy1[1] + newxy3[1]) / 2)
-        edgex = math.sqrt(
-            abs(newxy1[0] - newxy2[0]) ** 2 + abs(newxy1[1] - newxy2[1]) ** 2
-        )
-        edgey = math.sqrt(
-            abs(newxy2[0] - newxy3[0]) ** 2 + abs(newxy2[1] - newxy3[1]) ** 2
-        )
-
-        if not isequal(edgex, edgey) and (
-            node.TAG == "circle"
-            or not isequal(newxy2[0], newxy3[0])
-            or not isequal(newxy1[1], newxy2[1])
-        ):
-            inkex.utils.errormsg(f"Warning: Shape {node.TAG} ({node.get('id')}) is approximate only, try Object to path first for better results")
-
-        if node.TAG == "ellipse":
-            node.set("rx", edgex / 2)
-            node.set("ry", edgey / 2)
-        else:
-            node.set("r", edgex / 2)
-
-    elif node.tag in [inkex.addNS('rect', 'svg'),
-                        inkex.addNS('text', 'svg'),
-                        inkex.addNS('image', 'svg'),
-                        inkex.addNS('use', 'svg')]:
-        node.attrib['transform'] = str(transf)
-        inkex.utils.errormsg(f"Shape {node.TAG} ({node.get('id')}) not yet supported. Not all transforms will be applied. Try Object to path first")
-
-    else:
-        # e.g. <g style="...">
-        scaleStrokeWidth(svg_doc, node, transf)
+    write_file(tree, TEMP_FILE_PATH[:-4]+random_nbr+".svg")
         
-def scaleStrokeWidth(svg_doc, node, transf):
-    if 'style' in node.attrib:
-        style = node.attrib.get('style')
-        style = dict(Style.parse_str(style))
-        update = False
+    # cmd_string = f"python3 {u.APPLY_TRANSFORM_EXTENSION} {u.TEMP_FILE_PATH} > {u.TEMP_DESIGN_FILE_PATH}"
+    # print(cmd_string)
+    # os.system(cmd_string)
 
-        if 'stroke-width' in style:
-            try:
-                stroke_width = svg_doc.unittouu(style.get('stroke-width')) / svg_doc.unittouu("1px")
-                stroke_width *= math.sqrt(abs(transf.a * transf.d - transf.b * transf.c))
-                style['stroke-width'] = str(stroke_width)
-                update = True
-            except AttributeError as e:
-                pass
+    aply = ApplyTransform()
+    aply.run([TEMP_FILE_PATH[:-4]+random_nbr+".svg"], output=TEMP_DESIGN_FILE_PATH[:-4]+random_nbr+".svg")
 
-        if update:
-            node.attrib['style'] = Style(style).to_str()
+    # Get the new tree
+    families_tree = etree.parse(TEMP_DESIGN_FILE_PATH[:-4]+random_nbr+".svg")
+
+    # Remove the temporary file
+    os.system(f"rm {TEMP_FILE_PATH[:-4]+random_nbr+'.svg'}")
+    # Remove the temporary file
+    os.system(f"rm {TEMP_DESIGN_FILE_PATH[:-4]+random_nbr+'.svg'}")
+
+    return families_tree
 
 def move_rep_markers(mp_results, tree, img_height, img_width, dic=get_microgest_xml()) :
     for hand_landmarks in mp_results.hand_landmarks:
