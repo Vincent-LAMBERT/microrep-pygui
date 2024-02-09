@@ -65,6 +65,10 @@ INDEX_MIDDLE = 21
 MIDDLE_RING = 22
 RING_PINKY = 23
 
+
+LEFT = "Left"
+RIGHT = "Right"
+
 def getUI(fileName) :
     # Get the config tree
     return getFilePath(__file__, RESOURCES_PATH+'/data/ui/'+fileName)

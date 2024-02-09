@@ -69,9 +69,9 @@ def flip_tree(tree) :
             child.attrib['transform'] = f"scale(-1, 1)"
     return tree
 
-def get_resize_ratio(tree, mp_results) :
-    index_metacarpal_position = mp_results.hand_landmarks[0][INDEX_METACARPAL]
-    wrist_position = mp_results.hand_landmarks[0][WRIST]
+def get_resize_ratio(tree, hand_landmarks) :
+    index_metacarpal_position = hand_landmarks[INDEX_METACARPAL]
+    wrist_position = hand_landmarks[WRIST]
 
     # Getting the palm length
     palm_length_squared = np.sqrt((index_metacarpal_position.x - wrist_position.x)**2 + (index_metacarpal_position.y - wrist_position.y)**2)
@@ -91,37 +91,6 @@ def get_resize_ratio(tree, mp_results) :
     # Get the scale factor
     return palm_length_squared / scale_markers_length_squared
 
-# def family_resize(tree, mp_results) :  # --> super long
-#     # Method to resize family to the right size
-#     if len(mp_results.hand_landmarks) > 0:
-#         index_metacarpal_position = mp_results.hand_landmarks[0][INDEX_METACARPAL]
-#         wrist_position = mp_results.hand_landmarks[0][WRIST]
-
-#         # Getting the palm lenght
-#         palm_length_squared = np.sqrt((index_metacarpal_position.x - wrist_position.x)**2 + (index_metacarpal_position.y - wrist_position.y)**2)
-#         # Convert to mm (mediapipe gives the position in meters)
-#         palm_length_squared *= 1000
-        
-#         # Getting the layers with the attribute 'mgrep-scale-marker'
-#         svg_layers = tree.xpath('//svg:g[@inkscape:groupmode="layer"]', namespaces=inkex.NSS)
-#         scale_marker_layers = [layer for layer in svg_layers if layer.attrib.get('mgrep-scale-marker') is not None]
-#         assert(len(scale_marker_layers) == 2)
-#         scale_markers = [scale_marker_layers[0][0], scale_marker_layers[1][0]]
-        
-#         # Get the length of the segment between the two markers
-#         scale_markers_length_squared = np.sqrt((float(scale_markers[0].attrib['cx']) - float(scale_markers[1].attrib['cx']))**2 + (float(scale_markers[0].attrib['cy']) - float(scale_markers[1].attrib['cy']))**2)
-
-#         # Get the scale factor
-#         scale_factor = palm_length_squared / scale_markers_length_squared
-
-#         # Scale the whole tree
-#         tree = scale_children(tree, scale_factor)
-        
-#         return tree
-#     else:
-#         print("No hand detected")
-#         return
-
 def scale_children(tree, scale_factor) :    
     # The patterns must be scaled too
     for child in tree.getroot() :
@@ -129,24 +98,11 @@ def scale_children(tree, scale_factor) :
         
     return tree
 
-# def apply_transforms(tree) :
-#     write_file(tree, TEMP_DESIGN_FILE_PATH)
-
-#     # aply = ApplyTransform()
-#     # aply.run(args=[TEMP_DESIGN_FILE_PATH])
-
-#     cmd = "inkscape -f " + TEMP_DESIGN_FILE_PATH + " -l " + TEMP_DESIGN_FILE_PATH + " --select=mgrep-path-element --verb=EditSelectAll --verb=ObjectToPath --verb=FileSave --verb=FileClose"
-
-
 def apply_transforms(tree) :
     random_nbr = str(np.random.randint(0, 1000000))
     # Save as temp.svg
 
     write_file(tree, TEMP_FILE_PATH[:-4]+random_nbr+".svg")
-        
-    # cmd_string = f"python3 {u.APPLY_TRANSFORM_EXTENSION} {u.TEMP_FILE_PATH} > {u.TEMP_DESIGN_FILE_PATH}"
-    # print(cmd_string)
-    # os.system(cmd_string)
 
     aply = ApplyTransform()
     aply.run([TEMP_FILE_PATH[:-4]+random_nbr+".svg"], output=TEMP_DESIGN_FILE_PATH[:-4]+random_nbr+".svg")
@@ -161,23 +117,22 @@ def apply_transforms(tree) :
 
     return families_tree
 
-def move_rep_markers(mp_results, tree, img_height, img_width, dic=get_microgest_xml()) :
-    for hand_landmarks in mp_results.hand_landmarks:
-        # Fill list with x, y and z positions of each landmark
-        handLandmarks = []
-        for landmarks in hand_landmarks:
-            handLandmarks.append([landmarks.x, landmarks.y, landmarks.z])
-        # To get the coord for the marks
-        coord_marqueur = list_coord_marks(handLandmarks, img_height, img_width)
-        
-        for finger in dic :
-            if finger != "thumb" : finger_name = finger
-            else : finger_name = 'index|middle|ring|pinky' 
-            for elem in  dic[finger] :
-                id_coord = dic[finger][elem]
-                list_config = elem.split(", ")
-                move_rep_marker(finger_name, list_config[0], list_config[1], list_config[2],
-                            coord_marqueur[id_coord][0], coord_marqueur[id_coord][1], tree)
+def move_rep_markers(hand_landmarks, tree, img_height, img_width, dic=get_microgest_xml()) :
+    # Fill list with x, y and z positions of each landmark
+    handLandmarks = []
+    for landmarks in hand_landmarks:
+        handLandmarks.append([landmarks.x, landmarks.y, landmarks.z])
+    # To get the coord for the marks
+    coord_marqueur = list_coord_marks(handLandmarks, img_height, img_width)
+    
+    for finger in dic :
+        if finger != "thumb" : finger_name = finger
+        else : finger_name = 'index|middle|ring|pinky' 
+        for elem in  dic[finger] :
+            id_coord = dic[finger][elem]
+            list_config = elem.split(", ")
+            move_rep_marker(finger_name, list_config[0], list_config[1], list_config[2],
+                        coord_marqueur[id_coord][0], coord_marqueur[id_coord][1], tree)
     return tree
 
 def move_rep_marker(fingerCombo, mgCombo, characCombo, markerTypeCombo, coord_x, coord_y, tree) :

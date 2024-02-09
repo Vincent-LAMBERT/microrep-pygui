@@ -65,10 +65,10 @@ class Exporter(QWidget) :
         image = cv2.imread(background)
         self.mgc.update_frame_size(image)
 
-        mp_results = self.mgc.detect(image)
+        hand_landmarks = self.mgc.detect(image)
         
-        if mp_results.hand_landmarks != [] :
-            self.markers_tree, markers_pixmap = self.mgc.update_markers(mp_results, self.dic, self.mgc.img_height, self.mgc.img_width)
+        if hand_landmarks != [] :
+            self.markers_tree, markers_pixmap = self.mgc.update_markers(hand_landmarks, self.dic, self.mgc.img_height, self.mgc.img_width)
 
     def compute_images(self) :
         self.nbr_representations = len(os.listdir(u.TEMP_REP_FOLDER_PATH))

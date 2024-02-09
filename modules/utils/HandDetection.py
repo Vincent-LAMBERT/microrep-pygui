@@ -9,11 +9,78 @@ import subprocess
 
 from .AppUtils import *
 
+
+# import math
+# import os
+# import cv2
+# import mediapipe as mp
+# import numpy as np
+
+# from colorama import init as colorama_init
+# from colorama import Fore
+# from colorama import Style
+
+# import matplotlib
+
+# matplotlib.use('Agg')
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
+
+# class FingersTracker():
+#     def __init__(self, mode=False, maxHands=1, detectionCon=0.5,modelComplexity=1,trackCon=0.5):
+#         self.mode = mode
+#         self.maxHands = maxHands
+#         self.detectionCon = detectionCon
+#         self.modelComplex = modelComplexity
+#         self.trackCon = trackCon
+#         self.mpHands = mp.solutions.hands
+#         self.hands = self.mpHands.Hands(self.mode, self.maxHands,self.modelComplex,
+#                                         self.detectionCon, self.trackCon)
+#         self.mpDraw = mp.solutions.drawing_utils
+
+#     def landmark_finder(self, image):
+#         # imageRGB = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
+#         self.results = self.hands.process(image)
+
+#         hands = {LEFT:[], RIGHT:[]}
+#         if self.results.multi_hand_landmarks:
+#             for i, handLms in enumerate(self.results.multi_hand_landmarks): # working with each hand
+#                 # Separate results accoridng to the hand
+#                 handedness = self.results.multi_handedness[i].classification[0].label
+#                 if handedness==LEFT : handedness=RIGHT # Mediapipe has inverted handednesses
+#                 else : handedness=LEFT
+#                 for lm in handLms.landmark:
+#                     h,w,c = image.shape
+#                     cx,cy,cz = int(lm.x*w), int(lm.y*h), int(lm.z*h)
+#                     hands[handedness].append(NormalizedLandmark(cx,cy,cz))
+
+#         print(f"hands : {hands}")
+        
+#         return self.results.multi_hand_landmarks
+
+
+# BaseOptions = mp.tasks.BaseOptions
+# HandLandmarker = mp.tasks.vision.HandLandmarker
+# HandLandmarkerOptions = mp.tasks.vision.HandLandmarkerOptions
+# HandLandmarkerResult = mp.tasks.vision.HandLandmarkerResult
+# VisionRunningMode = mp.tasks.vision.RunningMode
+
+# # Create a hand landmarker instance with the live stream mode:
+# def print_result(result: HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
+#     print('hand landmarker result: {}'.format(result))
+
 def create_detector() :
     # Mediapipe treatement
     base_options = python.BaseOptions(model_asset_path=HAND_LANDMARK_PATH)
     options = vision.HandLandmarkerOptions(base_options=base_options, num_hands=2)
     return vision.HandLandmarker.create_from_options(options)
+
+# def stream_detector(function) :
+#     options = HandLandmarkerOptions(
+#         base_options=BaseOptions(model_asset_path=HAND_LANDMARK_PATH),
+#         running_mode=VisionRunningMode.LIVE_STREAM,
+#         result_callback=function)
+#     return HandLandmarker.create_from_options(options) 
 
 def input_treatement(image_name, detector) :
     # For treating the input
@@ -30,46 +97,67 @@ def input_treatement(image_name, detector) :
 
     return image_numpy, detector.detect(image)
 
-detected_hands = {"Left" : None, "Right" : None}
 
 def update_mp_results(mp_results, list, max_size) :
     if len(list) == max_size :
         list.pop(0)
-    list.append(mp_results)
 
-    return compute_mean_mp_results(list)
+    detected_hands = {LEFT : [], RIGHT : []}
 
-def compute_mean_mp_results(list) :
+    handednesses = mp_results.handedness
+    hand_landmarks = mp_results.hand_landmarks
+    # handednesses = mp_results.multi_handedness
+    # hand_landmarks = mp_results.multi_hand_landmarks
+
+    for i in range(len(handednesses)) :
+        if handednesses[i][0].category_name == LEFT :
+        # if handednesses[i].classification[0].label == LEFT :
+            landmarks = hand_landmarks[i]
+            detected_hands[LEFT] = landmarks
+        else :
+            landmarks = hand_landmarks[i]
+            detected_hands[RIGHT] = landmarks
+            
+    list.append(detected_hands)
+
+    return compute_mean_detected_hands(list)
+
+def compute_mean_detected_hands(list) :
     if len(list) == 0 :
         return None
     else :
-        mean_mp_result = list[0]
+        mean_detected_hands = list[0]
 
-        # compute the mean_mp_result
-        for i in range(1, len(list)) :
-            for hand_index, hand_landmarks in enumerate(list[i].hand_landmarks):
-                for landmark_index, landmark in enumerate(hand_landmarks):
-                    
-                    if hand_index >= len(mean_mp_result.hand_landmarks) :
-                        normalizedLandmarkList = [NormalizedLandmark for i in range(21)]
-                        # Set x, y and z to 0 for each landmark
-                        for i in range(21) :
-                            normalizedLandmarkList[i].x = 0
-                            normalizedLandmarkList[i].y = 0
-                            normalizedLandmarkList[i].z = 0
-                        
-                        mean_mp_result.hand_landmarks.append(normalizedLandmarkList)
+        for handedness in mean_detected_hands.keys() :
+                
+            if mean_detected_hands[handedness] == [] :
+                mean_hand_landmarks = [NormalizedLandmark(0, 0, 0) for i in range(21)]
+            else :
+                mean_hand_landmarks = mean_detected_hands[handedness]
 
-                    mean_mp_result.hand_landmarks[hand_index][landmark_index].x += landmark.x
-                    mean_mp_result.hand_landmarks[hand_index][landmark_index].y += landmark.y
-                    mean_mp_result.hand_landmarks[hand_index][landmark_index].z += landmark.z
+            not_detected = False
 
-                    if i == len(list) - 1 :
-                        mean_mp_result.hand_landmarks[hand_index][landmark_index].x /= len(list)
-                        mean_mp_result.hand_landmarks[hand_index][landmark_index].y /= len(list)
-                        mean_mp_result.hand_landmarks[hand_index][landmark_index].z /= len(list)
+            # compute the mean_detected_hands
+            for i in range(1, len(list)) :
+                hand_landmarks = list[i][handedness]
 
-        return mean_mp_result
+                if hand_landmarks != [] :
+                    for landmark_index, landmark in enumerate(hand_landmarks):
+                        mean_hand_landmarks[landmark_index].x += landmark.x
+                        mean_hand_landmarks[landmark_index].y += landmark.y
+                        mean_hand_landmarks[landmark_index].z += landmark.z
+
+                        if i == len(list) - 1 :
+                            mean_hand_landmarks[landmark_index].x /= len(list)
+                            mean_hand_landmarks[landmark_index].y /= len(list)
+                            mean_hand_landmarks[landmark_index].z /= len(list)
+                else :
+                    not_detected = True
+
+            if not_detected :
+                mean_detected_hands[handedness] = []
+                            
+        return mean_detected_hands
 
 # Create a dictionnary from an xml file of microgesture
 def get_microgest_xml() :

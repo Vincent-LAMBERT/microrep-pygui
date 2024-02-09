@@ -23,21 +23,23 @@ import threading
 
 class MicroRepThread(QThread):
 
-    resized_done = 0
+    detections = 0
     detector = create_detector()
     fmc_combinations = None
     rep_tree = None
+    resized_tree = None
 
     active = None
 
-    def __init__(self, running_info=None, mp_result_max_size=3):
+    def __init__(self, running_info=None, detections_max_size=3):
         super(MicroRepThread, self).__init__()
         # Creation de la liste des mp_results et de sa taille max
         # (pour fluidification de la détection)
-        self.mp_result_list = []
-        self.mp_result_max_size = mp_result_max_size
+        self.detected_hands_list = []
+        self.detections_max_size = detections_max_size
 
         self.running_info = running_info
+        # self.tracker = FingersTracker()
 
     def set_config(self, config_file):
         # Check if absolute path
@@ -76,7 +78,7 @@ class MicroRepThread(QThread):
             os.remove(TEMP_REP_FILE_PATH)
         os.rename(TEMP_REP_FOLDER_PATH+self.active, TEMP_REP_FILE_PATH)
 
-        self.resized_done = 0
+        self.detections = 0
 
         # self.base_tree = remove_invisible_layers(base_tree)
 
@@ -88,16 +90,10 @@ class MicroRepThread(QThread):
         
         self.base_tree = self.base_tree_left
 
-    def update_markers(self, mp_results, dic, img_height, img_width):
+    def update_markers(self, hand_landmarks, dic, img_height, img_width):
         markers_tree = get_markers_tree()
-        # resized_tree = family_resize(markers_tree, mp_results)
-
-        # Setup the svt size for displaying markers at the right position
-        markers_tree.getroot().attrib["width"] = f"{img_width}"
-        markers_tree.getroot().attrib["height"] = f"{img_height}"
-        markers_tree.getroot().attrib["viewBox"] = f"0 0 {img_width} {img_height}"
-
-        tree = move_rep_markers(mp_results, markers_tree, img_height, img_width, dic)
+        markers_tree = resize_tree(markers_tree, img_height, img_width)
+        tree = move_rep_markers(hand_landmarks, markers_tree, img_height, img_width, dic)
 
         pixmap = svg_to_pixmap(tree, img_height, img_width)
         return tree, pixmap
@@ -122,47 +118,56 @@ class MicroRepThread(QThread):
         resize_tree(self.base_tree_right, self.img_height, self.img_width)
 
     def detect(self, image):
-        image_numpy, mp_results = input_treatement(image, self.detector)
 
-        # Scale the image to the self.img_height and self.img_width
-        image_numpy = cv2.resize(image_numpy, (self.img_width, self.img_height), interpolation=cv2.INTER_LANCZOS4)
+        image_numpy, mp_results = input_treatement(image, self.detector)
         
+        # mp_results = self.tracker.landmark_finder(image)
+        self.detections += 1
+
+        # # Scale the image to the self.img_height and self.img_width
+        # image_numpy = cv2.resize(image_numpy, (self.img_width, self.img_height), interpolation=cv2.INTER_LANCZOS4)
+
+        hand_landmarks = self.get_hand_skeleton(mp_results)
+        self.resize_design(hand_landmarks)
+
+        return hand_landmarks
+
+    def get_hand_skeleton(self, mp_results):
         # Ensure that a hand is detected
         if mp_results.hand_landmarks != [] :
-            mp_results = update_mp_results(mp_results, self.mp_result_list, self.mp_result_max_size) # Ensure stability whereas the more stable the representation, the more the delay because of the multiple detections (a max size of 3 is fine)
+        # if mp_results :
+        #     # print(f"mp_results : {mp_results}")
+        #     if mp_results.multi_hand_landmarks != [] :
+            detected_hands = update_mp_results(mp_results, self.detected_hands_list, self.detections_max_size) # Ensure stability whereas the more stable the representation, the more the delay because of the multiple detections (a max size of 3 is fine)
 
-            # If it is a left hand, we need to flip the base_tree
-            if mp_results.handedness[0][0].category_name == "Left" :
+            if detected_hands[LEFT] != [] and detected_hands[RIGHT] != [] :
+                hand_landmarks = detected_hands[RIGHT]
+                self.base_tree = self.base_tree_right
+                write_file(self.base_tree, TEMP_DESIGN_FILE_PATH[:-4]+"right.svg")
+            elif detected_hands[LEFT] == [] and detected_hands[RIGHT] != [] :
+                hand_landmarks = detected_hands[RIGHT]
+                self.base_tree = self.base_tree_right
+                write_file(self.base_tree, TEMP_DESIGN_FILE_PATH[:-4]+"right.svg")
+            elif detected_hands[LEFT] != [] and detected_hands[RIGHT] == [] :
+                hand_landmarks = detected_hands[LEFT]
                 self.base_tree = self.base_tree_left
                 write_file(self.base_tree, TEMP_DESIGN_FILE_PATH[:-4]+"left.svg")
             else :
-                self.base_tree = self.base_tree_right
-                write_file(self.base_tree, TEMP_DESIGN_FILE_PATH[:-4]+"right.svg")
+                hand_landmarks = []
+        else :
+            hand_landmarks = []
+        # else :
+        #     hand_landmarks = []
 
-            if self.resized_done%5 == 0:
-                # tree = family_resize(self.base_tree, mp_results)
+        return hand_landmarks
+    
+    def resize_design(self, hand_landmarks):
+        if hand_landmarks != [] and (self.detections%5 == 0 or self.resized_tree==None):
+            ratio = get_resize_ratio(self.base_tree, hand_landmarks)
+            self.resized_tree = scale_children(self.base_tree, ratio)
+            self.resized_tree = apply_transforms(self.resized_tree)
 
-                ratio = get_resize_ratio(self.base_tree, mp_results)
-                # print(f"ratio : {ratio}")
-                # size = (str(self.img_width*ratio), str(self.img_height*ratio))
-
-                # write_file(self.base_tree, TEMP_DESIGN_FILE_PATH)
-                # sg_tree = sg.fromfile(TEMP_DESIGN_FILE_PATH)
-                # print(f"sg_tree size : {sg_tree.get_size()}")
-                # sg_tree.set_size(size)
-                # print(f"sg_tree NEW size : {sg_tree.get_size()}")
-                # sg_tree.save(TEMP_DESIGN_FILE_PATH)
-                # self.base_tree = read_file(TEMP_DESIGN_FILE_PATH)
-
-                self.resized_tree = scale_children(self.base_tree, ratio)
-                # self.base_tree = apply_transform_to_element(self.base_tree)
-                self.resized_tree = apply_transforms(self.resized_tree)
-
-                write_file(self.resized_tree, TEMP_DESIGN_FILE_PATH)
-
-            self.resized_done += 1
-
-        return mp_results
+            write_file(self.resized_tree, TEMP_DESIGN_FILE_PATH)
     
     def copy_design(self):
         # Copy the representation tree
@@ -171,7 +176,6 @@ class MicroRepThread(QThread):
         rep_tree = read_file(TEMP_COPY_FILE_PATH+str(random_int))
         os.remove(TEMP_COPY_FILE_PATH+str(random_int))
 
-        # return rep_tree
         return rep_tree
     
     def getRep(self, index):
@@ -183,6 +187,10 @@ class MicroRepThread(QThread):
         fmc_combination = get_combination_from_name(file)
 
         return tree, fmc_combination, file
+    
+#####################################################
+################# UTILS FUNCTIONS ###################
+#####################################################
 
 def resize_tree(tree, img_height, img_width):
     tree.getroot().attrib["width"] = f"{img_width}"

@@ -3202,6 +3202,246 @@ background-repeat: no-repeat;</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btn_import</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>import_image()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>193</x>
+     <y>538</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>212</x>
+     <y>566</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_export_5</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>export_image_with_mappings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>294</x>
+     <y>604</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>653</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_mapping</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>lock_mappings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>627</x>
+     <y>641</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>645</x>
+     <y>664</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_select</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>select_file_config()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>883</x>
+     <y>563</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>909</x>
+     <y>625</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_save_as</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>save_config_as_file()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>820</x>
+     <y>504</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>914</x>
+     <y>538</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_clear</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>clear_config()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>705</x>
+     <y>496</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>749</x>
+     <y>662</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_reset</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>default_config()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>538</x>
+     <y>494</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>476</x>
+     <y>664</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_remove</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>remove_config()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>848</x>
+     <y>274</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>914</x>
+     <y>297</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_apply</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>apply_config()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>871</x>
+     <y>243</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>913</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_add</sender>
+   <signal>clicked()</signal>
+   <receiver>generator</receiver>
+   <slot>add_mapping()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>860</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>916</x>
+     <y>178</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_export_6</sender>
+   <signal>clicked()</signal>
+   <receiver>exporter</receiver>
+   <slot>back_to_generator()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>281</x>
+     <y>562</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>632</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_export_current</sender>
+   <signal>clicked()</signal>
+   <receiver>exporter</receiver>
+   <slot>export_current()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>436</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>191</x>
+     <y>649</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_export_all</sender>
+   <signal>clicked()</signal>
+   <receiver>exporter</receiver>
+   <slot>export_all()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>442</x>
+     <y>432</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>411</x>
+     <y>658</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_previous</sender>
+   <signal>clicked()</signal>
+   <receiver>exporter</receiver>
+   <slot>previous_rep()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>623</x>
+     <y>595</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>583</x>
+     <y>671</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_next</sender>
+   <signal>clicked()</signal>
+   <receiver>exporter</receiver>
+   <slot>next_rep()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>765</x>
+     <y>621</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>744</x>
+     <y>664</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>testSlot()</slot>

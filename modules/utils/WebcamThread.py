@@ -149,10 +149,10 @@ class WebcamThread(QThread):
     def update_all(self, image, ratio=0.1):
         reduced_image = cv2.resize(image, (0, 0), fx=ratio, fy=ratio)
 
-        mp_results = self.mgc.detect(reduced_image)
+        hand_landmarks = self.mgc.detect(reduced_image)
 
-        if mp_results.hand_landmarks != [] :
-            markers_tree, self.markers_canva = self.mgc.update_markers(mp_results, self.dic, self.mgc.img_height, self.mgc.img_width)
+        if hand_landmarks != [] :
+            markers_tree, self.markers_canva = self.mgc.update_markers(hand_landmarks, self.dic, self.mgc.img_height, self.mgc.img_width)
 
             rep_tree = self.mgc.copy_design()
             new_rep_tree, self.rep_canva = self.mgc.update_representation(rep_tree, markers_tree, self.mgc.fmc_combinations, self.mgc.img_height, self.mgc.img_width)
