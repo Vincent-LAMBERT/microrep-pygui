@@ -1810,7 +1810,7 @@ p, li { white-space: pre-wrap; }
                       <bool>true</bool>
                      </property>
                      <property name="currentIndex">
-                      <number>0</number>
+                      <number>4</number>
                      </property>
                      <widget class="QWidget" name="webcam_page">
                       <layout class="QGridLayout" name="gridLayout_344">
@@ -2300,7 +2300,10 @@ background-repeat: no-repeat;</string>
                            </item>
                           </layout>
                          </widget>
-                         <widget class="QPushButton" name="btn_export_6">
+                         <widget class="QPushButton" name="btn_back_to_generator">
+                          <property name="enabled">
+                           <bool>false</bool>
+                          </property>
                           <property name="geometry">
                            <rect>
                             <x>150</x>
@@ -3363,7 +3366,7 @@ background-repeat: no-repeat;</string>
    </hints>
   </connection>
   <connection>
-   <sender>btn_export_6</sender>
+   <sender>btn_back_to_generator</sender>
    <signal>clicked()</signal>
    <receiver>exporter</receiver>
    <slot>back_to_generator()</slot>

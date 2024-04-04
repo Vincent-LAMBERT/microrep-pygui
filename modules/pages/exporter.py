@@ -57,6 +57,7 @@ class Exporter(QWidget) :
         self.ui.btn_export_all.setEnabled(True)
         self.ui.btn_previous.setEnabled(True)
         self.ui.btn_next.setEnabled(True)
+        self.ui.btn_back_to_generator.setEnabled(True)
 
     def update_background(self) :
         self.label_file.setPixmap(QPixmap(self.background))
@@ -65,7 +66,7 @@ class Exporter(QWidget) :
         image = cv2.imread(background)
         self.mgc.update_frame_size(image)
 
-        hand_landmarks = self.mgc.detect(image)
+        hand_landmarks = self.mgc.process_image(image)
         
         if hand_landmarks != [] :
             self.markers_tree, markers_pixmap = self.mgc.update_markers(hand_landmarks, self.dic, self.mgc.img_height, self.mgc.img_width)

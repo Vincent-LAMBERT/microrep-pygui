@@ -155,7 +155,7 @@ class Generator(QWidget) :
     #     if (self.image == "") :
     #         print('Select an image')
     #     else :
-    #         image_numpy, mp_results = hd.input_treatement(self.image)
+    #         image_numpy, mp_results = hd.image_treatment(self.image)
     #         self.img_height, self.img_width, channel = image_numpy.shape
 
     #         if len(mp_results.hand_landmarks) > 0:

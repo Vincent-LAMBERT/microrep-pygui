@@ -1,5 +1,6 @@
 
 import math
+import time
 from lxml import etree
 import mediapipe as mp
 from mediapipe.tasks import python
@@ -9,94 +10,68 @@ import subprocess
 
 from .AppUtils import *
 
+class ImageHandLandmarker():
+   def __init__(self):
+      self.result = mp.tasks.vision.HandLandmarkerResult
+      self.landmarker = mp.tasks.vision.HandLandmarker
+      self.createLandmarker()
+   
+   def createLandmarker(self):
+        # HandLandmarkerOptions (details here: https://developers.google.com/mediapipe/solutions/vision/hand_landmarker/python#live-stream)
+        # Mediapipe treatement
+        options = mp.tasks.vision.HandLandmarkerOptions( 
+         base_options = mp.tasks.BaseOptions(model_asset_path=HAND_LANDMARK_PATH), # path to model
+         running_mode = mp.tasks.vision.RunningMode.IMAGE, # running on a live stream
+         num_hands = 2, # track both hands
+         min_hand_detection_confidence = 0.3, # lower than value to get predictions more often
+         min_hand_presence_confidence = 0.3, # lower than value to get predictions more often
+         min_tracking_confidence = 0.3, # lower than value to get predictions more often
+         )
+        self.landmarker =  self.landmarker.create_from_options(options)
+   
+   def detect(self, frame):
+      # convert np frame to mp image
+      mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
+      # detect landmarks
+      self.landmarker.detect(image = mp_image)
 
-# import math
-# import os
-# import cv2
-# import mediapipe as mp
-# import numpy as np
+   def close(self):
+      # close landmarker
+      self.landmarker.close()
 
-# from colorama import init as colorama_init
-# from colorama import Fore
-# from colorama import Style
+class StreamHandLandmarker():
+   def __init__(self):
+      self.result = mp.tasks.vision.HandLandmarkerResult
+      self.landmarker = mp.tasks.vision.HandLandmarker
+      self.createLandmarker()
+   
+   def createLandmarker(self):
+      # callback function
+      def update_result(result: mp.tasks.vision.HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
+         self.result = result
 
-# import matplotlib
+      # HandLandmarkerOptions (details here: https://developers.google.com/mediapipe/solutions/vision/hand_landmarker/python#live-stream)
+      options = mp.tasks.vision.HandLandmarkerOptions( 
+         base_options = mp.tasks.BaseOptions(model_asset_path=HAND_LANDMARK_PATH), # path to model
+         running_mode = mp.tasks.vision.RunningMode.LIVE_STREAM, # running on a live stream
+         num_hands = 2, # track both hands
+         min_hand_detection_confidence = 0.3, # lower than value to get predictions more often
+         min_hand_presence_confidence = 0.3, # lower than value to get predictions more often
+         min_tracking_confidence = 0.3, # lower than value to get predictions more often
+         result_callback=update_result)
+      
+      # initialize landmarker
+      self.landmarker = self.landmarker.create_from_options(options)
+   
+   def detect_async(self, frame):
+      # convert np frame to mp image
+      mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
+      # detect landmarks
+      self.landmarker.detect_async(image = mp_image, timestamp_ms = int(time.time() * 1000))
 
-# matplotlib.use('Agg')
-# import matplotlib.pyplot as plt
-# from mpl_toolkits.mplot3d import Axes3D
-
-# class FingersTracker():
-#     def __init__(self, mode=False, maxHands=1, detectionCon=0.5,modelComplexity=1,trackCon=0.5):
-#         self.mode = mode
-#         self.maxHands = maxHands
-#         self.detectionCon = detectionCon
-#         self.modelComplex = modelComplexity
-#         self.trackCon = trackCon
-#         self.mpHands = mp.solutions.hands
-#         self.hands = self.mpHands.Hands(self.mode, self.maxHands,self.modelComplex,
-#                                         self.detectionCon, self.trackCon)
-#         self.mpDraw = mp.solutions.drawing_utils
-
-#     def landmark_finder(self, image):
-#         # imageRGB = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
-#         self.results = self.hands.process(image)
-
-#         hands = {LEFT:[], RIGHT:[]}
-#         if self.results.multi_hand_landmarks:
-#             for i, handLms in enumerate(self.results.multi_hand_landmarks): # working with each hand
-#                 # Separate results accoridng to the hand
-#                 handedness = self.results.multi_handedness[i].classification[0].label
-#                 if handedness==LEFT : handedness=RIGHT # Mediapipe has inverted handednesses
-#                 else : handedness=LEFT
-#                 for lm in handLms.landmark:
-#                     h,w,c = image.shape
-#                     cx,cy,cz = int(lm.x*w), int(lm.y*h), int(lm.z*h)
-#                     hands[handedness].append(NormalizedLandmark(cx,cy,cz))
-
-#         print(f"hands : {hands}")
-        
-#         return self.results.multi_hand_landmarks
-
-
-# BaseOptions = mp.tasks.BaseOptions
-# HandLandmarker = mp.tasks.vision.HandLandmarker
-# HandLandmarkerOptions = mp.tasks.vision.HandLandmarkerOptions
-# HandLandmarkerResult = mp.tasks.vision.HandLandmarkerResult
-# VisionRunningMode = mp.tasks.vision.RunningMode
-
-# # Create a hand landmarker instance with the live stream mode:
-# def print_result(result: HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
-#     print('hand landmarker result: {}'.format(result))
-
-def create_detector() :
-    # Mediapipe treatement
-    base_options = python.BaseOptions(model_asset_path=HAND_LANDMARK_PATH)
-    options = vision.HandLandmarkerOptions(base_options=base_options, num_hands=2)
-    return vision.HandLandmarker.create_from_options(options)
-
-# def stream_detector(function) :
-#     options = HandLandmarkerOptions(
-#         base_options=BaseOptions(model_asset_path=HAND_LANDMARK_PATH),
-#         running_mode=VisionRunningMode.LIVE_STREAM,
-#         result_callback=function)
-#     return HandLandmarker.create_from_options(options) 
-
-def input_treatement(image_name, detector) :
-    # For treating the input
-    if type(image_name) == str :
-      if image_name == "" :
-          print("errror: no path given")
-          return ""
-      else :
-          image = mp.Image.create_from_file(image_name)
-          image_numpy=image.numpy_view()
-    else:
-        image = mp.Image(image_format=mp.ImageFormat.SRGB,data=image_name)
-        image_numpy = image.numpy_view()
-
-    return image_numpy, detector.detect(image)
-
+   def close(self):
+      # close landmarker
+      self.landmarker.close()
 
 def update_mp_results(mp_results, list, max_size) :
     if len(list) == max_size :

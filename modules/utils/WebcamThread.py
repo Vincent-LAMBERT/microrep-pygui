@@ -14,7 +14,7 @@ import numpy as np
 
 from widgets.image_viewer.ImageViewer import ImageViewer
 
-from .HandDetection import create_detector, get_microgest_xml
+from .HandDetection import get_microgest_xml
 from .DesignManagement import get_markers_tree, move_rep_markers, move_rep, stroke_to_path
 from .AppUtils import *
 import time, numpy,cv2, subprocess, copy
@@ -149,7 +149,7 @@ class WebcamThread(QThread):
     def update_all(self, image, ratio=0.1):
         reduced_image = cv2.resize(image, (0, 0), fx=ratio, fy=ratio)
 
-        hand_landmarks = self.mgc.detect(reduced_image)
+        hand_landmarks = self.mgc.process_stream(reduced_image)
 
         if hand_landmarks != [] :
             markers_tree, self.markers_canva = self.mgc.update_markers(hand_landmarks, self.dic, self.mgc.img_height, self.mgc.img_width)

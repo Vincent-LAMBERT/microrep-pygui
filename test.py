@@ -1,1 +1,151 @@
-[[NormalizedLandmark(x=0.21770086884498596, y=0.8716751337051392, z=2.49273767849445e-07, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.28024807572364807, y=0.8029576539993286, z=-0.02122027985751629, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.33115774393081665, y=0.7001193165779114, z=-0.02759718894958496, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.3666853606700897, y=0.6183562874794006, z=-0.03398679196834564, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.3964579105377197, y=0.5571529269218445, z=-0.04078134894371033, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.2826816141605377, y=0.5597149133682251, z=-0.014991924166679382, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.2969731390476227, y=0.43466776609420776, z=-0.0314682200551033, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.304471492767334, y=0.3642128109931946, z=-0.04563763737678528, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.310072660446167, y=0.3049303889274597, z=-0.056708160787820816, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.2379046529531479, y=0.5420919060707092, z=-0.020646875724196434, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.24072426557540894, y=0.39965689182281494, z=-0.03536354750394821, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.24578958749771118, y=0.31739938259124756, z=-0.0505015030503273, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.2500740885734558, y=0.2508808970451355, z=-0.06261996179819107, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.19528792798519135, y=0.5549887418746948, z=-0.029996586963534355, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.18956468999385834, y=0.4196905493736267, z=-0.0473848432302475, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.1932932436466217, y=0.3380485773086548, z=-0.061620861291885376, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.2008795440196991, y=0.2697845697402954, z=-0.07219190895557404, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.15508748590946198, y=0.5934059619903564, z=-0.04175420105457306, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.13135872781276703, y=0.4924583435058594, z=-0.06109841540455818, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.12034425139427185, y=0.42257437109947205, z=-0.0718713104724884, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.11647796630859375, y=0.3561750054359436, z=-0.07895690947771072, visibility=0.0, presence=0.0)], [NormalizedLandmark(x=0.807673454284668, y=0.8233124613761902, z=2.879396845401061e-07, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.7412846684455872, y=0.7848928570747375, z=-0.030085429549217224, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.6797866821289062, y=0.7183241844177246, z=-0.05415770038962364, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.6255629062652588, y=0.6686654090881348, z=-0.07733231782913208, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.578917920589447, y=0.6388900279998779, z=-0.10276682674884796, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.7178182601928711, y=0.5435948967933655, z=-0.042775724083185196, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.6813216805458069, y=0.4212626814842224, z=-0.06840551644563675, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.6608105897903442, y=0.34156501293182373, z=-0.08850883692502975, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.646270215511322, y=0.2700030505657196, z=-0.10399138927459717, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.7621369361877441, y=0.5120487809181213, z=-0.048093218356370926, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.7456433176994324, y=0.3617056608200073, z=-0.07027710974216461, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.734974205493927, y=0.26398029923439026, z=-0.0886247381567955, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.7280425429344177, y=0.1814882457256317, z=-0.10361544042825699, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.8078188300132751, y=0.5193006992340088, z=-0.056668926030397415, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.8047412633895874, y=0.37186187505722046, z=-0.07969608902931213, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.8018217086791992, y=0.2744736671447754, z=-0.1002456545829773, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.7993671298027039, y=0.1895274519920349, z=-0.11529857665300369, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.8539514541625977, y=0.5539982318878174, z=-0.06753197312355042, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.8756942749023438, y=0.4411206841468811, z=-0.08709301799535751, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.8872579336166382, y=0.3656653165817261, z=-0.09870929270982742, visibility=0.0, presence=0.0), NormalizedLandmark(x=0.8920294046401978, y=0.2939112186431885, z=-0.10771350562572479, visibility=0.0, presence=0.0)]]
+
+import time
+import cv2
+import numpy as np
+import mediapipe as mp
+# for visualizing results
+from mediapipe.framework.formats import landmark_pb2
+
+
+class landmarker_and_result():
+   def __init__(self):
+      self.result = mp.tasks.vision.HandLandmarkerResult
+      self.landmarker = mp.tasks.vision.HandLandmarker
+      self.createLandmarker()
+   
+   def createLandmarker(self):
+      # callback function
+      def update_result(result: mp.tasks.vision.HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
+         self.result = result
+
+      # HandLandmarkerOptions (details here: https://developers.google.com/mediapipe/solutions/vision/hand_landmarker/python#live-stream)
+      options = mp.tasks.vision.HandLandmarkerOptions( 
+         base_options = mp.tasks.BaseOptions(model_asset_path="hand_landmarker.task"), # path to model
+         running_mode = mp.tasks.vision.RunningMode.LIVE_STREAM, # running on a live stream
+         num_hands = 2, # track both hands
+         min_hand_detection_confidence = 0.3, # lower than value to get predictions more often
+         min_hand_presence_confidence = 0.3, # lower than value to get predictions more often
+         min_tracking_confidence = 0.3, # lower than value to get predictions more often
+         result_callback=update_result)
+      
+      # initialize landmarker
+      self.landmarker = self.landmarker.create_from_options(options)
+   
+   def detect_async(self, frame):
+      # convert np frame to mp image
+      mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
+      # detect landmarks
+      self.landmarker.detect_async(image = mp_image, timestamp_ms = int(time.time() * 1000))
+
+   def close(self):
+      # close landmarker
+      self.landmarker.close()
+
+def draw_landmarks_on_image(rgb_image, detection_result: mp.tasks.vision.HandLandmarkerResult):
+   """Courtesy of https://github.com/googlesamples/mediapipe/blob/main/examples/hand_landmarker/python/hand_landmarker.ipynb"""
+   try:
+      if detection_result.hand_landmarks == []:
+         return rgb_image
+      else:
+         hand_landmarks_list = detection_result.hand_landmarks
+         handedness_list = detection_result.handedness
+         annotated_image = np.copy(rgb_image)
+
+         # Loop through the detected hands to visualize.
+         for idx in range(len(hand_landmarks_list)):
+            hand_landmarks = hand_landmarks_list[idx]
+            
+            # Draw the hand landmarks.
+            hand_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
+            hand_landmarks_proto.landmark.extend([
+               landmark_pb2.NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z) for landmark in hand_landmarks])
+            mp.solutions.drawing_utils.draw_landmarks(
+               annotated_image,
+               hand_landmarks_proto,
+               mp.solutions.hands.HAND_CONNECTIONS,
+               mp.solutions.drawing_styles.get_default_hand_landmarks_style(),
+               mp.solutions.drawing_styles.get_default_hand_connections_style())
+
+         return annotated_image
+   except:
+      return rgb_image
+
+def count_fingers_raised(rgb_image, detection_result: mp.tasks.vision.HandLandmarkerResult):
+   """Iterate through each hand, checking if fingers (and thumb) are raised.
+   Hand landmark enumeration (and weird naming convention) comes from
+   https://developers.google.com/mediapipe/solutions/vision/hand_landmarker."""
+   try:
+      # Get Data
+      hand_landmarks_list = detection_result.hand_landmarks
+      # Counter
+      numRaised = 0
+      # for each hand...
+      for idx in range(len(hand_landmarks_list)):
+         # hand landmarks is a list of landmarks where each entry in the list has an x, y, and z in normalized image coordinates
+         hand_landmarks = hand_landmarks_list[idx]
+         # for each fingertip... (hand_landmarks 4, 8, 12, and 16)
+         for i in range(8,21,4):
+            # make sure finger is higher in image the 3 proceeding values (2 finger segments and knuckle)
+            tip_y = hand_landmarks[i].y
+            dip_y = hand_landmarks[i-1].y
+            pip_y = hand_landmarks[i-2].y
+            mcp_y = hand_landmarks[i-3].y
+            if tip_y < min(dip_y,pip_y,mcp_y):
+               numRaised += 1
+         # for the thumb
+         # use direction vector from wrist to base of thumb to determine "raised"
+         tip_x = hand_landmarks[4].x
+         dip_x = hand_landmarks[3].x
+         pip_x = hand_landmarks[2].x
+         mcp_x = hand_landmarks[1].x
+         palm_x = hand_landmarks[0].x
+         if mcp_x > palm_x:
+            if tip_x > max(dip_x,pip_x,mcp_x):
+               numRaised += 1
+         else:
+            if tip_x < min(dip_x,pip_x,mcp_x):
+               numRaised += 1
+         
+         
+      # display number of fingers raised on the image
+      annotated_image = np.copy(rgb_image)
+      height, width, _ = annotated_image.shape
+      text_x = int(hand_landmarks[0].x * width) - 100
+      text_y = int(hand_landmarks[0].y * height) + 50
+      cv2.putText(img = annotated_image, text = str(numRaised) + " Fingers Raised",
+                        org = (text_x, text_y), fontFace = cv2.FONT_HERSHEY_DUPLEX,
+                        fontScale = 1, color = (0,0,255), thickness = 2, lineType = cv2.LINE_4)
+      return annotated_image
+   except:
+      return rgb_image
+
+def main():
+   # access webcam
+   cap = cv2.VideoCapture(0)
+
+   # create landmarker
+   hand_landmarker = landmarker_and_result()
+
+   while True:
+      # pull frame
+      ret, frame = cap.read()
+      # mirror frame
+      frame = cv2.flip(frame, 1)
+      # update landmarker results
+      hand_landmarker.detect_async(frame)
+      # draw landmarks on frame
+      frame = draw_landmarks_on_image(frame,hand_landmarker.result)
+      # count number of fingers raised
+      frame = count_fingers_raised(frame,hand_landmarker.result)
+      # display image
+      cv2.imshow('frame',frame)
+      if cv2.waitKey(1) == ord('q'):
+         break
+   
+   # release everything
+   hand_landmarker.close()
+   cap.release()
+   cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+   main()

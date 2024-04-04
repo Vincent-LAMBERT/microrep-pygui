@@ -13,7 +13,7 @@ import PIL as pix
 from lxml import etree
 import numpy as np
 
-from .HandDetection import create_detector, input_treatement, update_mp_results
+from .HandDetection import ImageHandLandmarker, StreamHandLandmarker, update_mp_results
 from .DesignManagement import apply_transforms, flip_tree, get_resize_ratio, move_rep, move_rep_markers, read_file, scale_children, stroke_to_path, write_file, remove_invisible_layers, get_markers_tree
 from .AppUtils import *
 
@@ -22,9 +22,9 @@ import time, numpy,cv2, subprocess, copy
 import threading
 
 class MicroRepThread(QThread):
-
+    image_landmarker = ImageHandLandmarker()
+    stream_landmarker = StreamHandLandmarker()
     detections = 0
-    detector = create_detector()
     fmc_combinations = None
     rep_tree = None
     resized_tree = None
@@ -117,24 +117,32 @@ class MicroRepThread(QThread):
         resize_tree(self.base_tree_left, self.img_height, self.img_width)
         resize_tree(self.base_tree_right, self.img_height, self.img_width)
 
-    def detect(self, image):
-
-        image_numpy, mp_results = input_treatement(image, self.detector)
+    def process_image(self, image_path):
+        self.image_landmarker.detect(image_path)
+        self.detections += 1
         
-        # mp_results = self.tracker.landmark_finder(image)
+        mp_results = self.stream_landmarker.result
+        hand_landmarks = self.process_mediapipe_results(mp_results)
+        return hand_landmarks
+
+    def process_stream(self, image_path) :
+        self.stream_landmarker.detect_async(image_path)
         self.detections += 1
 
+        mp_results = self.stream_landmarker.result
+        hand_landmarks = self.process_mediapipe_results(mp_results)
+        return hand_landmarks
+
+    def process_mediapipe_results(self, mp_results) :
         # # Scale the image to the self.img_height and self.img_width
         # image_numpy = cv2.resize(image_numpy, (self.img_width, self.img_height), interpolation=cv2.INTER_LANCZOS4)
-
         hand_landmarks = self.get_hand_skeleton(mp_results)
         self.resize_design(hand_landmarks)
-
         return hand_landmarks
 
     def get_hand_skeleton(self, mp_results):
         # Ensure that a hand is detected
-        if mp_results.hand_landmarks != [] :
+        if hasattr(mp_results, 'hand_landmarks') and mp_results.hand_landmarks != [] :
         # if mp_results :
         #     # print(f"mp_results : {mp_results}")
         #     if mp_results.multi_hand_landmarks != [] :

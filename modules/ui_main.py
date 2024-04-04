@@ -1307,15 +1307,16 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_22.addWidget(self.line_6)
 
-        self.btn_export_6 = QPushButton(self.exporter)
-        self.btn_export_6.setObjectName(u"btn_export_6")
-        self.btn_export_6.setGeometry(QRect(150, 450, 91, 91))
-        self.btn_export_6.setMinimumSize(QSize(0, 0))
-        self.btn_export_6.setStyleSheet(u"border-radius: 45%;")
+        self.btn_back_to_generator = QPushButton(self.exporter)
+        self.btn_back_to_generator.setObjectName(u"btn_back_to_generator")
+        self.btn_back_to_generator.setEnabled(False)
+        self.btn_back_to_generator.setGeometry(QRect(150, 450, 91, 91))
+        self.btn_back_to_generator.setMinimumSize(QSize(0, 0))
+        self.btn_back_to_generator.setStyleSheet(u"border-radius: 45%;")
         icon4 = QIcon()
         icon4.addFile(u":/images/images/images/cil-arrow-circle-left.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_export_6.setIcon(icon4)
-        self.btn_export_6.setIconSize(QSize(80, 80))
+        self.btn_back_to_generator.setIcon(icon4)
+        self.btn_back_to_generator.setIconSize(QSize(80, 80))
 
         self.gridLayout_343.addWidget(self.exporter, 0, 0, 1, 1)
 
@@ -1679,13 +1680,13 @@ class Ui_MainWindow(object):
         self.btn_remove.clicked.connect(self.generator.remove_config)
         self.btn_apply.clicked.connect(self.generator.apply_config)
         self.btn_add.clicked.connect(self.generator.add_mapping)
-        self.btn_export_6.clicked.connect(self.exporter.back_to_generator)
+        self.btn_back_to_generator.clicked.connect(self.exporter.back_to_generator)
         self.btn_export_current.clicked.connect(self.exporter.export_current)
         self.btn_export_all.clicked.connect(self.exporter.export_all)
         self.btn_previous.clicked.connect(self.exporter.previous_rep)
         self.btn_next.clicked.connect(self.exporter.next_rep)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(4)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1771,7 +1772,7 @@ class Ui_MainWindow(object):
         self.btn_previous.setText(QCoreApplication.translate("MainWindow", u"Previous", None))
         self.btn_next.setText(QCoreApplication.translate("MainWindow", u"Next", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Export microgesture representations</span></p></body></html>", None))
-        self.btn_export_6.setText("")
+        self.btn_back_to_generator.setText("")
         self.btn_import.setText(QCoreApplication.translate("MainWindow", u"Import JPG...", None))
         self.btn_mapping.setText(QCoreApplication.translate("MainWindow", u"Unlock mappings", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><span style=\" font-size:16pt;\">Export microgesture representations</span></p></body></html>", None))
