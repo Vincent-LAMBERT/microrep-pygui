@@ -17,12 +17,21 @@
 import sys
 import os
 import platform
+import time
 import cv2
 
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
 from modules import *
 from widgets import *
+
+
+import numpy as np
+from PySide6.QtCore import Signal, Slot, QThread
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+    QHBoxLayout, QLabel, QLineEdit, QListWidget,
+    QListWidgetItem, QMainWindow, QPushButton, QSizePolicy,
+    QStackedWidget, QTextEdit, QVBoxLayout, QWidget)
 
 # SET AS GLOBAL WIDGETS
 # ///////////////////////////////////////////////////////////////
@@ -144,9 +153,9 @@ class MainWindow(QMainWindow):
             
             self.ui.webcam.recompute_config()
             self.microrep_thread.recompute_design()
-            self.webcam_thread.restartLive()
+            self.webcam_thread.startWebcam()
         else :
-            self.webcam_thread.stopLive()
+            self.webcam_thread.stopWebcam()
 
         # SHOW EXPERIMENT PAGE
         if btnName == "btn_exp":
@@ -165,43 +174,6 @@ class MainWindow(QMainWindow):
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
         self.dragPos = event.globalPosition().toPoint()
-            
-    @Slot(QImage)
-    def runWebCam(self, idx):
-        self.idx = idx
-        combo = self.sender()
-        print(f"Selected the variable {idx} from combo {combo.id_number}")
-        self.th.start()
-
-    @Slot(QImage)
-    def setImage(self, image):
-        self.label.setPixmap(QPixmap.fromImage(image))
-    
-    def getAvailableCameras(self):
-        cameras = QMediaDevices.videoInputs()
-        for cameraDevice in cameras:
-            self.availableCameras.append(cameraDevice.description())
-
-
-class Thread(QThread):
-    updateFrame = Signal(QImage)
-    def __init__(self, parent=None):
-        QThread.__init__(self, parent)
-        self.status = True
-        self.cap = True
-
-    def run(self):
-        self.cap = cv2.VideoCapture(0)
-        while self.status:
-            ret, frame = self.cap.read()
-            if not ret:
-                continue
-            h, w, ch = frame.shape
-            img = QImage(frame.data, w, h, ch * w, QImage.Format_RGB888)
-            scaled_img = img.scaled(640, 480, Qt.KeepAspectRatio)
-            # Emit signal
-            self.updateFrame.emit(scaled_img)
-        sys.exit(-1)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

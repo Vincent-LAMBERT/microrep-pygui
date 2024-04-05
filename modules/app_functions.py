@@ -21,7 +21,7 @@ import cv2
 from main import *
 from modules.utils.AppUtils import TEMP_FOLDER_PATH, createFolder, deleteFolder
 from modules.utils.MicroRepThread import MicroRepThread
-from modules.utils.WebcamThread import WebcamThread
+from modules.utils.WebcamThread import VideoThread
 
 from PySide6.QtMultimedia import QMediaDevices
 
@@ -52,13 +52,11 @@ class AppFunctions(MainWindow):
         createFolder(TEMP_FOLDER_PATH)
 
         self.microrep_thread = MicroRepThread(running_info=self.ui.runningInfo)
-
-        label_live_file = self.ui.label_live_file
-        label_markers = self.ui.label_markers
-        label_rep = self.ui.label_rep
-        label_commands = self.ui.label_commands
         
-        self.webcam_thread = WebcamThread(label_live_file, label_markers, label_rep, label_commands, microrep_compute=self.microrep_thread, frame_rate=30, frame_skip=2)
+        # self.webcam_thread = WebcamThread(self.ui, microrep_compute=self.microrep_thread, frame_rate=60, frame_skip=2)
+        self.webcam_thread = VideoThread()
+        self.webcam_thread.image_data.connect(self.ui.webcam.update_image)
+        self.webcam_thread.start()
 
         # Set to home page
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
@@ -67,3 +65,28 @@ class AppFunctions(MainWindow):
         self.ui.generator.configure(self.ui, self.microrep_thread)
         self.ui.exporter.configure(self.ui, self.microrep_thread)
         self.ui.webcam.configure(self.ui, self.microrep_thread, self.webcam_thread)
+
+        # self.setWindowTitle("Qt live label demo")
+        # self.disply_width = 640
+        # self.display_height = 480
+        # # create the label that holds the image
+        # self.image_label = QLabel(self)
+        # self.image_label.resize(self.disply_width, self.display_height)
+        # # create a text label
+        # self.textLabel = QLabel('Webcam')
+
+        # # create a vertical box layout and add the two labels
+        # vbox = QVBoxLayout()
+        # vbox.addWidget(self.image_label)
+        # vbox.addWidget(self.textLabel)
+        # # set the vbox layout as the widgets layout
+        # # self.setLayout(vbox)
+
+        # # create the video capture thread
+        # self.thread = VideoThread()
+        # # connect its signal to the update_image slot
+        # self.thread.change_pixmap_signal.connect(self.update_image)
+        # # start the thread
+        # self.thread.start()
+
+        # self.show()

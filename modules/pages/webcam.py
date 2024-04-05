@@ -1,5 +1,7 @@
 from argparse import ArgumentParser
 import base64
+
+import numpy as np
 from main import *
 import threading
 
@@ -13,6 +15,7 @@ from microrep.create_representations.create_representations import CreateReprese
 from modules.utils.MicroRepThread import resize_tree
 
 from microrep.create_representations.create_representations.configuration_file import get_combination_from_row
+from PySide6.QtCore import Slot
 
 from microrep.core.utils import get_fmc_combination, get_combination_name
 
@@ -22,6 +25,8 @@ NAME = "name"
 
 class Webcam(QWidget) :
     prefix="export_"
+    
+    dic = hd.get_microgest_xml()
 
     def __init__(self, parent=None) :
         super().__init__(parent)
@@ -30,6 +35,22 @@ class Webcam(QWidget) :
             self.list_config = config_file.read().split("\n")
 
         self.families = ["AandB", "MaS"]
+
+
+        # Webcam variables
+        self.first_computed = False
+
+        self.back_pixmap = None
+        self.markers_canva = None
+        self.rep_canva = None
+        self.command_canva = None
+        
+        self.tree = None
+        self.frame_count = 0
+        self.markers_tree = None
+        
+        self.mp_result_list = []
+        self.mp_result_max_size = 3
             
 
     def configure(self, ui, microrep_thread, webcam_thread) :
@@ -70,3 +91,75 @@ class Webcam(QWidget) :
             
             self.mgc.set_active(self.active)
             self.wt.resetComputing()
+
+    ################################################################
+    ####################  VIDEO FUNCTIONS  #########################
+    ################################################################
+
+    # @Slot(np.ndarray)
+    # def update_image(self, cv_img):
+    #     """Updates the image_label with a new opencv image"""
+    #     qt_img = self.convert_cv_qt(cv_img)
+    #     self.ui.label_live_file.setPixmap(qt_img)
+    
+    # def convert_cv_qt(self, cv_img):
+    #     """Convert from an opencv image to QPixmap"""
+    #     rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+    #     h, w, ch = rgb_image.shape
+    #     bytes_per_line = ch * w
+    #     convert_to_Qt_format = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
+    #     # p = convert_to_Qt_format.scaled(self.display_width, self.display_height, Qt.KeepAspectRatio)
+    #     # return QPixmap.fromImage(p)
+    #     return QPixmap.fromImage(convert_to_Qt_format)
+    
+
+    ################################################################
+
+
+    # Fonction gerant la mise a jour de l'affichage
+    @Slot(np.ndarray)
+    def update_image(self, image):
+        if not self.first_computed :
+            self.mgc.update_frame_size(image)
+            self.first_computed = True
+
+        back_thread = threading.Thread(target=self.update_background, args=(image,))
+        back_thread.start()
+
+        if self.frame_count % 2 == 0 :
+            thread = threading.Thread(target=self.update_all, args=(image, 0.1))
+            thread.start()
+
+        self.update_labels()
+
+        self.frame_count += 1
+
+    def update_background(self, image):
+        time.sleep(0.2) # Makes the background update coincide with the markers update
+        img_height, img_width, channel = image.shape
+        bytes_per_line = 3 * img_width
+        q_image = QImage(image.data, img_width, img_height, bytes_per_line, QImage.Format_RGB888)
+        if not q_image.isNull():
+            self.back_pixmap = QPixmap.fromImage(q_image)
+        else :
+            self.back_pixmap = None
+
+    def update_all(self, image, ratio=0.1):
+        reduced_image = cv2.resize(image, (0, 0), fx=ratio, fy=ratio)
+
+        hand_landmarks = self.mgc.process_stream(reduced_image)
+
+        if hand_landmarks != [] :
+            markers_tree, self.markers_canva = self.mgc.update_markers(hand_landmarks, self.dic, self.mgc.img_height, self.mgc.img_width)
+
+            rep_tree = self.mgc.copy_design()
+            new_rep_tree, self.rep_canva = self.mgc.update_representation(rep_tree, markers_tree, self.mgc.fmc_combinations, self.mgc.img_height, self.mgc.img_width)
+            # self.update_commands(rep_tree, combi)
+        else :
+            self.markers_canva = None
+            self.rep_canva = None
+
+    def update_labels(self):
+        self.ui.label_live_file.setPixmap(self.back_pixmap)
+        self.ui.label_markers.setPixmap(self.markers_canva)
+        self.ui.label_rep.setPixmap(self.rep_canva)

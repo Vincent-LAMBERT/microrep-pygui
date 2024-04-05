@@ -1,4 +1,5 @@
 
+import dataclasses
 import math
 import time
 from lxml import etree
@@ -7,6 +8,12 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from mediapipe.tasks.python.components.containers.landmark import NormalizedLandmark
 import subprocess
+from typing import List, Mapping, Optional, Tuple, Union
+
+import numpy as np
+from mediapipe.framework.formats import landmark_pb2
+import cv2
+from mediapipe import solutions
 
 from .AppUtils import *
 
@@ -40,38 +47,39 @@ class ImageHandLandmarker():
       self.landmarker.close()
 
 class StreamHandLandmarker():
-   def __init__(self):
-      self.result = mp.tasks.vision.HandLandmarkerResult
-      self.landmarker = mp.tasks.vision.HandLandmarker
-      self.createLandmarker()
-   
-   def createLandmarker(self):
-      # callback function
-      def update_result(result: mp.tasks.vision.HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
-         self.result = result
+    def __init__(self):
+        self.result = mp.tasks.vision.HandLandmarkerResult
+        self.landmarker = mp.tasks.vision.HandLandmarker
+        self.createLandmarker()
+    
+    def createLandmarker(self):
+        # callback function
+        def update_result(result: mp.tasks.vision.HandLandmarkerResult, output_image: mp.Image, timestamp_ms: int):
+            self.result = result
 
-      # HandLandmarkerOptions (details here: https://developers.google.com/mediapipe/solutions/vision/hand_landmarker/python#live-stream)
-      options = mp.tasks.vision.HandLandmarkerOptions( 
-         base_options = mp.tasks.BaseOptions(model_asset_path=HAND_LANDMARK_PATH), # path to model
-         running_mode = mp.tasks.vision.RunningMode.LIVE_STREAM, # running on a live stream
-         num_hands = 2, # track both hands
-         min_hand_detection_confidence = 0.3, # lower than value to get predictions more often
-         min_hand_presence_confidence = 0.3, # lower than value to get predictions more often
-         min_tracking_confidence = 0.3, # lower than value to get predictions more often
-         result_callback=update_result)
-      
-      # initialize landmarker
-      self.landmarker = self.landmarker.create_from_options(options)
-   
-   def detect_async(self, frame):
-      # convert np frame to mp image
-      mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
-      # detect landmarks
-      self.landmarker.detect_async(image = mp_image, timestamp_ms = int(time.time() * 1000))
+        # HandLandmarkerOptions (details here: https://developers.google.com/mediapipe/solutions/vision/hand_landmarker/python#live-stream)
+        options = mp.tasks.vision.HandLandmarkerOptions( 
+            base_options = mp.tasks.BaseOptions(model_asset_path=HAND_LANDMARK_PATH), # path to model
+            running_mode = mp.tasks.vision.RunningMode.LIVE_STREAM, # running on a live stream
+            num_hands = 2, # track both hands
+            min_hand_detection_confidence = 0.3, # lower than value to get predictions more often
+            min_hand_presence_confidence = 0.3, # lower than value to get predictions more often
+            min_tracking_confidence = 0.3, # lower than value to get predictions more often
+            result_callback=update_result)
+        
+        # initialize landmarker
+        self.landmarker = self.landmarker.create_from_options(options)
+    
+    def detect_async(self, frame):
+        # convert np frame to mp image
+        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
+        # detect landmarks
+        self.landmarker.detect_async(image = mp_image, timestamp_ms = int(time.time() * 1000))
 
-   def close(self):
-      # close landmarker
-      self.landmarker.close()
+    def close(self):
+        # close landmarker
+        self.landmarker.close()
+
 
 def update_mp_results(mp_results, list, max_size) :
     if len(list) == max_size :
