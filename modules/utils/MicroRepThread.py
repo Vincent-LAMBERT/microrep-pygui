@@ -95,15 +95,17 @@ class MicroRepThread(QThread):
         markers_tree = resize_tree(markers_tree, img_height, img_width)
         tree = move_rep_markers(hand_landmarks, markers_tree, img_height, img_width, dic)
 
-        pixmap = svg_to_pixmap(tree, img_height, img_width)
-        return tree, pixmap
+        # pixmap = svg_to_pixmap(tree, img_height, img_width)
+        # return tree, pixmap
+        return tree
 
     def update_representation(self, rep_tree, markers_tree, combi, img_height, img_width):
         new_rep_tree = move_rep(rep_tree, markers_tree, combi)
         tree = stroke_to_path(new_rep_tree, markers_tree, combi)
 
-        pixmap = svg_to_pixmap(tree, img_height, img_width)
-        return tree, pixmap
+        # pixmap = svg_to_pixmap(tree, img_height, img_width)
+        # return tree, pixmap
+        return tree
 
     def update_commands(self):
         pass
@@ -131,6 +133,11 @@ class MicroRepThread(QThread):
 
         mp_results = self.stream_landmarker.result
         hand_landmarks = self.process_mediapipe_results(mp_results)
+
+        # mp_results = self.stream_landmarker.get_hands(image_path)
+        # hand_landmarks = self.get_hand_skeleton(mp_results)
+
+        # self.resize_design(hand_landmarks)
         return hand_landmarks
 
     def process_mediapipe_results(self, mp_results) :

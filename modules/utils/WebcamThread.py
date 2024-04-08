@@ -25,55 +25,38 @@ from PySide6.QtCore import QLibraryInfo
 os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = QLibraryInfo.path(QLibraryInfo.PluginsPath)
 os.environ["QT_LOGGING_RULES"] = '*.debug=false;qt.accessibility.cache.warning=false;qt.qpa.events.warning=false;qt.qpa.fonts.warning=false;qt.qpa.gl.warning=false;qt.qpa.input.devices.warning=false;qt.qpa.screen.warning=false;qt.qpa.xcb.warning=false;qt.text.font.db.warning=false;qt.xkb.compose.warning=false'
 
-class VideoThread(QThread):
+class WebcamThread(QThread):
     image_data = Signal(np.ndarray)
 
     def __init__(self):
         super().__init__()
         self._run_flag = True
         self.cap = None
-
-    def run(self):
-        # used to record the time when we processed last frame 
-        prev_frame_time = 0
-        # used to record the time at which we processed current frame 
-        new_frame_time = 0
         
+        self.fps = 0
+        
+    def set_fps(self, fps):
+        self.fps = fps
+
+    def run(self):        
         while self._run_flag:
+            fps_list = []
             if self.cap != None and self.cap.isOpened():
                 ret, cv_img = self.cap.read()
                 if ret:
                     
-                    cv_img.flags.writeable = False
-                    cv_img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
-                    # Upscale the image by 450%
-                    cv_img = cv2.resize(cv_img, None, fx=2.28, fy=2.28, interpolation=cv2.INTER_LANCZOS4)
+                    # cv_img.flags.writeable = False
+                    # cv_img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+                    # # Upscale the image by 450%
+                    # cv_img = cv2.resize(cv_img, None, fx=2.28, fy=2.28, interpolation=cv2.INTER_LANCZOS4)
                     # Flip the image horizontally
-                    cv_img = cv2.flip(cv_img, 1)
+                    # cv_img = cv2.flip(cv_img, 1)
 
-                    # font which we will be using to display FPS 
-                    font = cv2.FONT_HERSHEY_SIMPLEX 
-                    # time when we finish processing for this frame 
-                    new_frame_time = time.time() 
+                    # # font which we will be using to display FPS 
+                    # font = cv2.FONT_HERSHEY_SIMPLEX 
                 
-                    # Calculating the fps 
-                
-                    # fps will be number of frame processed in given time frame 
-                    # since their will be most of time error of 0.001 second 
-                    # we will be subtracting it to get more accurate result 
-                    fps = 1/(new_frame_time-prev_frame_time) 
-                    prev_frame_time = new_frame_time 
-                
-                    # converting the fps into integer 
-                    fps = int(fps) 
-                
-                    # converting the fps to string so that we can display it on frame 
-                    # by using putText function 
-                    fps = str(fps) 
-                
-                    # putting the FPS count on the frame 
-                    cv2.putText(cv_img, fps, (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA) 
-
+                    # # putting the FPS count on the frame 
+                    # cv2.putText(cv_img, str(int(self.fps)), (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA) 
 
                     self.image_data.emit(cv_img)
 

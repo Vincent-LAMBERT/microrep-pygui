@@ -21,7 +21,7 @@ import cv2
 from main import *
 from modules.utils.AppUtils import TEMP_FOLDER_PATH, createFolder, deleteFolder
 from modules.utils.MicroRepThread import MicroRepThread
-from modules.utils.WebcamThread import VideoThread
+from modules.utils.WebcamThread import WebcamThread
 
 from PySide6.QtMultimedia import QMediaDevices
 
@@ -54,7 +54,7 @@ class AppFunctions(MainWindow):
         self.microrep_thread = MicroRepThread(running_info=self.ui.runningInfo)
         
         # self.webcam_thread = WebcamThread(self.ui, microrep_compute=self.microrep_thread, frame_rate=60, frame_skip=2)
-        self.webcam_thread = VideoThread()
+        self.webcam_thread = WebcamThread()
         self.webcam_thread.image_data.connect(self.ui.webcam.update_image)
         self.webcam_thread.start()
 

@@ -69,7 +69,7 @@ def flip_tree(tree) :
             child.attrib['transform'] = f"scale(-1, 1)"
     return tree
 
-def get_resize_ratio(tree, hand_landmarks) :
+def get_resize_ratio(tree, hand_landmarks) :    
     index_metacarpal_position = hand_landmarks[INDEX_METACARPAL]
     wrist_position = hand_landmarks[WRIST]
 

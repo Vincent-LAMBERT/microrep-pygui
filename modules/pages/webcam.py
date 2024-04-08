@@ -9,7 +9,7 @@ import modules.utils.HandDetection as hd
 import modules.utils.DesignManagement as dm
 import modules.utils.AppUtils as u
 from lxml import etree
-from modules.utils.AppUtils import get_config
+from modules.utils.AppUtils import get_config, svg_to_pixmap
 from microrep.core.export import export
 from microrep.create_representations.create_representations import CreateRepresentations
 from modules.utils.MicroRepThread import resize_tree
@@ -40,10 +40,10 @@ class Webcam(QWidget) :
         # Webcam variables
         self.first_computed = False
 
-        self.back_pixmap = None
-        self.markers_canva = None
-        self.rep_canva = None
-        self.command_canva = None
+        self.back_image_cv = None
+        self.markers_svg_tree = None
+        self.rep_svg_tree = None
+        self.command_svg_tree = None
         
         self.tree = None
         self.frame_count = 0
@@ -51,7 +51,6 @@ class Webcam(QWidget) :
         
         self.mp_result_list = []
         self.mp_result_max_size = 3
-            
 
     def configure(self, ui, microrep_thread, webcam_thread) :
         self.ui = ui
@@ -102,15 +101,17 @@ class Webcam(QWidget) :
     #     qt_img = self.convert_cv_qt(cv_img)
     #     self.ui.label_live_file.setPixmap(qt_img)
     
-    # def convert_cv_qt(self, cv_img):
-    #     """Convert from an opencv image to QPixmap"""
-    #     rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
-    #     h, w, ch = rgb_image.shape
-    #     bytes_per_line = ch * w
-    #     convert_to_Qt_format = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
-    #     # p = convert_to_Qt_format.scaled(self.display_width, self.display_height, Qt.KeepAspectRatio)
-    #     # return QPixmap.fromImage(p)
-    #     return QPixmap.fromImage(convert_to_Qt_format)
+    def convert_cv_qt(self, cv_img):
+        """Convert from an opencv image to QPixmap"""
+        if cv_img is None:
+            return None
+        rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+        h, w, ch = rgb_image.shape
+        bytes_per_line = ch * w
+        convert_to_Qt_format = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
+        # p = convert_to_Qt_format.scaled(self.display_width, self.display_height, Qt.KeepAspectRatio)
+        # return QPixmap.fromImage(p)
+        return QPixmap.fromImage(convert_to_Qt_format)
     
 
     ################################################################
@@ -119,47 +120,69 @@ class Webcam(QWidget) :
     # Fonction gerant la mise a jour de l'affichage
     @Slot(np.ndarray)
     def update_image(self, image):
-        if not self.first_computed :
-            self.mgc.update_frame_size(image)
-            self.first_computed = True
 
         back_thread = threading.Thread(target=self.update_background, args=(image,))
         back_thread.start()
 
         if self.frame_count % 2 == 0 :
             thread = threading.Thread(target=self.update_all, args=(image, 0.1))
-            thread.start()
+            thread.start()        
 
-        self.update_labels()
+        labels_thread = threading.Thread(target=self.update_labels)
+        labels_thread.start()
+
+        self.mgc.update_running_info()
 
         self.frame_count += 1
+        
 
     def update_background(self, image):
-        time.sleep(0.2) # Makes the background update coincide with the markers update
-        img_height, img_width, channel = image.shape
-        bytes_per_line = 3 * img_width
-        q_image = QImage(image.data, img_width, img_height, bytes_per_line, QImage.Format_RGB888)
-        if not q_image.isNull():
-            self.back_pixmap = QPixmap.fromImage(q_image)
-        else :
-            self.back_pixmap = None
+        # time.sleep(0.2) # Makes the background update coincide with the markers update
+        if not self.first_computed :
+            self.mgc.update_frame_size(image)
+            self.first_computed = True
+
+        self.back_image_cv = image
 
     def update_all(self, image, ratio=0.1):
-        reduced_image = cv2.resize(image, (0, 0), fx=ratio, fy=ratio)
 
-        hand_landmarks = self.mgc.process_stream(reduced_image)
+        # reduced_image = cv2.resize(image, (0, 0), fx=ratio, fy=ratio)
+
+        hand_landmarks = self.mgc.process_stream(image)
 
         if hand_landmarks != [] :
-            markers_tree, self.markers_canva = self.mgc.update_markers(hand_landmarks, self.dic, self.mgc.img_height, self.mgc.img_width)
+            self.markers_svg_tree = self.mgc.update_markers(hand_landmarks, self.dic, self.mgc.img_height, self.mgc.img_width)
 
             rep_tree = self.mgc.copy_design()
-            new_rep_tree, self.rep_canva = self.mgc.update_representation(rep_tree, markers_tree, self.mgc.fmc_combinations, self.mgc.img_height, self.mgc.img_width)
+            self.rep_svg_tree = self.mgc.update_representation(rep_tree, self.markers_svg_tree, self.mgc.fmc_combinations, self.mgc.img_height, self.mgc.img_width)
             # self.update_commands(rep_tree, combi)
         else :
-            self.markers_canva = None
-            self.rep_canva = None
+            self.markers_svg_tree = None
+            self.rep_svg_tree = None
 
     def update_labels(self):
-        self.ui.label_live_file.setPixmap(self.back_pixmap)
-        self.ui.label_markers.setPixmap(self.markers_canva)
-        self.ui.label_rep.setPixmap(self.rep_canva)
+        
+        # back_canva = self.convert_cv_qt(self.back_image_cv)
+        # markers_canva = self.convert_cv_qt(self.markers_svg)
+        # rep_canva = self.convert_cv_qt(self.rep_svg)
+
+        # self.ui.label_live_file.setPixmap(back_canva)
+        # self.ui.label_markers.setPixmap(markers_canva)
+        # self.ui.label_rep.setPixmap(rep_canva)
+
+        # thread = threading.Thread(target=self.convert_to_qt, args=([self.back_image_cv, self.markers_svg, self.rep_svg], [self.ui.label_live_file, self.ui.label_markers, self.ui.label_rep]))
+        # thread.start()
+
+
+        back_pixmap = self.convert_cv_qt(self.back_image_cv)
+        self.ui.label_live_file.setPixmap(back_pixmap)
+        
+        if self.rep_svg_tree != None :
+            markers_pixmap = svg_to_pixmap(self.markers_svg_tree, self.mgc.img_height, self.mgc.img_width)
+            self.ui.label_markers.setPixmap(markers_pixmap)
+        
+        if self.rep_svg_tree != None :
+            rep_pixmap = svg_to_pixmap(self.rep_svg_tree, self.mgc.img_height, self.mgc.img_width)
+            self.ui.label_rep.setPixmap(rep_pixmap)
+
+        # cv2.imshow("rep_image", self.rep_svg)

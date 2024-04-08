@@ -17,6 +17,91 @@ from mediapipe import solutions
 
 from .AppUtils import *
 
+
+from mediapipe import solutions
+from mediapipe.framework.formats import landmark_pb2
+import numpy as np
+
+MARGIN = 10  # pixels
+FONT_SIZE = 1
+FONT_THICKNESS = 1
+HANDEDNESS_TEXT_COLOR = (88, 205, 54) # vibrant green
+
+def draw_landmarks_on_image(rgb_image, detection_result, is_relevant: bool = True):
+    hand_landmarks_list = detection_result.hand_landmarks
+    handedness_list = detection_result.handedness
+    annotated_image = np.copy(rgb_image)
+
+    # Loop through the detected hands to visualize.
+    for idx in range(len(hand_landmarks_list)):
+        hand_landmarks = hand_landmarks_list[idx]
+        handedness = handedness_list[idx]
+
+        # Draw the hand landmarks.
+        hand_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
+        hand_landmarks_proto.landmark.extend([
+            landmark_pb2.NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z) for landmark in hand_landmarks
+        ])
+        solutions.drawing_utils.draw_landmarks(
+            annotated_image,
+            hand_landmarks_proto,
+            solutions.hands.HAND_CONNECTIONS,
+            solutions.drawing_utils.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=1),  # Change the color to green
+            solutions.drawing_styles.get_default_hand_connections_style())
+
+        # Get the top left corner of the detected hand's bounding box.
+        height, width, _ = annotated_image.shape
+        x_coordinates = [landmark.x for landmark in hand_landmarks]
+        y_coordinates = [landmark.y for landmark in hand_landmarks]
+        text_x = int(min(x_coordinates) * width)
+        text_y = int(min(y_coordinates) * height) - MARGIN
+
+        # Draw handedness (left or right hand) on the image.
+        cv2.putText(annotated_image, f"{handedness[0].category_name}",
+                    (text_x, text_y), cv2.FONT_HERSHEY_DUPLEX,
+                    FONT_SIZE, HANDEDNESS_TEXT_COLOR, FONT_THICKNESS, cv2.LINE_AA)
+        
+        if not is_relevant :
+            cv2.putText(annotated_image, "Not relevant",
+                        (text_x, text_y+20), cv2.FONT_HERSHEY_DUPLEX,
+                        FONT_SIZE, (0, 0, 255), FONT_THICKNESS, cv2.LINE_AA)
+
+    return annotated_image
+
+_PRESENCE_THRESHOLD = 0.5
+_VISIBILITY_THRESHOLD = 0.5
+_BGR_CHANNELS = 3
+
+WHITE_COLOR = (224, 224, 224)
+BLACK_COLOR = (0, 0, 0)
+RED_COLOR = (0, 0, 255)
+GREEN_COLOR = (0, 128, 0)
+BLUE_COLOR = (255, 0, 0)
+@dataclasses.dataclass
+class DrawingSpec:
+    # Color for drawing the annotation. Default to the white color.
+    color: Tuple[int, int, int] = WHITE_COLOR
+    # Thickness for drawing the annotation. Default to 2 pixels.
+    thickness: int = 2
+    # Circle radius. Default to 2 pixels.
+    circle_radius: int = 2
+
+def _normalized_to_pixel_coordinates(normalized_x: float, normalized_y: float, image_width: int, image_height: int) -> Union[None, Tuple[int, int]]:
+    """Converts normalized value pair to pixel coordinates."""
+
+    # Checks if the float value is between 0 and 1.
+    def is_valid_normalized_value(value: float) -> bool:
+        return (value > 0 or math.isclose(0, value)) and (value < 1 or
+                                                        math.isclose(1, value))
+
+    if not (is_valid_normalized_value(normalized_x) and
+            is_valid_normalized_value(normalized_y)):
+        # TODO: Draw coordinates even if it's outside of the image bounds.
+        return None
+    x_px = min(math.floor(normalized_x * image_width), image_width - 1)
+    y_px = min(math.floor(normalized_y * image_height), image_height - 1)
+    return x_px, y_px
+
 class ImageHandLandmarker():
    def __init__(self):
       self.result = mp.tasks.vision.HandLandmarkerResult
@@ -47,10 +132,16 @@ class ImageHandLandmarker():
       self.landmarker.close()
 
 class StreamHandLandmarker():
+    detected_hands = []
+    hands_list = []
+    max_size_hands_list = 5
+
     def __init__(self):
         self.result = mp.tasks.vision.HandLandmarkerResult
         self.landmarker = mp.tasks.vision.HandLandmarker
         self.createLandmarker()
+        
+        self.timestamp = 0
     
     def createLandmarker(self):
         # callback function
@@ -74,11 +165,84 @@ class StreamHandLandmarker():
         # convert np frame to mp image
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
         # detect landmarks
-        self.landmarker.detect_async(image = mp_image, timestamp_ms = int(time.time() * 1000))
+        self.landmarker.detect_async(image = mp_image, timestamp_ms = self.timestamp)
+        self.timestamp += 1
+
+    def landmark_finder(self, opencv_image):
+        imageRGB = cv2.cvtColor(opencv_image,cv2.COLOR_BGR2RGB)
+        
+        self.detect_async(imageRGB)
+
+        # With async, the result treated here may be the one 
+        # from a previous call of landmark_finder
+        return self.result
 
     def close(self):
         # close landmarker
         self.landmarker.close()
+
+    def direct_draw_landmarks(self, is_relevant: bool = True):
+        annotated_image = np.copy(self.image)
+        if hasattr(self.mp_results, 'hand_landmarks') and self.mp_results.hand_landmarks != [] :
+            annotated_image = draw_landmarks_on_image(annotated_image, self.mp_results, is_relevant)
+        # self.drawer.draw_landmarks(self.image, handLms, self.drawer.HAND_CONNECTIONS)
+        return annotated_image
+    
+    #####################################################################
+    
+    def get_hands(self, image):
+        self.image = image   
+        # reduced_image = cv2.resize(image, (0, 0), fx=0.1, fy=0.1)
+
+        self.mp_results = self.landmark_finder(image)
+    
+        if hasattr(self.mp_results, 'hand_landmarks') and self.mp_results.hand_landmarks != [] :
+            self.detected_hands = self.optimize_results(self.mp_results)
+        else :
+            self.detected_hands = []
+        return self.detected_hands
+    
+    def optimize_results(self, mp_results) :
+        self.update_detected_hands_list(mp_results)
+        # mp_results = self.compute_mean_detected_hands()
+        mp_results = self.compute_mean_mp_results()
+        
+        return mp_results
+    
+    def update_detected_hands_list(self, mp_results) :
+        if len(self.hands_list) == self.max_size_hands_list :
+            self.hands_list.pop(0)
+        self.hands_list.append(mp_results)
+
+    def compute_mean_mp_results(self) :
+        if len(self.hands_list) == 0 :
+            return None
+        else :
+            mean_hands = []
+            mp_results = self.hands_list[0]
+            
+            for hand_index, hand in enumerate(mp_results.hand_landmarks) :
+                if hand == [] :
+                    mean_hand_landmarks = [NormalizedLandmark(0, 0, 0) for i in range(21)]
+                else :
+                    mean_hand_landmarks = hand
+    
+                    # compute the mean_detected_hands
+                    for i in range(1, len(self.hands_list)) :
+                        for previous_hand_index, previous_hand in enumerate(self.hands_list[i].hand_landmarks) :
+                            if previous_hand != [] :
+                                for landmark_index, landmark in enumerate(previous_hand):
+                                    mean_hand_landmarks[landmark_index].x += landmark.x
+                                    mean_hand_landmarks[landmark_index].y += landmark.y
+                                    mean_hand_landmarks[landmark_index].z += landmark.z
+        
+                                    if i == len(self.hands_list) - 1 :
+                                        mean_hand_landmarks[landmark_index].x /= len(self.hands_list)
+                                        mean_hand_landmarks[landmark_index].y /= len(self.hands_list)
+                                        mean_hand_landmarks[landmark_index].z /= len(self.hands_list)
+                mean_hands.append(mean_hand_landmarks)
+
+            return mean_hands
 
 
 def update_mp_results(mp_results, list, max_size) :
