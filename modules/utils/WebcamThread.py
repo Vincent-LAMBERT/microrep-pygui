@@ -69,8 +69,8 @@ class WebcamThread(QThread):
     def stopWebcam(self):
         if self.cap!=None and self.cap.isOpened():
             self.cap.release()
-        else:
-            raise Exception("Cannot stop webcam, it is not running")
+        # else:
+        #     raise Exception("Cannot stop webcam, it is not running")
 
     def startWebcam(self):
         self.cap = cv2.VideoCapture(0)
