@@ -20,10 +20,11 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
     QListWidgetItem, QMainWindow, QPushButton, QSizePolicy,
     QStackedWidget, QTextEdit, QVBoxLayout, QWidget)
 
+from modules.pages.explorable import Explorable
 from modules.pages.exporter import Exporter
 from modules.pages.generator import Generator
 from modules.pages.webcam import Webcam
-from widgets.image_viewer.ImageViewer import ImageViewer
+from widgets.image_viewer import ImageViewer
 from .resources_rc import *
 
 class Ui_MainWindow(object):
@@ -1118,8 +1119,36 @@ class Ui_MainWindow(object):
         self.gridLayout_3411 = QGridLayout(self.classic_page)
         self.gridLayout_3411.setObjectName(u"gridLayout_3411")
         self.gridLayout_3411.setContentsMargins(9, 9, 9, 9)
-        self.classic = QWidget(self.classic_page)
+        self.classic = Explorable(self.classic_page)
         self.classic.setObjectName(u"classic")
+        self.comboBox_classic_family = QComboBox(self.classic)
+        self.comboBox_classic_family.setObjectName(u"comboBox_classic_family")
+        self.comboBox_classic_family.setGeometry(QRect(30, 560, 158, 34))
+        self.verticalLayoutWidget_4 = QWidget(self.classic)
+        self.verticalLayoutWidget_4.setObjectName(u"verticalLayoutWidget_4")
+        self.verticalLayoutWidget_4.setGeometry(QRect(10, -10, 811, 551))
+        self.verticalLayout_11 = QVBoxLayout(self.verticalLayoutWidget_4)
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.widget_4 = QWidget(self.verticalLayoutWidget_4)
+        self.widget_4.setObjectName(u"widget_4")
+        self.label_classic_live_file = ImageViewer(self.widget_4)
+        self.label_classic_live_file.setObjectName(u"label_classic_live_file")
+        self.label_classic_live_file.setGeometry(QRect(0, 0, 840, 560))
+        self.label_classic_markers = ImageViewer(self.widget_4)
+        self.label_classic_markers.setObjectName(u"label_classic_markers")
+        self.label_classic_markers.setGeometry(QRect(0, 0, 840, 560))
+        self.label_classic_rep = ImageViewer(self.widget_4)
+        self.label_classic_rep.setObjectName(u"label_classic_rep")
+        self.label_classic_rep.setGeometry(QRect(0, 0, 840, 560))
+        self.label_classic_commands = ImageViewer(self.widget_4)
+        self.label_classic_commands.setObjectName(u"label_classic_commands")
+        self.label_classic_commands.setGeometry(QRect(0, 0, 840, 560))
+
+        self.verticalLayout_11.addWidget(self.widget_4)
+
+        self.comboBox_classic_config = QComboBox(self.classic)
+        self.comboBox_classic_config.setObjectName(u"comboBox_classic_config")
+        self.comboBox_classic_config.setGeometry(QRect(210, 560, 591, 31))
 
         self.gridLayout_3411.addWidget(self.classic, 0, 0, 1, 1)
 
@@ -1685,8 +1714,10 @@ class Ui_MainWindow(object):
         self.btn_export_all.clicked.connect(self.exporter.export_all)
         self.btn_previous.clicked.connect(self.exporter.previous_rep)
         self.btn_next.clicked.connect(self.exporter.next_rep)
+        self.comboBox_classic_config.currentIndexChanged.connect(self.classic.selectMapping)
+        self.comboBox_classic_family.currentIndexChanged.connect(self.classic.selectFamily)
 
-        self.stackedWidget.setCurrentIndex(4)
+        self.stackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1755,6 +1786,10 @@ class Ui_MainWindow(object):
         self.label_markers.setProperty("text", "")
         self.label_rep.setProperty("text", "")
         self.label_commands.setProperty("text", "")
+        self.label_classic_live_file.setProperty("text", "")
+        self.label_classic_markers.setProperty("text", "")
+        self.label_classic_rep.setProperty("text", "")
+        self.label_classic_commands.setProperty("text", "")
         self.comboBox_export_type.setItemText(0, QCoreApplication.translate("MainWindow", u"SVG", None))
         self.comboBox_export_type.setItemText(1, QCoreApplication.translate("MainWindow", u"PNG", None))
         self.comboBox_export_type.setItemText(2, QCoreApplication.translate("MainWindow", u"JPG", None))

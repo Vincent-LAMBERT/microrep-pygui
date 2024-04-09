@@ -1810,7 +1810,7 @@ p, li { white-space: pre-wrap; }
                       <bool>true</bool>
                      </property>
                      <property name="currentIndex">
-                      <number>4</number>
+                      <number>1</number>
                      </property>
                      <widget class="QWidget" name="webcam_page">
                       <layout class="QGridLayout" name="gridLayout_344">
@@ -1935,7 +1935,96 @@ p, li { white-space: pre-wrap; }
                         <number>9</number>
                        </property>
                        <item row="0" column="0">
-                        <widget class="QWidget" name="classic" native="true"/>
+                        <widget class="Explorable" name="classic" native="true">
+                         <widget class="QComboBox" name="comboBox_classic_family">
+                          <property name="geometry">
+                           <rect>
+                            <x>30</x>
+                            <y>560</y>
+                            <width>158</width>
+                            <height>34</height>
+                           </rect>
+                          </property>
+                         </widget>
+                         <widget class="QWidget" name="verticalLayoutWidget_4">
+                          <property name="geometry">
+                           <rect>
+                            <x>10</x>
+                            <y>-10</y>
+                            <width>811</width>
+                            <height>551</height>
+                           </rect>
+                          </property>
+                          <layout class="QVBoxLayout" name="verticalLayout_11">
+                           <item>
+                            <widget class="QWidget" name="widget_4" native="true">
+                             <widget class="ImageViewer" name="label_classic_live_file" native="true">
+                              <property name="geometry">
+                               <rect>
+                                <x>0</x>
+                                <y>0</y>
+                                <width>840</width>
+                                <height>560</height>
+                               </rect>
+                              </property>
+                              <property name="text" stdset="0">
+                               <string/>
+                              </property>
+                             </widget>
+                             <widget class="ImageViewer" name="label_classic_markers" native="true">
+                              <property name="geometry">
+                               <rect>
+                                <x>0</x>
+                                <y>0</y>
+                                <width>840</width>
+                                <height>560</height>
+                               </rect>
+                              </property>
+                              <property name="text" stdset="0">
+                               <string/>
+                              </property>
+                             </widget>
+                             <widget class="ImageViewer" name="label_classic_rep" native="true">
+                              <property name="geometry">
+                               <rect>
+                                <x>0</x>
+                                <y>0</y>
+                                <width>840</width>
+                                <height>560</height>
+                               </rect>
+                              </property>
+                              <property name="text" stdset="0">
+                               <string/>
+                              </property>
+                             </widget>
+                             <widget class="ImageViewer" name="label_classic_commands" native="true">
+                              <property name="geometry">
+                               <rect>
+                                <x>0</x>
+                                <y>0</y>
+                                <width>840</width>
+                                <height>560</height>
+                               </rect>
+                              </property>
+                              <property name="text" stdset="0">
+                               <string/>
+                              </property>
+                             </widget>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                         <widget class="QComboBox" name="comboBox_classic_config">
+                          <property name="geometry">
+                           <rect>
+                            <x>210</x>
+                            <y>560</y>
+                            <width>591</width>
+                            <height>31</height>
+                           </rect>
+                          </property>
+                         </widget>
+                        </widget>
                        </item>
                       </layout>
                      </widget>
@@ -3122,11 +3211,6 @@ background-repeat: no-repeat;</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ImageViewer</class>
-   <extends>QWidget</extends>
-   <header>widgets.image_viewer.ImageViewer</header>
-  </customwidget>
-  <customwidget>
    <class>Generator</class>
    <extends>QWidget</extends>
    <header>modules.pages.generator</header>
@@ -3168,6 +3252,21 @@ background-repeat: no-repeat;</string>
     <slot>selectMapping()</slot>
    </slots>
   </customwidget>
+  <customwidget>
+   <class>Explorable</class>
+   <extends>QWidget</extends>
+   <header>modules.pages.explorable</header>
+   <container>1</container>
+   <slots>
+    <slot>selectFamily()</slot>
+    <slot>selectMapping()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>ImageViewer</class>
+   <extends>QWidget</extends>
+   <header>widgets.image_viewer</header>
+  </customwidget>
  </customwidgets>
  <resources>
   <include location="resources.qrc"/>
@@ -3184,8 +3283,8 @@ background-repeat: no-repeat;</string>
      <y>650</y>
     </hint>
     <hint type="destinationlabel">
-     <x>217</x>
-     <y>672</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3200,8 +3299,8 @@ background-repeat: no-repeat;</string>
      <y>644</y>
     </hint>
     <hint type="destinationlabel">
-     <x>391</x>
-     <y>670</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3212,12 +3311,12 @@ background-repeat: no-repeat;</string>
    <slot>import_image()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>193</x>
-     <y>538</y>
+     <x>190</x>
+     <y>163</y>
     </hint>
     <hint type="destinationlabel">
-     <x>212</x>
-     <y>566</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3232,8 +3331,8 @@ background-repeat: no-repeat;</string>
      <y>604</y>
     </hint>
     <hint type="destinationlabel">
-     <x>342</x>
-     <y>653</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3244,12 +3343,12 @@ background-repeat: no-repeat;</string>
    <slot>lock_mappings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>627</x>
-     <y>641</y>
+     <x>590</x>
+     <y>628</y>
     </hint>
     <hint type="destinationlabel">
-     <x>645</x>
-     <y>664</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3260,12 +3359,12 @@ background-repeat: no-repeat;</string>
    <slot>select_file_config()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>883</x>
-     <y>563</y>
+     <x>590</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>909</x>
-     <y>625</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3276,12 +3375,12 @@ background-repeat: no-repeat;</string>
    <slot>save_config_as_file()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>820</x>
-     <y>504</y>
+     <x>590</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>914</x>
-     <y>538</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3292,12 +3391,12 @@ background-repeat: no-repeat;</string>
    <slot>clear_config()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>705</x>
-     <y>496</y>
+     <x>590</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>749</x>
-     <y>662</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3308,12 +3407,12 @@ background-repeat: no-repeat;</string>
    <slot>default_config()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>538</x>
-     <y>494</y>
+     <x>590</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>476</x>
-     <y>664</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3324,12 +3423,12 @@ background-repeat: no-repeat;</string>
    <slot>remove_config()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>848</x>
-     <y>274</y>
+     <x>590</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>914</x>
-     <y>297</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3340,12 +3439,12 @@ background-repeat: no-repeat;</string>
    <slot>apply_config()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>871</x>
-     <y>243</y>
+     <x>590</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
-     <x>913</x>
-     <y>249</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3356,12 +3455,12 @@ background-repeat: no-repeat;</string>
    <slot>add_mapping()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>860</x>
-     <y>162</y>
+     <x>590</x>
+     <y>123</y>
     </hint>
     <hint type="destinationlabel">
-     <x>916</x>
-     <y>178</y>
+     <x>161</x>
+     <y>84</y>
     </hint>
    </hints>
   </connection>
@@ -3376,8 +3475,8 @@ background-repeat: no-repeat;</string>
      <y>562</y>
     </hint>
     <hint type="destinationlabel">
-     <x>322</x>
-     <y>632</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3388,12 +3487,12 @@ background-repeat: no-repeat;</string>
    <slot>export_current()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>204</x>
-     <y>436</y>
+     <x>180</x>
+     <y>273</y>
     </hint>
     <hint type="destinationlabel">
-     <x>191</x>
-     <y>649</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3404,12 +3503,12 @@ background-repeat: no-repeat;</string>
    <slot>export_all()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>442</x>
-     <y>432</y>
+     <x>180</x>
+     <y>273</y>
     </hint>
     <hint type="destinationlabel">
-     <x>411</x>
-     <y>658</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3420,12 +3519,12 @@ background-repeat: no-repeat;</string>
    <slot>previous_rep()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>623</x>
-     <y>595</y>
+     <x>580</x>
+     <y>603</y>
     </hint>
     <hint type="destinationlabel">
-     <x>583</x>
-     <y>671</y>
+     <x>170</x>
+     <y>93</y>
     </hint>
    </hints>
   </connection>
@@ -3436,12 +3535,44 @@ background-repeat: no-repeat;</string>
    <slot>next_rep()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>765</x>
-     <y>621</y>
+     <x>580</x>
+     <y>603</y>
     </hint>
     <hint type="destinationlabel">
-     <x>744</x>
-     <y>664</y>
+     <x>170</x>
+     <y>93</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox_classic_config</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>classic</receiver>
+   <slot>selectMapping()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>364</x>
+     <y>656</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>380</x>
+     <y>672</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox_classic_family</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>classic</receiver>
+   <slot>selectFamily()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>649</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>277</x>
+     <y>645</y>
     </hint>
    </hints>
   </connection>
