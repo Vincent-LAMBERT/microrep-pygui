@@ -616,7 +616,22 @@ Disabled */
 
 </string>
    </property>
-   <layout class="QGridLayout" name="gridLayout_3">
+   <layout class="QGridLayout" name="appMargins">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <property name="topMargin">
+     <number>10</number>
+    </property>
+    <property name="rightMargin">
+     <number>10</number>
+    </property>
+    <property name="bottomMargin">
+     <number>10</number>
+    </property>
     <item row="0" column="0">
      <widget class="QFrame" name="bgApp">
       <property name="frameShape">
@@ -991,7 +1006,7 @@ background-repeat: no-repeat;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="btn_classic">
+                 <widget class="QPushButton" name="btn_explorable">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -1026,7 +1041,7 @@ background-repeat: no-repeat;</string>
                    <string notr="true">background-image: url(:/icons/images/icons/cil-media-play.png);</string>
                   </property>
                   <property name="text">
-                   <string>Classic demo</string>
+                   <string>Explorable demo</string>
                   </property>
                  </widget>
                 </item>
@@ -1920,7 +1935,7 @@ p, li { white-space: pre-wrap; }
                        </item>
                       </layout>
                      </widget>
-                     <widget class="QWidget" name="classic_page">
+                     <widget class="QWidget" name="explorable_page">
                       <layout class="QGridLayout" name="gridLayout_3411">
                        <property name="leftMargin">
                         <number>9</number>
@@ -1935,8 +1950,8 @@ p, li { white-space: pre-wrap; }
                         <number>9</number>
                        </property>
                        <item row="0" column="0">
-                        <widget class="Explorable" name="classic" native="true">
-                         <widget class="QComboBox" name="comboBox_classic_family">
+                        <widget class="Explorable" name="explorable" native="true">
+                         <widget class="QComboBox" name="comboBox_explorable_family">
                           <property name="geometry">
                            <rect>
                             <x>30</x>
@@ -1958,7 +1973,7 @@ p, li { white-space: pre-wrap; }
                           <layout class="QVBoxLayout" name="verticalLayout_11">
                            <item>
                             <widget class="QWidget" name="widget_4" native="true">
-                             <widget class="ImageViewer" name="label_classic_live_file" native="true">
+                             <widget class="ImageViewer" name="label_explorable_live_file" native="true">
                               <property name="geometry">
                                <rect>
                                 <x>0</x>
@@ -1971,7 +1986,7 @@ p, li { white-space: pre-wrap; }
                                <string/>
                               </property>
                              </widget>
-                             <widget class="ImageViewer" name="label_classic_markers" native="true">
+                             <widget class="ImageViewer" name="label_explorable_markers" native="true">
                               <property name="geometry">
                                <rect>
                                 <x>0</x>
@@ -1984,7 +1999,7 @@ p, li { white-space: pre-wrap; }
                                <string/>
                               </property>
                              </widget>
-                             <widget class="ImageViewer" name="label_classic_rep" native="true">
+                             <widget class="ImageViewer" name="label_explorable_rep" native="true">
                               <property name="geometry">
                                <rect>
                                 <x>0</x>
@@ -1997,7 +2012,7 @@ p, li { white-space: pre-wrap; }
                                <string/>
                               </property>
                              </widget>
-                             <widget class="ImageViewer" name="label_classic_commands" native="true">
+                             <widget class="ImageViewer" name="label_explorable_commands" native="true">
                               <property name="geometry">
                                <rect>
                                 <x>0</x>
@@ -2014,7 +2029,7 @@ p, li { white-space: pre-wrap; }
                            </item>
                           </layout>
                          </widget>
-                         <widget class="QComboBox" name="comboBox_classic_config">
+                         <widget class="QComboBox" name="comboBox_explorable_config">
                           <property name="geometry">
                            <rect>
                             <x>210</x>
@@ -3545,9 +3560,9 @@ background-repeat: no-repeat;</string>
    </hints>
   </connection>
   <connection>
-   <sender>comboBox_classic_config</sender>
+   <sender>comboBox_explorable_config</sender>
    <signal>currentIndexChanged(QString)</signal>
-   <receiver>classic</receiver>
+   <receiver>explorable</receiver>
    <slot>selectMapping()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -3561,9 +3576,9 @@ background-repeat: no-repeat;</string>
    </hints>
   </connection>
   <connection>
-   <sender>comboBox_classic_family</sender>
+   <sender>comboBox_explorable_family</sender>
    <signal>currentIndexChanged(QString)</signal>
-   <receiver>classic</receiver>
+   <receiver>explorable</receiver>
    <slot>selectFamily()</slot>
    <hints>
     <hint type="sourcelabel">

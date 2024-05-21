@@ -34,19 +34,29 @@ class Explorable(QWidget) :
 
         self.families = ["AandB", "MaS"]
 
+        self.page_is_active = False
+
     def configure(self, ui, microrep_thread, webcam_thread) :
         self.ui = ui
         self.mgc = microrep_thread
         self.wt = webcam_thread
 
-        self.ui.comboBox_family.addItems(self.families)
-        self.ui.comboBox_config.addItems(self.list_config)
+        self.ui.comboBox_explorable_family.addItems(self.families)
+        self.ui.comboBox_explorable_config.addItems(self.list_config)
+
+        webcam_thread.image_data.connect(self.update_image)
 
     def recompute_config(self) :
-        config = self.ui.comboBox_config.currentText()
+        config = self.ui.comboBox_explorable_config.currentText()
         with open(get_config("live_config.csv"), "w") as config_file :
             config_file.write(config)
         self.mgc.set_config("live_config.csv")
+
+    def start(self) :
+        self.page_is_active = True
+    
+    def stop(self) :
+        self.page_is_active = False
 
     ################################################################
     #################### SLOT FUNCTIONS ############################
@@ -60,8 +70,8 @@ class Explorable(QWidget) :
         self.selectActive()
 
     def selectActive(self) :
-        selected_family = self.ui.comboBox_family.currentText()
-        selected_mapping = self.ui.comboBox_config.currentText()
+        selected_family = self.ui.comboBox_explorable_family.currentText()
+        selected_mapping = self.ui.comboBox_explorable_config.currentText()
 
         if selected_family and selected_mapping :
             selected_mapping = selected_mapping.split(",")
@@ -72,3 +82,47 @@ class Explorable(QWidget) :
             
             self.mgc.set_active(self.active)
             self.wt.resetComputing()
+            
+    ################################################################
+    ####################  VIDEO FUNCTIONS  #########################
+    ################################################################
+
+    @Slot(np.ndarray)
+    def update_image(self, image):
+        """Updates the image_label with a new opencv image"""
+        if self.page_is_active :
+            # qt_img = self.convert_cv_qt(image)
+            # self.ui.label_explorable_live_file.setPixmap(qt_img)
+            
+            back_thread = threading.Thread(target=self.update_hand_pose, args=(image,))
+            back_thread.start()
+
+            labels_thread = threading.Thread(target=self.update_labels)
+            labels_thread.start()
+            
+            self.mgc.update_running_info()
+
+    def update_hand_pose(self, image):
+        """
+        Compute the hand pose and update the hand_pose_img attribute
+        """
+        hand_landmarks = self.mgc.process_stream(image)
+        hand_pose = hd.get_hand_pose(hand_landmarks)
+        print(f"Hand pose: {hand_pose}")
+    
+    def convert_cv_qt(self, cv_img):
+        """Convert from an opencv image to QPixmap"""
+        if cv_img is None:
+            return None
+        rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+        h, w, ch = rgb_image.shape
+        bytes_per_line = ch * w
+        convert_to_Qt_format = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
+        # p = convert_to_Qt_format.scaled(self.display_width, self.display_height, Qt.KeepAspectRatio)
+        # return QPixmap.fromImage(p)
+        return QPixmap.fromImage(convert_to_Qt_format)
+    
+    
+    def update_labels(self):
+        hand_pose_pixmap = self.convert_cv_qt(self.hand_pose_img)
+        self.ui.label_live_file.setPixmap(hand_pose_pixmap)

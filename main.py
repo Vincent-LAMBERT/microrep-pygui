@@ -78,7 +78,7 @@ class MainWindow(QMainWindow):
         # LEFT MENUS
         widgets.btn_home.clicked.connect(self.buttonClick)
         widgets.btn_generator.clicked.connect(self.buttonClick)
-        widgets.btn_classic.clicked.connect(self.buttonClick)
+        widgets.btn_explorable.clicked.connect(self.buttonClick)
         widgets.btn_webcam.clicked.connect(self.buttonClick)
         widgets.btn_exp.clicked.connect(self.buttonClick)
 
@@ -139,21 +139,33 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
 
-        # SHOW CLASSIC DEMO PAGE
-        if btnName == "btn_classic":
-            widgets.stackedWidget.setCurrentWidget(widgets.classic_page)
-            UIFunctions.resetStyle(self, btnName)
-            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
-        # SHOW WEBCAM DEMO PAGE
-        if btnName == "btn_webcam":
-            widgets.stackedWidget.setCurrentWidget(widgets.webcam_page) # SET PAGE
-            UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
-            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
-            
-            self.ui.webcam.recompute_config()
-            self.microrep_thread.recompute_design()
+        if btnName == "btn_explorable" or btnName == "btn_webcam":
             self.webcam_thread.startWebcam()
+
+            # SHOW EXPLORABLE DEMO PAGE
+            if btnName == "btn_explorable":
+                widgets.stackedWidget.setCurrentWidget(widgets.explorable_page)
+                UIFunctions.resetStyle(self, btnName)
+                btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
+                
+                self.ui.explorable.recompute_config()
+                self.microrep_thread.recompute_design()
+                self.ui.explorable.start()
+            else :
+                self.ui.explorable.stop()
+
+            # SHOW WEBCAM DEMO PAGE
+            if btnName == "btn_webcam":
+                widgets.stackedWidget.setCurrentWidget(widgets.webcam_page) # SET PAGE
+                UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
+                btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
+                
+                self.ui.webcam.recompute_config()
+                self.microrep_thread.recompute_design()
+                self.ui.webcam.start()
+            else :
+                self.ui.webcam.stop()
         else :
             self.webcam_thread.stopWebcam()
 

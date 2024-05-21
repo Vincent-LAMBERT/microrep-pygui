@@ -38,6 +38,7 @@ class Webcam(QWidget) :
 
 
         # Webcam variables
+        self.page_is_active = False
         self.first_computed = False
 
         self.back_image_cv = None
@@ -60,11 +61,19 @@ class Webcam(QWidget) :
         self.ui.comboBox_family.addItems(self.families)
         self.ui.comboBox_config.addItems(self.list_config)
 
+        webcam_thread.image_data.connect(self.update_image)
+
     def recompute_config(self) :
         config = self.ui.comboBox_config.currentText()
         with open(get_config("live_config.csv"), "w") as config_file :
             config_file.write(config)
         self.mgc.set_config("live_config.csv")
+
+    def start(self) :
+        self.page_is_active = True
+    
+    def stop(self) :
+        self.page_is_active = False
 
     ################################################################
     #################### SLOT FUNCTIONS ############################
@@ -120,21 +129,20 @@ class Webcam(QWidget) :
     # Fonction gerant la mise a jour de l'affichage
     @Slot(np.ndarray)
     def update_image(self, image):
+        if self.page_is_active :
+            back_thread = threading.Thread(target=self.update_background, args=(image,))
+            back_thread.start()
 
-        back_thread = threading.Thread(target=self.update_background, args=(image,))
-        back_thread.start()
+            if self.frame_count % 2 == 0 :
+                thread = threading.Thread(target=self.update_all, args=(image, 0.1))
+                thread.start()        
 
-        if self.frame_count % 2 == 0 :
-            thread = threading.Thread(target=self.update_all, args=(image, 0.1))
-            thread.start()        
+            labels_thread = threading.Thread(target=self.update_labels)
+            labels_thread.start()
 
-        labels_thread = threading.Thread(target=self.update_labels)
-        labels_thread.start()
+            self.mgc.update_running_info()
 
-        self.mgc.update_running_info()
-
-        self.frame_count += 1
-        
+            self.frame_count += 1
 
     def update_background(self, image):
         # time.sleep(0.2) # Makes the background update coincide with the markers update
