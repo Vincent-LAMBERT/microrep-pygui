@@ -244,6 +244,7 @@ class StreamHandLandmarker():
 
             return mean_hands
 
+        
 
 def update_mp_results(mp_results, list, max_size) :
     if len(list) == max_size :

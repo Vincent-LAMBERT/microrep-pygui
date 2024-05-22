@@ -1,0 +1,3 @@
+[submodule "modules/utils/microgesture_detector"]
+	path = modules/utils/microgesture_detector
+	url = git@github.com:Vincent-LAMBERT/microgesture-detector.git

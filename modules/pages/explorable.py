@@ -9,16 +9,20 @@ import modules.utils.HandDetection as hd
 import modules.utils.DesignManagement as dm
 import modules.utils.AppUtils as u
 from lxml import etree
+from PySide6.QtGui import QPixmap,QImage
 from modules.utils.AppUtils import get_config, svg_to_pixmap
 from microrep.core.export import export
 from microrep.create_representations.create_representations import CreateRepresentations
 from modules.utils.MicroRepThread import resize_tree
+import modules.utils.microgesture_detector.micro_glyph_detector as mgd
 
 from microrep.create_representations.create_representations.configuration_file import get_combination_from_row
 from PySide6.QtCore import Slot
 
 from microrep.core.utils import get_fmc_combination, get_combination_name
 
+HandPose = mgd.MicroGlyphDetector.Detection.HandPose
+WristOrientation = mgd.MicroGlyphDetector.Detection.WristOrientation
 
 
 class Explorable(QWidget) :
@@ -107,8 +111,10 @@ class Explorable(QWidget) :
         Compute the hand pose and update the hand_pose_img attribute
         """
         hand_landmarks = self.mgc.process_stream(image)
-        hand_pose = hd.get_hand_pose(hand_landmarks)
-        print(f"Hand pose: {hand_pose}")
+        if hand_landmarks != []:
+            hand_pose = HandPose(hand_landmarks)
+            wrist_orientation = WristOrientation(hand_landmarks)
+            print(f"Hand pose: {hand_pose} | Wrist orientation: {wrist_orientation}")
     
     def convert_cv_qt(self, cv_img):
         """Convert from an opencv image to QPixmap"""
@@ -124,5 +130,6 @@ class Explorable(QWidget) :
     
     
     def update_labels(self):
-        hand_pose_pixmap = self.convert_cv_qt(self.hand_pose_img)
-        self.ui.label_live_file.setPixmap(hand_pose_pixmap)
+        # hand_pose_pixmap = self.convert_cv_qt(self.hand_pose_img)
+        # self.ui.label_live_file.setPixmap(hand_pose_pixmap)
+        pass
