@@ -14,7 +14,7 @@ from modules.utils.AppUtils import get_config, svg_to_pixmap
 from microrep.core.export import export
 from microrep.create_representations.create_representations import CreateRepresentations
 from modules.utils.MicroRepThread import resize_tree
-import modules.utils.microgesture_detector.micro_glyph_detector as mgd
+import microglyph.micro_glyph_detector as mgd
 
 from microrep.create_representations.create_representations.configuration_file import get_combination_from_row
 from PySide6.QtCore import Slot
@@ -39,6 +39,8 @@ class Explorable(QWidget) :
         self.families = ["AandB", "MaS"]
 
         self.page_is_active = False
+        self.filename = None
+        self.hand_pose_img = None
 
     def configure(self, ui, microrep_thread, webcam_thread) :
         self.ui = ui
@@ -114,7 +116,12 @@ class Explorable(QWidget) :
         if hand_landmarks != []:
             hand_pose = HandPose(hand_landmarks)
             wrist_orientation = WristOrientation(hand_landmarks)
-            print(f"Hand pose: {hand_pose} | Wrist orientation: {wrist_orientation}")
+
+            filename = hd.get_hand_pose_file_name(wrist_orientation, hand_pose)
+            if filename != self.filename:
+                print(f"filename: {filename}")
+                self.filename = filename
+                self.hand_pose_img = QPixmap("resources/hand_poses/" + self.filename)
     
     def convert_cv_qt(self, cv_img):
         """Convert from an opencv image to QPixmap"""
@@ -131,5 +138,5 @@ class Explorable(QWidget) :
     
     def update_labels(self):
         # hand_pose_pixmap = self.convert_cv_qt(self.hand_pose_img)
-        # self.ui.label_live_file.setPixmap(hand_pose_pixmap)
-        pass
+        if self.hand_pose_img is not None:
+            self.ui.label_live_file.setPixmap(self.hand_pose_img)

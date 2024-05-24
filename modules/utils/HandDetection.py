@@ -8,7 +8,9 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from mediapipe.tasks.python.components.containers.landmark import NormalizedLandmark
 import subprocess
+from microrep.core.utils import get_wrist_orientation_nickname, get_status_nickname
 from typing import List, Mapping, Optional, Tuple, Union
+
 
 import numpy as np
 from mediapipe.framework.formats import landmark_pb2
@@ -17,7 +19,7 @@ from mediapipe import solutions
 
 from .AppUtils import *
 
-
+import microrep.core.utils as u
 from mediapipe import solutions
 from mediapipe.framework.formats import landmark_pb2
 import numpy as np
@@ -244,7 +246,15 @@ class StreamHandLandmarker():
 
             return mean_hands
 
-        
+def get_hand_pose_file_name(wrist_orientation, hand_pose):
+    label = get_wrist_orientation_nickname(wrist_orientation.orientation)
+    label += f"_"
+    for finger in u.FINGERS_WITH_THUMB :
+        status = hand_pose.finger_states[finger]
+        label += finger[0].capitalize() + get_status_nickname(status) + "-"
+    label = label[:-1]+".png"
+    
+    return label
 
 def update_mp_results(mp_results, list, max_size) :
     if len(list) == max_size :

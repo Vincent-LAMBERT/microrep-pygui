@@ -6,6 +6,7 @@ from main import *
 import threading
 
 import modules.utils.HandDetection as hd
+from PySide6.QtGui import QPixmap,QImage
 import modules.utils.DesignManagement as dm
 import modules.utils.AppUtils as u
 from lxml import etree
