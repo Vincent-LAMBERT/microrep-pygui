@@ -62,7 +62,7 @@ class Webcam(QWidget) :
         self.ui.comboBox_family.addItems(self.families)
         self.ui.comboBox_config.addItems(self.list_config)
 
-        webcam_thread.image_data.connect(self.update_image)
+        # webcam_thread.image_data.connect(self.update_image)
 
     def recompute_config(self) :
         config = self.ui.comboBox_config.currentText()

@@ -20,6 +20,7 @@ import threading
 import cv2
 from main import *
 from modules.utils.AppUtils import TEMP_FOLDER_PATH, createFolder, deleteFolder
+from modules.utils.CamThread import CamThread
 from modules.utils.MicroRepThread import MicroRepThread
 from modules.utils.WebcamThread import WebcamThread
 
@@ -59,7 +60,8 @@ class AppFunctions(MainWindow):
         # self.explorable_thread.image_data.connect(self.ui.explorable.update_image)
         # self.explorable_thread.start()
 
-        self.webcam_thread = WebcamThread()
+        # self.webcam_thread = WebcamThread()
+        self.webcam_thread = CamThread()
         self.webcam_thread.start()
 
         # Set to home page

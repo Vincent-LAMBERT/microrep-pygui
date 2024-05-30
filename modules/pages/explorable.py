@@ -94,13 +94,15 @@ class Explorable(QWidget) :
     ################################################################
 
     @Slot(np.ndarray)
-    def update_image(self, image):
+    def update_image(self, triplet):
         """Updates the image_label with a new opencv image"""
+        hand_landmarks, hand_pose, wrist_orientation = triplet
+
         if self.page_is_active :
             # qt_img = self.convert_cv_qt(image)
             # self.ui.label_explorable_live_file.setPixmap(qt_img)
             
-            back_thread = threading.Thread(target=self.update_hand_pose, args=(image,))
+            back_thread = threading.Thread(target=self.update_hand_pose, args=(hand_landmarks, hand_pose, wrist_orientation,))
             back_thread.start()
 
             labels_thread = threading.Thread(target=self.update_labels)
@@ -108,20 +110,20 @@ class Explorable(QWidget) :
             
             self.mgc.update_running_info()
 
-    def update_hand_pose(self, image):
+    def update_hand_pose(self, hand_landmarks, hand_pose, wrist_orientation):
         """
         Compute the hand pose and update the hand_pose_img attribute
         """
-        hand_landmarks = self.mgc.process_stream(image)
         if hand_landmarks != []:
-            hand_pose = HandPose(hand_landmarks)
-            wrist_orientation = WristOrientation(hand_landmarks)
+            # hand_pose = HandPose(hand_landmarks)
+            # wrist_orientation = WristOrientation(hand_landmarks)
 
             filename = hd.get_hand_pose_file_name(wrist_orientation, hand_pose)
             if filename != self.filename:
-                print(f"filename: {filename}")
                 self.filename = filename
-                self.hand_pose_img = QPixmap("resources/hand_poses/" + self.filename)
+                image = QImage("resources/images/hand_poses/" + self.filename)
+                print(f"filename: {filename} | image: {image}")
+                self.hand_pose_img = QPixmap(image)
     
     def convert_cv_qt(self, cv_img):
         """Convert from an opencv image to QPixmap"""
@@ -137,6 +139,6 @@ class Explorable(QWidget) :
     
     
     def update_labels(self):
-        # hand_pose_pixmap = self.convert_cv_qt(self.hand_pose_img)
+        # hand_pose_pixmap = self.convert_cv_qt(image)
         if self.hand_pose_img is not None:
-            self.ui.label_live_file.setPixmap(self.hand_pose_img)
+            self.ui.label_explorable_live_file.setPixmap(self.hand_pose_img)
