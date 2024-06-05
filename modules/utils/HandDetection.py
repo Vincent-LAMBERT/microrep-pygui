@@ -246,13 +246,13 @@ class StreamHandLandmarker():
 
             return mean_hands
 
-def get_hand_pose_file_name(wrist_orientation, hand_pose):
+def get_hand_pose_file_name(wrist_orientation, hand_pose, extension=".svg"):
     label = get_wrist_orientation_nickname(wrist_orientation.orientation)
     label += f"_"
     for finger in u.FINGERS_WITH_THUMB :
         status = hand_pose.finger_states[finger]
         label += finger[0].capitalize() + get_status_nickname(status) + "-"
-    label = label[:-1]+".png"
+    label = label[:-1]+extension
     
     return label
 

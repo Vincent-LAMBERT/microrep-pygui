@@ -93,7 +93,7 @@ def getExportPath() :
         return export_path
 
 
-def svg_to_pixmap(svg_tree, height, width):
+def svg_to_pixmap(svg_tree, height=715, width=564):
     # Convert the SVG tree to an SVG string
     svg_string = etree.tostring(svg_tree, pretty_print=True).decode()
 

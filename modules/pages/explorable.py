@@ -121,9 +121,12 @@ class Explorable(QWidget) :
             filename = hd.get_hand_pose_file_name(wrist_orientation, hand_pose)
             if filename != self.filename:
                 self.filename = filename
-                image = QImage("resources/images/hand_poses/" + self.filename)
-                print(f"filename: {filename} | image: {image}")
-                self.hand_pose_img = QPixmap(image)
+                # image = QImage("resources/images/hand_poses/" + self.filename)
+                # print(f"filename: {filename} | image: {image}")
+                # self.hand_pose_img = QPixmap(image)
+
+                svg_tree = dm.read_file("resources/images/hand_poses/" + self.filename)
+                self.hand_pose_img = svg_to_pixmap(svg_tree)
     
     def convert_cv_qt(self, cv_img):
         """Convert from an opencv image to QPixmap"""
