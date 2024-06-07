@@ -68,8 +68,8 @@ class CamThread(QThread):
                 hand_landmarks.append(landmark)
 
         if hand_landmarks != []:
-            hand_pose = HandPose(hand_landmarks)
             wrist_orientation = WristOrientation(hand_landmarks)
+            hand_pose = HandPose(hand_landmarks, wrist_orientation.orientation)
             print("CAMERA: "+str(self.previewName)+" | Hand_pose: "+str(hand_pose)+", Wrist_orientation: "+str(wrist_orientation))
         else:
             hand_pose = None
