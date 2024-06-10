@@ -125,6 +125,8 @@ class Explorable(QWidget) :
                 # print(f"filename: {filename} | image: {image}")
                 # self.hand_pose_img = QPixmap(image)
 
+    
+                print(f"filename: {filename}")
                 svg_tree = dm.read_file("resources/images/hand_poses/" + self.filename)
                 self.hand_pose_img = svg_to_pixmap(svg_tree)
     

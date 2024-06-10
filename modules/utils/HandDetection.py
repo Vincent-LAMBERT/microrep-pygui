@@ -253,7 +253,6 @@ def get_hand_pose_file_name(wrist_orientation, hand_pose, extension=".svg"):
         status = hand_pose.finger_states[finger]
         label += finger[0].capitalize() + get_status_nickname(status) + "-"
     label = label[:-1]+extension
-    
     return label
 
 def update_mp_results(mp_results, list, max_size) :
