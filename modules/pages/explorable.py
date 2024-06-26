@@ -44,15 +44,17 @@ class Explorable(QWidget) :
         self.filename = None
         self.hand_pose_img = None
 
-    def configure(self, ui, microrep_thread, webcam_thread) :
+    def configure(self, ui, microrep_thread, main_thread, second_thread) :
         self.ui = ui
         self.mgc = microrep_thread
-        self.wt = webcam_thread
 
         self.ui.comboBox_explorable_family.addItems(self.families)
         self.ui.comboBox_explorable_config.addItems(self.list_config)
 
-        webcam_thread.image_data.connect(self.update_image)
+        self.main_thread = main_thread
+        self.second_thread = second_thread
+        
+        self.update_image(self.main_thread, self.second_thread)
 
     def recompute_config(self) :
         config = self.ui.comboBox_explorable_config.currentText()
@@ -62,9 +64,13 @@ class Explorable(QWidget) :
 
     def start(self) :
         self.page_is_active = True
+        self.main_thread.start_webcam()
+        self.second_thread.start_webcam()
     
     def stop(self) :
         self.page_is_active = False
+        self.main_thread.stop_webcam()
+        self.second_thread.stop_webcam()
 
     ################################################################
     #################### SLOT FUNCTIONS ############################
@@ -97,23 +103,23 @@ class Explorable(QWidget) :
     ####################  VIDEO FUNCTIONS  #########################
     ################################################################
 
-    @Slot(np.ndarray)
-    def update_image(self, resultThread):
+    def update_image(self, thread1, thread2):
         """Updates the image_label with a new opencv image"""
-        pass
         # thread1, thread2 = threads
         # # print(f"Thread 1: {thread1.isRunning()} | Thread 2: {thread2.isRunning()}")
 
-        # if self.page_is_active :
+        results = []
+        
+        # while thread1.isRunning() and thread2.isRunning():
             
-        #     resultThread = threading.Thread(target=get_results, args=(thread1, thread2))
-        #     resultThread.start()
+        #     # resultThread = threading.Thread(target=get_results, args=(thread1, thread2, results))
+        #     # resultThread.start()
             
         #     # back_thread = threading.Thread(target=self.update_hand_pose, args=(hand_landmarks, hand_pose, wrist_orientation,))
         #     # back_thread.start()
 
-        #     labels_thread = threading.Thread(target=self.update_labels)
-        #     labels_thread.start()
+        #     # labels_thread = threading.Thread(target=self.update_labels)
+        #     # labels_thread.start()
             
         #     self.mgc.update_running_info()
 
@@ -156,29 +162,26 @@ class Explorable(QWidget) :
             self.ui.label_explorable_live_file.setPixmap(self.hand_pose_img)
 
         
-def get_results(thread1, thread2):
-    results = []
-    
-    while thread1.isRunning() and thread2.isRunning():
-        if thread1.results != None and thread2.results != None:
-            result = mergeThreads(thread1, thread2)
-            results.append(result)
+def get_results(thread1, thread2, results):
+    if thread1.results != None and thread2.results != None:
+        result = mergeThreads(thread1, thread2)
+        results.append(result)
+        
+        if len(results) > 15:
+            results.pop(0)
+        
+        # Check if every result is the same
+        if all(elem == results[-1] for elem in results):
+            rs = results[-1]
+            # Corrected orientation gives the orient for the filename
+            filename = hd.get_hand_pose_file_name(*rs)
             
-            if len(results) > 15:
-                results.pop(0)
-            
-            # Check if every result is the same
-            if all(elem == results[-1] for elem in results):
-                rs = results[-1]
-                # Corrected orientation gives the orient for the filename
-                filename = hd.get_hand_pose_file_name(*rs)
-                
-                if thread2.results[1] in [WristOrientation.BACK, WristOrientation.FRONT, WristOrientation.LEFT, WristOrientation.RIGHT] :
-                    name = f"{thread2.results[1]} \t\t"
-                else :
-                    name = f"{thread2.results[1]} \t"
-                # print(f"{name} --- {thread1.previewName}: {thread1.results[0]} --- {thread2.previewName}: {thread2.results[0]}")
-                print(f"{name} --- {thread1.previewName}: {thread1.results[2]} \t\t| {thread2.previewName}: {thread2.results[2]} \t\t| final: {rs[1]}")
+            if thread2.results[1] in [WristOrientation.BACK, WristOrientation.FRONT, WristOrientation.LEFT, WristOrientation.RIGHT] :
+                name = f"{thread2.results[1]} \t\t"
+            else :
+                name = f"{thread2.results[1]} \t"
+            # print(f"{name} --- {thread1.previewName}: {thread1.results[0]} --- {thread2.previewName}: {thread2.results[0]}")
+            # print(f"{name} --- {thread1.previewName}: {thread1.results[2]} \t\t| {thread2.previewName}: {thread2.results[2]} \t\t| final: {rs[1]}")
                 
 CALIBRATION_EQUIVALENT = {(WristOrientation.FRONT, WristOrientation.LEFT): WristOrientation.FRONT_LEFT,
                           (WristOrientation.FRONT, WristOrientation.RIGHT): WristOrientation.FRONT_RIGHT,

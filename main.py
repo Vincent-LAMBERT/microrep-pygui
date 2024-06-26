@@ -25,7 +25,6 @@ import cv2
 from modules import *
 from widgets import *
 
-
 import numpy as np
 from PySide6.QtCore import Signal, Slot, QThread
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
@@ -101,23 +100,23 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         self.show()
 
-        # SET CUSTOM THEME
-        # ///////////////////////////////////////////////////////////////
-        useCustomTheme = False
-        themeFile = "themes\py_dracula_light.qss"
+        # # SET CUSTOM THEME
+        # # ///////////////////////////////////////////////////////////////
+        # useCustomTheme = False
+        # themeFile = "themes\py_dracula_light.qss"
 
-        # SET THEME AND HACKS
-        if useCustomTheme:
-            # LOAD AND APPLY STYLE
-            UIFunctions.theme(self, themeFile, True)
+        # # SET THEME AND HACKS
+        # if useCustomTheme:
+        #     # LOAD AND APPLY STYLE
+        #     UIFunctions.theme(self, themeFile, True)
 
-            # SET HACKS
-            AppFunctions.setThemeHack(self)
+        #     # SET HACKS
+        #     AppFunctions.setThemeHack(self)
 
-        # SET HOME PAGE AND SELECT MENU
-        # ///////////////////////////////////////////////////////////////
-        widgets.stackedWidget.setCurrentWidget(widgets.home_page)
-        widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
+        # # SET HOME PAGE AND SELECT MENU
+        # # ///////////////////////////////////////////////////////////////
+        # widgets.stackedWidget.setCurrentWidget(widgets.home_page)
+        # widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
 
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
@@ -138,36 +137,30 @@ class MainWindow(QMainWindow):
             widgets.stackedWidget.setCurrentWidget(widgets.generator_page) # SET PAGE
             UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
-
-
-        if btnName == "btn_explorable" or btnName == "btn_webcam":
-            self.webcam_thread.startWebcam()
-
-            # SHOW EXPLORABLE DEMO PAGE
-            if btnName == "btn_explorable":
-                widgets.stackedWidget.setCurrentWidget(widgets.explorable_page)
-                UIFunctions.resetStyle(self, btnName)
-                btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
-                
-                self.ui.explorable.recompute_config()
-                self.microrep_thread.recompute_design()
-                self.ui.explorable.start()
-            else :
-                self.ui.explorable.stop()
-
-            # SHOW WEBCAM DEMO PAGE
-            if btnName == "btn_webcam":
-                widgets.stackedWidget.setCurrentWidget(widgets.webcam_page) # SET PAGE
-                UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
-                btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
-                
-                self.ui.webcam.recompute_config()
-                self.microrep_thread.recompute_design()
-                self.ui.webcam.start()
-            else :
-                self.ui.webcam.stop()
+        
+        # SHOW EXPLORABLE DEMO PAGE
+        if btnName == "btn_explorable":
+            widgets.stackedWidget.setCurrentWidget(widgets.explorable_page)
+            UIFunctions.resetStyle(self, btnName)
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
+            
+            # self.ui.explorable.recompute_config()
+            # self.microrep_thread.recompute_design()
+            self.ui.explorable.start()
         else :
-            self.webcam_thread.stopWebcam()
+            self.ui.explorable.stop()
+
+        # SHOW WEBCAM DEMO PAGE
+        if btnName == "btn_webcam":
+            widgets.stackedWidget.setCurrentWidget(widgets.webcam_page) # SET PAGE
+            UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
+            
+            self.ui.webcam.recompute_config()
+            self.microrep_thread.recompute_design()
+            self.ui.webcam.start()
+        else :
+            self.ui.webcam.stop()
 
         # SHOW EXPERIMENT PAGE
         if btnName == "btn_exp":
@@ -191,4 +184,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon("resources/images/images/microRep.png"))
     window = MainWindow()
+    
     sys.exit(app.exec())

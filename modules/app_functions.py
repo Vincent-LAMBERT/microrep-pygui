@@ -74,20 +74,15 @@ class AppFunctions(MainWindow):
         # self.explorable_thread.start()
 
         self.webcam_thread = WebcamThread()
-        # self.webcam_thread = CamThread()
-        self.webcam_thread.start()
+        # self.webcam_thread.start()
+        # # self.webcam_thread = CamThread()
         
-        # mp_hands = mp.solutions.hands
-        # mp_detector1 = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.8, min_tracking_confidence=0.5)
-        # mp_detector2 = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.8, min_tracking_confidence=0.5)
+        mp_hands = mp.solutions.hands
+        mp_detector1 = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.8, min_tracking_confidence=0.5)
+        mp_detector2 = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.8, min_tracking_confidence=0.5)
         
-        main_thread = CamThread("Top Webcam", mp_detector1, camID=3)
-        
-        def result_treatment(thread1, thread2):
-            cv2.imshow(thread1.previewName, thread1.result)
-        
-        second_thread = CamThread("Side Webcam", mp_detector2, camID=2, image_treatment=result_treatment, pov=WristOrientation.LEFT)
-        
+        main_thread = CamThread("Top Webcam", mp_detector1, camID=3)        
+        second_thread = CamThread("Side Webcam", mp_detector2, camID=2, pov=WristOrientation.LEFT)
         
         main_thread.start()
         second_thread.start()
@@ -98,7 +93,7 @@ class AppFunctions(MainWindow):
         # Give the ui to the children widgets
         self.ui.generator.configure(self.ui, self.microrep_thread)
         self.ui.exporter.configure(self.ui, self.microrep_thread)
-        self.ui.explorable.configure(self.ui, self.microrep_thread, second_thread)
+        self.ui.explorable.configure(self.ui, self.microrep_thread, main_thread, second_thread)
         self.ui.webcam.configure(self.ui, self.microrep_thread, self.webcam_thread)
         
         

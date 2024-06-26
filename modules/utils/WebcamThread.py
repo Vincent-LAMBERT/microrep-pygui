@@ -38,7 +38,7 @@ class WebcamThread(QThread):
     def set_fps(self, fps):
         self.fps = fps
 
-    def run(self):        
+    def run(self):
         while self._run_flag:
             fps_list = []
             if self.cap != None and self.cap.isOpened():
@@ -61,14 +61,14 @@ class WebcamThread(QThread):
     def stop(self):
         """Sets run flag to False and waits for thread to finish"""
         self._run_flag = False
-        self.stopWebcam()
+        self.stop_webcam()
         self.wait()
 
-    def stopWebcam(self):
+    def stop_webcam(self):
         if self.cap!=None and self.cap.isOpened():
             self.cap.release()
 
-    def startWebcam(self):
+    def start_webcam(self):
         self.cap = cv2.VideoCapture(0)
 
     def resetComputing(self):
