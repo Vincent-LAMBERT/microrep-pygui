@@ -44,20 +44,18 @@ class WebcamThread(QThread):
             if self.cap != None and self.cap.isOpened():
                 ret, cv_img = self.cap.read()
                 if ret:
-                    
                     # cv_img.flags.writeable = False
                     # cv_img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
                     # # Upscale the image by 450%
                     # cv_img = cv2.resize(cv_img, None, fx=2.28, fy=2.28, interpolation=cv2.INTER_LANCZOS4)
                     # Flip the image horizontally
                     # cv_img = cv2.flip(cv_img, 1)
-
+                    
                     # # font which we will be using to display FPS 
                     # font = cv2.FONT_HERSHEY_SIMPLEX 
-                
-                    # # putting the FPS count on the frame 
-                    # cv2.putText(cv_img, str(int(self.fps)), (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA) 
 
+                    # # putting the FPS count on the frame 
+                    # cv2.putText(cv_img, str(int(self.fps)), (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
                     self.image_data.emit(cv_img)
 
     def stop(self):

@@ -62,7 +62,7 @@ class Webcam(QWidget) :
         self.ui.comboBox_family.addItems(self.families)
         self.ui.comboBox_config.addItems(self.list_config)
 
-        # webcam_thread.image_data.connect(self.update_image)
+        webcam_thread.image_data.connect(self.update_image)
 
     def recompute_config(self) :
         config = self.ui.comboBox_config.currentText()
@@ -81,11 +81,13 @@ class Webcam(QWidget) :
     ################################################################
         
     def selectFamily(self) :
-        self.selectActive()
+        # self.selectActive()
+        pass
     
     def selectMapping(self) :
-        self.recompute_config()
-        self.selectActive()
+        # self.recompute_config()
+        # self.selectActive()
+        pass
 
     def selectActive(self) :
         selected_family = self.ui.comboBox_family.currentText()
@@ -134,9 +136,9 @@ class Webcam(QWidget) :
             back_thread = threading.Thread(target=self.update_background, args=(image,))
             back_thread.start()
 
-            if self.frame_count % 2 == 0 :
-                thread = threading.Thread(target=self.update_all, args=(image, 0.1))
-                thread.start()        
+            # if self.frame_count % 2 == 0 :
+            #     thread = threading.Thread(target=self.update_all, args=(image, 0.1))
+            #     thread.start()        
 
             labels_thread = threading.Thread(target=self.update_labels)
             labels_thread.start()
@@ -147,9 +149,9 @@ class Webcam(QWidget) :
 
     def update_background(self, image):
         # time.sleep(0.2) # Makes the background update coincide with the markers update
-        if not self.first_computed :
-            self.mgc.update_frame_size(image)
-            self.first_computed = True
+        # if not self.first_computed :
+        #     self.mgc.update_frame_size(image)
+        #     self.first_computed = True
 
         self.back_image_cv = image
 

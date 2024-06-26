@@ -59,36 +59,37 @@ class MicroRepThread(QThread):
         self.recompute_design()
 
     def recompute_design(self):
-        tree = get_markers_tree()
+        pass
+        # tree = get_markers_tree()
 
-        # Check if the path exists
-        if os.path.exists(TEMP_REP_FOLDER_PATH):
-            deleteFolder(TEMP_REP_FOLDER_PATH)
-        createFolder(TEMP_REP_FOLDER_PATH)
+        # # Check if the path exists
+        # if os.path.exists(TEMP_REP_FOLDER_PATH):
+        #     deleteFolder(TEMP_REP_FOLDER_PATH)
+        # createFolder(TEMP_REP_FOLDER_PATH)
 
-        write_file(tree, TEMP_FILE_PATH)
-        # Export the representations with the dedicated module
-        export_representations(self.config_path)
+        # write_file(tree, TEMP_FILE_PATH)
+        # # Export the representations with the dedicated module
+        # export_representations(self.config_path)
 
-        # Select the first file
-        if self.active not in os.listdir(TEMP_REP_FOLDER_PATH):
-            self.active = os.listdir(TEMP_REP_FOLDER_PATH)[0]
+        # # Select the first file
+        # if self.active not in os.listdir(TEMP_REP_FOLDER_PATH):
+        #     self.active = os.listdir(TEMP_REP_FOLDER_PATH)[0]
     
-        if os.path.exists(TEMP_REP_FILE_PATH) :
-            os.remove(TEMP_REP_FILE_PATH)
-        os.rename(TEMP_REP_FOLDER_PATH+self.active, TEMP_REP_FILE_PATH)
+        # if os.path.exists(TEMP_REP_FILE_PATH) :
+        #     os.remove(TEMP_REP_FILE_PATH)
+        # os.rename(TEMP_REP_FOLDER_PATH+self.active, TEMP_REP_FILE_PATH)
 
-        self.detections = 0
+        # self.detections = 0
 
-        # self.base_tree = remove_invisible_layers(base_tree)
+        # # self.base_tree = remove_invisible_layers(base_tree)
 
-        self.base_tree_left = read_file(TEMP_REP_FILE_PATH)
+        # self.base_tree_left = read_file(TEMP_REP_FILE_PATH)
 
-        self.base_tree_right = read_file(TEMP_REP_FILE_PATH)
-        self.base_tree_right = flip_tree(self.base_tree_right)
-        self.base_tree_right = apply_transforms(self.base_tree_right)
+        # self.base_tree_right = read_file(TEMP_REP_FILE_PATH)
+        # self.base_tree_right = flip_tree(self.base_tree_right)
+        # self.base_tree_right = apply_transforms(self.base_tree_right)
         
-        self.base_tree = self.base_tree_left
+        # self.base_tree = self.base_tree_left
 
     def update_markers(self, hand_landmarks, dic, img_height, img_width):
         markers_tree = get_markers_tree()

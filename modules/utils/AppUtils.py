@@ -69,15 +69,15 @@ RING_PINKY = 23
 LEFT = "Left"
 RIGHT = "Right"
 
-def getUI(fileName) :
+def getUI(fileName):
     # Get the config tree
-    return getFilePath(__file__, RESOURCES_PATH+'/data/ui/'+fileName)
+    return getFilePath(RESOURCES_PATH+'/data/ui/', fileName)
 
-def get_config(fileName) : 
+def get_config(fileName): 
     # Get the config tree
-    return getFilePath(__file__, RESOURCES_PATH+'data/config/'+fileName)
+    return getFilePath(RESOURCES_PATH+'data/config/', fileName)
 
-def getExportPath() :
+def getExportPath():
     download_path = str(pathlib.Path.home())+"/Downloads/"
     random_nbr = random.randint(0, 1000000)
     export_path = download_path+"export_"+str(random_nbr)+"/"
@@ -86,7 +86,7 @@ def getExportPath() :
         export_path = export_path.replace("/", "\\")
 
     # Check that the folder does not already exist
-    if os.path.isdir(export_path) :
+    if os.path.isdir(export_path):
         return getExportPath()
     else :
         os.mkdir(export_path)
@@ -113,14 +113,14 @@ def svg_to_pixmap(svg_tree, height=715, width=564):
 
     return pixmap
 
-def deleteFolder(temp_folder) :
+def deleteFolder(temp_folder):
     if (os.name == 'nt'):
         os.system(f"rmdir /S /Q {temp_folder}")
-    else :
+    else:
         os.system(f"rm -rf {temp_folder}")
 
-def createFolder(temp_folder) :
+def createFolder(temp_folder):
     if (os.name == 'nt'):
         os.system(f"mkdir {temp_folder}")
-    else :
+    else:
         os.system(f"mkdir {temp_folder}")

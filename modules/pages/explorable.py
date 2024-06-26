@@ -21,6 +21,8 @@ from PySide6.QtCore import Slot
 
 from microrep.core.utils import get_fmc_combination, get_combination_name
 
+from modules.utils.microgesture_detector.microglyph.micro_glyph import MicroGlyphEvent
+
 HandPose = mgd.MicroGlyphDetector.Detection.HandPose
 WristOrientation = mgd.MicroGlyphDetector.Detection.WristOrientation
 
@@ -69,11 +71,13 @@ class Explorable(QWidget) :
     ################################################################
         
     def selectFamily(self) :
-        self.selectActive()
+        # self.selectActive()
+        pass
     
     def selectMapping(self) :
-        self.recompute_config()
-        self.selectActive()
+        # self.recompute_config()
+        # self.selectActive()
+        pass
 
     def selectActive(self) :
         selected_family = self.ui.comboBox_explorable_family.currentText()
@@ -86,29 +90,32 @@ class Explorable(QWidget) :
 
             self.active = f"{self.prefix}{selected_family}_{mapping_name}.svg"
             
-            self.mgc.set_active(self.active)
-            self.wt.resetComputing()
+            # self.mgc.set_active(self.active)
+            # self.wt.resetComputing()
             
     ################################################################
     ####################  VIDEO FUNCTIONS  #########################
     ################################################################
 
     @Slot(np.ndarray)
-    def update_image(self, triplet):
+    def update_image(self, resultThread):
         """Updates the image_label with a new opencv image"""
-        hand_landmarks, hand_pose, wrist_orientation = triplet
+        pass
+        # thread1, thread2 = threads
+        # # print(f"Thread 1: {thread1.isRunning()} | Thread 2: {thread2.isRunning()}")
 
-        if self.page_is_active :
-            # qt_img = self.convert_cv_qt(image)
-            # self.ui.label_explorable_live_file.setPixmap(qt_img)
+        # if self.page_is_active :
             
-            back_thread = threading.Thread(target=self.update_hand_pose, args=(hand_landmarks, hand_pose, wrist_orientation,))
-            back_thread.start()
+        #     resultThread = threading.Thread(target=get_results, args=(thread1, thread2))
+        #     resultThread.start()
+            
+        #     # back_thread = threading.Thread(target=self.update_hand_pose, args=(hand_landmarks, hand_pose, wrist_orientation,))
+        #     # back_thread.start()
 
-            labels_thread = threading.Thread(target=self.update_labels)
-            labels_thread.start()
+        #     labels_thread = threading.Thread(target=self.update_labels)
+        #     labels_thread.start()
             
-            self.mgc.update_running_info()
+        #     self.mgc.update_running_info()
 
     def update_hand_pose(self, hand_landmarks, hand_pose, wrist_orientation):
         """
@@ -147,3 +154,82 @@ class Explorable(QWidget) :
         # hand_pose_pixmap = self.convert_cv_qt(image)
         if self.hand_pose_img is not None:
             self.ui.label_explorable_live_file.setPixmap(self.hand_pose_img)
+
+        
+def get_results(thread1, thread2):
+    results = []
+    
+    while thread1.isRunning() and thread2.isRunning():
+        if thread1.results != None and thread2.results != None:
+            result = mergeThreads(thread1, thread2)
+            results.append(result)
+            
+            if len(results) > 15:
+                results.pop(0)
+            
+            # Check if every result is the same
+            if all(elem == results[-1] for elem in results):
+                rs = results[-1]
+                # Corrected orientation gives the orient for the filename
+                filename = hd.get_hand_pose_file_name(*rs)
+                
+                if thread2.results[1] in [WristOrientation.BACK, WristOrientation.FRONT, WristOrientation.LEFT, WristOrientation.RIGHT] :
+                    name = f"{thread2.results[1]} \t\t"
+                else :
+                    name = f"{thread2.results[1]} \t"
+                # print(f"{name} --- {thread1.previewName}: {thread1.results[0]} --- {thread2.previewName}: {thread2.results[0]}")
+                print(f"{name} --- {thread1.previewName}: {thread1.results[2]} \t\t| {thread2.previewName}: {thread2.results[2]} \t\t| final: {rs[1]}")
+                
+CALIBRATION_EQUIVALENT = {(WristOrientation.FRONT, WristOrientation.LEFT): WristOrientation.FRONT_LEFT,
+                          (WristOrientation.FRONT, WristOrientation.RIGHT): WristOrientation.FRONT_RIGHT,
+                          (WristOrientation.FRONT, WristOrientation.FRONT_LEFT): WristOrientation.FRONT_LEFT,
+                          (WristOrientation.FRONT, WristOrientation.FRONT_RIGHT): WristOrientation.FRONT_RIGHT,
+                          (WristOrientation.BACK, WristOrientation.LEFT): WristOrientation.BACK_LEFT,
+                          (WristOrientation.BACK, WristOrientation.RIGHT): WristOrientation.BACK_RIGHT,
+                          (WristOrientation.BACK, WristOrientation.BACK_LEFT): WristOrientation.BACK_LEFT,
+                          (WristOrientation.BACK, WristOrientation.BACK_RIGHT): WristOrientation.BACK_RIGHT,
+                          (WristOrientation.LEFT, WristOrientation.FRONT): WristOrientation.FRONT_LEFT,
+                          (WristOrientation.LEFT, WristOrientation.BACK): WristOrientation.BACK_LEFT,
+                          (WristOrientation.LEFT, WristOrientation.FRONT_LEFT): WristOrientation.FRONT_LEFT,
+                          (WristOrientation.LEFT, WristOrientation.BACK_LEFT): WristOrientation.BACK_LEFT,
+                          (WristOrientation.RIGHT, WristOrientation.FRONT): WristOrientation.FRONT_RIGHT,
+                          (WristOrientation.RIGHT, WristOrientation.BACK): WristOrientation.BACK_RIGHT,
+                          (WristOrientation.RIGHT, WristOrientation.FRONT_RIGHT): WristOrientation.FRONT_RIGHT,
+                          (WristOrientation.RIGHT, WristOrientation.BACK_RIGHT): WristOrientation.BACK_RIGHT,
+                          (WristOrientation.FRONT_LEFT, WristOrientation.FRONT): WristOrientation.FRONT_LEFT,
+                          (WristOrientation.FRONT_LEFT, WristOrientation.LEFT): WristOrientation.FRONT_LEFT,
+                          (WristOrientation.FRONT_RIGHT, WristOrientation.FRONT): WristOrientation.FRONT_RIGHT,
+                          (WristOrientation.FRONT_RIGHT, WristOrientation.RIGHT): WristOrientation.FRONT_RIGHT,
+                          (WristOrientation.BACK_LEFT, WristOrientation.BACK): WristOrientation.BACK_LEFT,
+                          (WristOrientation.BACK_LEFT, WristOrientation.LEFT): WristOrientation.BACK_LEFT,
+                          (WristOrientation.BACK_RIGHT, WristOrientation.BACK): WristOrientation.BACK_RIGHT,
+                          (WristOrientation.BACK_RIGHT, WristOrientation.RIGHT): WristOrientation.BACK_RIGHT}
+
+def mergeThreads(thread1, thread2):
+    wrist_orientation1, corrected_orientation, hand_pose1 = thread1.results
+    wrist_orientation2, x, hand_pose2 = thread2.results
+    
+    if wrist_orientation1 != None and wrist_orientation2 != None and corrected_orientation != None and hand_pose1 != None and hand_pose2 != None :
+        
+        # Handling side/calibration issues
+        if corrected_orientation != wrist_orientation2.orientation:
+            if (corrected_orientation, wrist_orientation2.orientation) in CALIBRATION_EQUIVALENT:
+                corrected_orientation = CALIBRATION_EQUIVALENT[(corrected_orientation, wrist_orientation2.orientation)]
+    
+        if hand_pose1 == hand_pose2:
+            hand_pose = hand_pose1
+        else :
+            if wrist_orientation1.orientation==WristOrientation.FRONT :
+                hand_pose = hand_pose1
+            elif wrist_orientation2.orientation==WristOrientation.FRONT :
+                hand_pose = hand_pose2
+            else :
+                if corrected_orientation == WristOrientation.FRONT_LEFT :
+                    hand_pose = hand_pose2
+                    # From the side camera, keep the ring and pinky
+                    hand_pose.finger_states[MicroGlyphEvent.FINGER.RING] = hand_pose1.finger_states[MicroGlyphEvent.FINGER.RING]
+                    hand_pose.finger_states[MicroGlyphEvent.FINGER.PINKY] = hand_pose1.finger_states[MicroGlyphEvent.FINGER.PINKY]
+                else : 
+                    hand_pose = hand_pose2
+
+        return corrected_orientation, hand_pose

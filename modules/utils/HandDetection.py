@@ -121,6 +121,8 @@ class ImageHandLandmarker():
          min_hand_presence_confidence = 0.3, # lower than value to get predictions more often
          min_tracking_confidence = 0.3, # lower than value to get predictions more often
          )
+        
+        # print(f"Options: {options}")
         self.landmarker =  self.landmarker.create_from_options(options)
    
    def detect(self, frame):
@@ -160,6 +162,7 @@ class StreamHandLandmarker():
             min_tracking_confidence = 0.3, # lower than value to get predictions more often
             result_callback=update_result)
         
+        # print(f"Options: {options}")
         # initialize landmarker
         self.landmarker = self.landmarker.create_from_options(options)
     
@@ -246,8 +249,8 @@ class StreamHandLandmarker():
 
             return mean_hands
 
-def get_hand_pose_file_name(wrist_orientation, hand_pose, extension=".svg"):
-    label = get_wrist_orientation_nickname(wrist_orientation.orientation)
+def get_hand_pose_file_name(orientation, hand_pose, extension=".svg"):
+    label = get_wrist_orientation_nickname(orientation)
     label += f"_"
     for finger in u.FINGERS_WITH_THUMB :
         status = hand_pose.finger_states[finger]
