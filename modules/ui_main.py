@@ -15,6 +15,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtSvgWidgets import QSvgWidget
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
     QHBoxLayout, QLabel, QLineEdit, QListWidget,
     QListWidgetItem, QMainWindow, QPushButton, QSizePolicy,
@@ -1131,22 +1132,10 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget_4.setGeometry(QRect(10, -10, 811, 551))
         self.verticalLayout_11 = QVBoxLayout(self.verticalLayoutWidget_4)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.widget_4 = QWidget(self.verticalLayoutWidget_4)
-        self.widget_4.setObjectName(u"widget_4")
-        self.label_explorable_live_file = ImageViewer(self.widget_4)
-        self.label_explorable_live_file.setObjectName(u"label_explorable_live_file")
-        self.label_explorable_live_file.setGeometry(QRect(0, 0, 840, 560))
-        self.label_explorable_markers = ImageViewer(self.widget_4)
-        self.label_explorable_markers.setObjectName(u"label_explorable_markers")
-        self.label_explorable_markers.setGeometry(QRect(0, 0, 840, 560))
-        self.label_explorable_rep = ImageViewer(self.widget_4)
-        self.label_explorable_rep.setObjectName(u"label_explorable_rep")
-        self.label_explorable_rep.setGeometry(QRect(0, 0, 840, 560))
-        self.label_explorable_commands = ImageViewer(self.widget_4)
-        self.label_explorable_commands.setObjectName(u"label_explorable_commands")
-        self.label_explorable_commands.setGeometry(QRect(0, 0, 840, 560))
+        self.widget_svg = QSvgWidget(self.verticalLayoutWidget_4)
+        self.widget_svg.setObjectName(u"widget_svg")
 
-        self.verticalLayout_11.addWidget(self.widget_4)
+        self.verticalLayout_11.addWidget(self.widget_svg)
 
         self.comboBox_explorable_config = QComboBox(self.explorable)
         self.comboBox_explorable_config.setObjectName(u"comboBox_explorable_config")
@@ -1788,10 +1777,6 @@ class Ui_MainWindow(object):
         self.label_markers.setProperty("text", "")
         self.label_rep.setProperty("text", "")
         self.label_commands.setProperty("text", "")
-        self.label_explorable_live_file.setProperty("text", "")
-        self.label_explorable_markers.setProperty("text", "")
-        self.label_explorable_rep.setProperty("text", "")
-        self.label_explorable_commands.setProperty("text", "")
         self.comboBox_export_type.setItemText(0, QCoreApplication.translate("MainWindow", u"SVG", None))
         self.comboBox_export_type.setItemText(1, QCoreApplication.translate("MainWindow", u"PNG", None))
         self.comboBox_export_type.setItemText(2, QCoreApplication.translate("MainWindow", u"JPG", None))

@@ -20,7 +20,6 @@ import threading
 import cv2
 import mediapipe as mp
 from main import *
-from modules.pages.explorable import get_results
 from modules.utils.AppUtils import TEMP_FOLDER_PATH, createFolder, deleteFolder
 from modules.utils.CamThread import CamThread
 from modules.utils.MicroRepThread import MicroRepThread

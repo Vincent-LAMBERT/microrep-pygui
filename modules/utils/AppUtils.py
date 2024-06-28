@@ -21,6 +21,7 @@ DATA_PATH=getFilePath(RESOURCES_PATH, "data/")
 HAND_LANDMARK_PATH=getFilePath(DATA_PATH, "task/HandLandmarker.task")
 MOVES_XML_PATH=getFilePath(DATA_PATH, "xml/list_move.xml")
 
+HAND_POSES_FOLDER_PATH=getFilePath(RESOURCES_PATH, "images/hand_poses/")
 SVG_FOLDER_PATH=getFilePath(RESOURCES_PATH, "images/svg/")
 DESIGN_FILE=SVG_FOLDER_PATH+"families.svg"
 TEMP_FOLDER_PATH=getFilePath(SVG_FOLDER_PATH, "temp/")

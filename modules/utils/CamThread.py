@@ -27,7 +27,7 @@ class CamThread(threading.Thread):
     SVG_FOLDER_PATH="C:\\Users\\sasuk\\Other\\microrep-pygui\\resources\\images\\hand_poses\\"
     FRAMES_DELAY=20
 
-    def __init__(self, previewName, mp_detector, camID, pov=WristOrientation.FRONT, image_treatment=None):
+    def __init__(self, previewName, mp_detector, camID, pov=WristOrientation.FRONT, display_window=False):
         threading.Thread.__init__(self)
         self._run_flag = True
         self.webcam_to_start = False
@@ -35,15 +35,11 @@ class CamThread(threading.Thread):
         
         self.previewName = previewName
         self.camID = camID
-        
-        if image_treatment is None:
-            self.image_treatment = lambda frame: cv2.imshow(self.previewName, frame)
-        else:
-            self.image_treatment = image_treatment
             
         self.mp_detector = mp_detector
         self.results = None
         self.pov = pov
+        self.display_window = display_window
         
         self.cam = None
 
@@ -67,9 +63,11 @@ class CamThread(threading.Thread):
                 self.webcam_to_start=False
                 self.cam_is_active=True
                 
-                cv2.namedWindow(self.previewName)
-                cv2.setWindowProperty(self.previewName, cv2.WND_PROP_TOPMOST, 1)
-                # cam = cv2.VideoCapture(camID)
+                if self.display_window:
+                    cv2.namedWindow(self.previewName)
+                    cv2.setWindowProperty(self.previewName, cv2.WND_PROP_TOPMOST, 1)
+                    # cam = cv2.VideoCapture(camID)
+                    
                 self.cam = cv2.VideoCapture(self.camID, cv2.CAP_DSHOW)
                 print(f"Camera {self.camID} is opened")
                 self.cam.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
@@ -96,12 +94,13 @@ class CamThread(threading.Thread):
                 else :
                     self.results = None
 
-                self.image_treatment(frame)
+                if self.display_window:
+                    cv2.imshow(self.previewName, frame)
 
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        break
 
-            elif not self.webcam_to_start and not self.cam_is_active:
+            elif not self.webcam_to_start and not self.cam_is_active and self.display_window:
                 # Destroy the window if it exist
                 if cv2.getWindowProperty(self.previewName, cv2.WND_PROP_VISIBLE) == 1:
                     cv2.destroyWindow(self.previewName)

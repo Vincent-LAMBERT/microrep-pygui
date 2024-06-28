@@ -617,9 +617,6 @@ Disabled */
 </string>
    </property>
    <layout class="QGridLayout" name="appMargins">
-    <property name="spacing">
-     <number>0</number>
-    </property>
     <property name="leftMargin">
      <number>10</number>
     </property>
@@ -631,6 +628,9 @@ Disabled */
     </property>
     <property name="bottomMargin">
      <number>10</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
     </property>
     <item row="0" column="0">
      <widget class="QFrame" name="bgApp">
@@ -1972,60 +1972,7 @@ p, li { white-space: pre-wrap; }
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_11">
                            <item>
-                            <widget class="QWidget" name="widget_4" native="true">
-                             <widget class="ImageViewer" name="label_explorable_live_file" native="true">
-                              <property name="geometry">
-                               <rect>
-                                <x>0</x>
-                                <y>0</y>
-                                <width>840</width>
-                                <height>560</height>
-                               </rect>
-                              </property>
-                              <property name="text" stdset="0">
-                               <string/>
-                              </property>
-                             </widget>
-                             <widget class="ImageViewer" name="label_explorable_markers" native="true">
-                              <property name="geometry">
-                               <rect>
-                                <x>0</x>
-                                <y>0</y>
-                                <width>840</width>
-                                <height>560</height>
-                               </rect>
-                              </property>
-                              <property name="text" stdset="0">
-                               <string/>
-                              </property>
-                             </widget>
-                             <widget class="ImageViewer" name="label_explorable_rep" native="true">
-                              <property name="geometry">
-                               <rect>
-                                <x>0</x>
-                                <y>0</y>
-                                <width>840</width>
-                                <height>560</height>
-                               </rect>
-                              </property>
-                              <property name="text" stdset="0">
-                               <string/>
-                              </property>
-                             </widget>
-                             <widget class="ImageViewer" name="label_explorable_commands" native="true">
-                              <property name="geometry">
-                               <rect>
-                                <x>0</x>
-                                <y>0</y>
-                                <width>840</width>
-                                <height>560</height>
-                               </rect>
-                              </property>
-                              <property name="text" stdset="0">
-                               <string/>
-                              </property>
-                             </widget>
-                            </widget>
+                            <widget class="QSvgWidget" name="widget_svg" native="true"/>
                            </item>
                           </layout>
                          </widget>
