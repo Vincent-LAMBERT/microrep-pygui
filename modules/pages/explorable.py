@@ -23,7 +23,7 @@ from PySide6.QtCore import Slot
 from microrep.core.utils import get_fmc_combination, get_combination_name
 
 from modules.utils.microgesture_detector.microglyph.micro_glyph import MicroGlyphEvent
-from modules.utils.microgesture_detector.microglyph.micro_glyph_detector import FINGERS
+from modules.utils.microgesture_detector.microglyph.micro_glyph_detector import FINGERS, THUMB
 
 HandPose = mgd.MicroGlyphDetector.Detection.HandPose
 WristOrientation = mgd.MicroGlyphDetector.Detection.WristOrientation
@@ -46,7 +46,7 @@ class Explorable(QWidget) :
         self.filename = None
         self.hand_pose_img = None
 
-    def configure(self, ui, microrep_thread, main_thread, second_thread) :
+    def configure(self, ui, microrep_thread, main_thread, second_thread, watch_server=None) :
         self.ui = ui
         self.mgc = microrep_thread
 
@@ -55,6 +55,7 @@ class Explorable(QWidget) :
 
         self.main_thread = main_thread
         self.second_thread = second_thread
+        self.watch_server = watch_server
         
         resultThread = threading.Thread(target=self.update_image, args=(main_thread, second_thread))
         resultThread.start()
@@ -68,12 +69,14 @@ class Explorable(QWidget) :
     def start(self) :
         self.page_is_active = True
         self.main_thread.start_webcam()
-        self.second_thread.start_webcam()
+        if self.second_thread!=None :
+            self.second_thread.start_webcam()
     
     def stop(self) :
         self.page_is_active = False
         self.main_thread.stop_webcam()
-        self.second_thread.stop_webcam()
+        if self.second_thread!=None :
+            self.second_thread.stop_webcam()
 
     ################################################################
     #################### SLOT FUNCTIONS ############################
@@ -108,75 +111,54 @@ class Explorable(QWidget) :
 
     def update_image(self, thread1, thread2):
         """Updates the image_label with a new opencv image"""
-        filename = None
         old_filename = None
-        previous_frame_result = None
+        previous_frame_wo_hp = None
         count_frames_with_result = 0
         
-        while thread1.is_alive() and thread2.is_alive():
-            result1, result2 = thread1.results, thread2.results
-            if result1 != None and result2 != None:
-                result = mergeResults(result1, result2)
-                
-                if previous_frame_result != result:
-                    count_frames_with_result = 0
-                else:
-                    count_frames_with_result += 1
-                
-                if count_frames_with_result > self.FRAMES_DELAY:
-                    # Corrected orientation gives the orient for the filename
-                    filename = hd.get_hand_pose_file_name(*result)
-                    
-                    # svg_tree = dm.read_file("resources/images/hand_poses/" + filename)
-                    # pixmap = svg_to_pixmap(svg_tree)
-                    # show with cv2
-                    # img = cv2.imread("resources/images/hand_poses/" + filename)
-                    # cv2.imshow("Hand Pose", img)
-                    
-                    if filename!=None and (old_filename==None or old_filename!=filename):
-                        old_filename = filename
-                        print(f"Filename: {filename}")
-                        # Loads the image
-                        svg_data = etree.parse(HAND_POSES_FOLDER_PATH+filename)
-                        # Change the svg width and height
-                        # svg_width = self.ui.widget_svg.width()
-                        # svg_height = self.ui.widget_svg.height()
-                        # svg_data = resize_tree(svg_data, svg_width, svg_height)
-                        
-                        svg_tree_as_string = etree.tostring(svg_data)
-                    #     # print("svg_tree_as_string: ", svg_tree_as_string)
-                        
-                        self.ui.widget_svg.load(svg_tree_as_string)
-            
-                    #     if thread2.results[1] in [WristOrientation.BACK, WristOrientation.FRONT, WristOrientation.LEFT, WristOrientation.RIGHT] :
-                    #         name = f"{thread2.results[1]} \t\t"
-                    #     else :
-                    #         name = f"{thread2.results[1]} \t"
-                    #     # # print(f"{name} --- {thread1.previewName}: {thread1.results[0]} --- {thread2.previewName}: {thread2.results[0]}")
-                    #     print(f"{name} --- {thread1.previewName}: {thread1.results[2]} \t\t| {thread2.previewName}: {thread2.results[2]} \t\t| final: {rs[1]} - {rs[0]}")
-                    
-                previous_frame_result = result
-                time.sleep(0.01)
-
-    def update_hand_pose(self, hand_landmarks, hand_pose, wrist_orientation):
-        """
-        Compute the hand pose and update the hand_pose_img attribute
-        """
-        if hand_landmarks != []:
-            # hand_pose = HandPose(hand_landmarks)
-            # wrist_orientation = WristOrientation(hand_landmarks)
-
-            filename = hd.get_hand_pose_file_name(wrist_orientation, hand_pose)
-            if filename != self.filename:
-                self.filename = filename
-                # image = QImage("resources/images/hand_poses/" + self.filename)
-                # print(f"filename: {filename} | image: {image}")
-                # self.hand_pose_img = QPixmap(image)
-
+        if thread2 == None:
+            while thread1.is_alive():
+                result1 = thread1.results
+                if result1 != None:
+                    wo1, co1, hp1 = result1
+                    wo_hp = (wo1, hp1)
+                    old_filename = self.load_image(wo_hp, previous_frame_wo_hp, count_frames_with_result, old_filename)
+        else :
+            while thread1.is_alive() and thread2.is_alive():
+                result1, result2 = thread1.results, thread2.results
+                if result1 != None and result2 != None:
+                    wo_hp = mergeResults(result1, result2)
+                    old_filename = self.load_image(wo_hp, previous_frame_wo_hp, count_frames_with_result, old_filename)
     
-                print(f"filename: {filename}")
-                svg_tree = dm.read_file("resources/images/hand_poses/" + self.filename)
-                self.hand_pose_img = svg_to_pixmap(svg_tree)
+    def load_image(self, result):
+        # Handle thumb too close to fingers cases:
+        if result[1].finger_states[THUMB] == mrep.CLOSE:
+            result = previous_frame_result
+            count_frames_with_result = 0
+        
+        if previous_frame_result != result:
+            count_frames_with_result = 0
+        else:
+            count_frames_with_result += 1
+        
+        if count_frames_with_result > self.FRAMES_DELAY:
+            # Corrected orientation gives the orient for the filename
+            filename = hd.get_hand_pose_file_name(*result)
+            
+            if filename!=None and (old_filename==None or old_filename!=filename):
+                old_filename = filename
+                if self.watch_server != None:
+                    self.watch_server.send_data(f"[FILENAME] {filename}")
+                
+                # print(f"Filename: {filename}")
+                # Loads the image
+                svg_data = etree.parse(HAND_POSES_FOLDER_PATH+filename)
+                svg_tree_as_string = etree.tostring(svg_data)
+                
+                self.ui.widget_svg.load(svg_tree_as_string)
+                
+        previous_frame_result = result
+        time.sleep(0.01)
+        return old_filename
     
     def convert_cv_qt(self, cv_img):
         """Convert from an opencv image to QPixmap"""
@@ -222,27 +204,34 @@ CALIBRATION_EQUIVALENT = {(WristOrientation.FRONT, WristOrientation.LEFT): Wrist
                           (WristOrientation.BACK_RIGHT, WristOrientation.RIGHT): WristOrientation.BACK_RIGHT}
 
 def mergeResults(result1, result2):
-    wo1, co, hp1 = result1
-    wo2, x, hp2 = result2
+    wo1, co1, hp1 = result1
+    wo2, co2, hp2 = result2
+                
+    # print(f"wo1: {wo1.orientation} \t| wo2: {wo2.orientation} \t| co2: {co2} \t| hp1: {hp1} \t| hp2: {hp2}")
     
-    if wo1 != None and wo2 != None and co != None and hp1 != None and hp2 != None :
-        
+    if wo1 != None and wo2 != None and co2 != None and hp1 != None and hp2 != None :
         # Handling side/calibration issues
-        if co != wo2.orientation:
-            if (co, wo2.orientation) in CALIBRATION_EQUIVALENT:
-                co = CALIBRATION_EQUIVALENT[(co, wo2.orientation)]
+        # if co2 != wo1.orientation:
+        #     if (co2, wo1.orientation) in CALIBRATION_EQUIVALENT:
+        #         co2 = CALIBRATION_EQUIVALENT[(co2, wo1.orientation)]
+        #     else :
+        #         co2 = wo1.orientation
+        co2 = wo1.orientation
 
         # Getting the hand pose from the right webcam according to the orientation
         if hp1 == hp2:
             hp = hp1
         else :
             if wo1.orientation==WristOrientation.FRONT :
+                # TODO Here I must take into account the angles with the camera in front
                 hp = hp1
+                hp.flex_fingers(hp2.get_flexed_fingers())
             elif wo2.orientation==WristOrientation.FRONT :
                 hp = hp2
+                hp.flex_fingers(hp1.get_flexed_fingers())
             else :
                 hp = hp2
-                # if co == WristOrientation.FRONT_LEFT :
+                # if co2 == WristOrientation.FRONT_LEFT :
                 #     hp = hp2
                 #     # From the side camera, keep the ring and pinky
                 #     hp.finger_states[RING] = hp1.finger_states[RING]
@@ -251,9 +240,9 @@ def mergeResults(result1, result2):
                 #     hp = hp2
         
         # Correcting the hand pose according to the corrected orientation (removing complex joints for side views)
-        if co in [WristOrientation.LEFT, WristOrientation.RIGHT]:
+        if co2 in [WristOrientation.LEFT, WristOrientation.RIGHT]:
             for finger in FINGERS: 
                 if hp.finger_states[finger] in [mrep.COMPLEX, mrep.ABDUCTION, mrep.ADDUCTION]:
                     hp.finger_states[finger] = mrep.UP
-
-        return co, hp
+        # print(f"co2: {co2} \t| wo1: {wo1.orientation} \t| wo2: {wo2.orientation}")
+        return co2, hp

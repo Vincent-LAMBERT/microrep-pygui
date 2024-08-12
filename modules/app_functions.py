@@ -19,9 +19,11 @@
 import threading
 import cv2
 import mediapipe as mp
+import numpy as np
 from main import *
 from modules.utils.AppUtils import TEMP_FOLDER_PATH, createFolder, deleteFolder
 from modules.utils.CamThread import CamThread
+from modules.utils.server.JavaServer import JavaServer
 from modules.utils.MicroRepThread import MicroRepThread
 from modules.utils.WebcamThread import WebcamThread
 
@@ -80,11 +82,17 @@ class AppFunctions(MainWindow):
         mp_detector1 = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.8, min_tracking_confidence=0.5)
         mp_detector2 = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.8, min_tracking_confidence=0.5)
         
-        main_thread = CamThread("Top Webcam", mp_detector1, camID=3)        
-        second_thread = CamThread("Side Webcam", mp_detector2, camID=2, pov=WristOrientation.LEFT)
+        main_thread = CamThread("Computer Webcam", mp_detector1, camID=0)
+        # main_thread = CamThread("Top Webcam", mp_detector1, camID=3, display_window=True)
+        # second_thread = CamThread("Side Webcam", mp_detector2, camID=2, pov=WristOrientation.LEFT, compensation=-np.pi/4, display_window=True)
+        second_thread=None
         
         main_thread.start()
-        second_thread.start()
+        # second_thread.start()
+        
+        watch_server=None
+        # watch_server = JavaServer("explorable", host="192.168.37.61", port=34295)
+        # watch_server.start()
 
         # Set to home page
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
@@ -92,7 +100,7 @@ class AppFunctions(MainWindow):
         # Give the ui to the children widgets
         self.ui.generator.configure(self.ui, self.microrep_thread)
         self.ui.exporter.configure(self.ui, self.microrep_thread)
-        self.ui.explorable.configure(self.ui, self.microrep_thread, main_thread, second_thread)
+        self.ui.explorable.configure(self.ui, self.microrep_thread, main_thread, second_thread, watch_server)
         self.ui.webcam.configure(self.ui, self.microrep_thread, self.webcam_thread)
         
         

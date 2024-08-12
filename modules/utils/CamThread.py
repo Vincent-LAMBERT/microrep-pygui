@@ -9,13 +9,13 @@ import threading
 from lxml import etree
 
 import microglyph.micro_glyph_detector as mgd
+
+HandPose = mgd.MicroGlyphDetector.Detection.HandPose
+WristOrientation = mgd.MicroGlyphDetector.Detection.WristOrientation
 # import  NormalizedLandmark
 from mediapipe.tasks.python.components.containers.landmark import NormalizedLandmark
 
 from modules.utils.HandDetection import get_hand_pose_file_name
-
-HandPose = mgd.MicroGlyphDetector.Detection.HandPose
-WristOrientation = mgd.MicroGlyphDetector.Detection.WristOrientation
 
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
@@ -27,7 +27,7 @@ class CamThread(threading.Thread):
     SVG_FOLDER_PATH="C:\\Users\\sasuk\\Other\\microrep-pygui\\resources\\images\\hand_poses\\"
     FRAMES_DELAY=20
 
-    def __init__(self, previewName, mp_detector, camID, pov=WristOrientation.FRONT, display_window=False):
+    def __init__(self, previewName, mp_detector, camID, pov=WristOrientation.FRONT, compensation=0, display_window=False):
         threading.Thread.__init__(self)
         self._run_flag = True
         self.webcam_to_start = False
@@ -39,6 +39,7 @@ class CamThread(threading.Thread):
         self.mp_detector = mp_detector
         self.results = None
         self.pov = pov
+        self.compensation = compensation
         self.display_window = display_window
         
         self.cam = None
@@ -85,8 +86,7 @@ class CamThread(threading.Thread):
                 self.hand_poses = []
             
             elif self.cam_is_active:
-                frame, result = self.loop_cap(self.hand_poses)
-                # frame, result = loop_cap(self.previewName, cam, self.mp_detector, self.pov, hand_poses)
+                frame, result = self.loop_cap(self.hand_poses, self.compensation)
                 self.frames.append(frame)
                 
                 if not None in result:
@@ -105,7 +105,7 @@ class CamThread(threading.Thread):
                 if cv2.getWindowProperty(self.previewName, cv2.WND_PROP_VISIBLE) == 1:
                     cv2.destroyWindow(self.previewName)
         
-    def loop_cap(self, hand_poses):
+    def loop_cap(self, hand_poses, compensation):
         rval, frame = self.cam.read()
         
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -120,16 +120,21 @@ class CamThread(threading.Thread):
             for handmark in handmarks.landmark:
                 landmark = NormalizedLandmark(handmark.x, handmark.y, handmark.z)
                 hand_landmarks.append(landmark)
+            
+        if result.multi_handedness:
+            handedness = result.multi_handedness[0].classification[0].label
+        else :
+            handedness = None
 
         if hand_landmarks != []:
-            wrist_orientation = WristOrientation(hand_landmarks)
+            wrist_orientation = WristOrientation(hand_landmarks, handedness, compensation)
             hand_pose = HandPose(hand_landmarks, wrist_orientation.orientation, hand_poses)
             hand_poses.append(hand_pose)
             if len(hand_poses) > 10 :
                 hand_poses.pop(0)
             
             if self.pov!=WristOrientation.FRONT :
-                corrected_orientation = WristOrientation.correct_orientation(wrist_orientation, self.pov)
+                corrected_orientation = WristOrientation.correct_orientation(wrist_orientation, self.pov, handedness)
             else :
                 corrected_orientation = wrist_orientation.orientation
         else :
