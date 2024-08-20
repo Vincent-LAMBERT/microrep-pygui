@@ -120,16 +120,16 @@ class Explorable(QWidget) :
                 result1 = thread1.results
                 if result1 != None:
                     wo1, co1, hp1 = result1
-                    wo_hp = (wo1, hp1)
-                    old_filename = self.load_image(wo_hp, previous_frame_wo_hp, count_frames_with_result, old_filename)
+                    wo_hp = (wo1.orientation, hp1)
+                    old_filename, previous_frame_wo_hp, count_frames_with_result = self.load_image(wo_hp, previous_frame_wo_hp, count_frames_with_result, old_filename)
         else :
             while thread1.is_alive() and thread2.is_alive():
                 result1, result2 = thread1.results, thread2.results
                 if result1 != None and result2 != None:
                     wo_hp = mergeResults(result1, result2)
-                    old_filename = self.load_image(wo_hp, previous_frame_wo_hp, count_frames_with_result, old_filename)
+                    old_filename, previous_frame_wo_hp, count_frames_with_result = self.load_image(wo_hp, previous_frame_wo_hp, count_frames_with_result, old_filename)
     
-    def load_image(self, result):
+    def load_image(self, result, previous_frame_result, count_frames_with_result, old_filename):
         # Handle thumb too close to fingers cases:
         if result[1].finger_states[THUMB] == mrep.CLOSE:
             result = previous_frame_result
@@ -158,7 +158,7 @@ class Explorable(QWidget) :
                 
         previous_frame_result = result
         time.sleep(0.01)
-        return old_filename
+        return old_filename, previous_frame_result, count_frames_with_result
     
     def convert_cv_qt(self, cv_img):
         """Convert from an opencv image to QPixmap"""

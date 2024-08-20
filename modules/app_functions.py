@@ -90,9 +90,10 @@ class AppFunctions(MainWindow):
         main_thread.start()
         # second_thread.start()
         
-        watch_server=None
+        # watch_server=None
+        watch_server = JavaServer("explorable", host="localhost", port=5000)
         # watch_server = JavaServer("explorable", host="192.168.37.61", port=34295)
-        # watch_server.start()
+        watch_server.start()
 
         # Set to home page
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)

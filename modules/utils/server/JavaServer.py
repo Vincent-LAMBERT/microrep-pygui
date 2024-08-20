@@ -28,7 +28,7 @@ SERVER_IP = "localhost"
 # SERVER_IP = "192.168.37.61"
 PORT = 5000
 
-IMAGES = ["b_tu_ic_mc_rf_pc", "f_tu_iu_mu_ru_pu", "bl_tu_ic_mu_rc_pf", "bl_tu_iu_mf_rf_pc", "br_tu_ic_mu_rc_pc", "br_tu_ic_mu_rc_pu"]
+IMAGES = ["f_tu_ic_mc_rc_pc", "f_tu_ic_mc_rc_pf", "f_tu_ic_mc_rc_pu", "f_tu_ic_mc_rd_pb", "f_tu_ic_mc_rf_pc"]
 
 serverFiles = os.path.join(os.path.dirname(__file__), "serverFiles.txt")
 
@@ -97,9 +97,9 @@ class JavaServer(threading.Thread):
                         if len(self.images)>0:
                             self.send_data(conn, "[DATA]", self.images.pop())
                             time.sleep(1)
-                            self.send_data(conn, "[ALERT]", "Banane")
+                            # self.send_data(conn, "[ALERT]", "Banane")
                             # self.send_data(conn, "[CONFIRMATION]", [True, False][random.randint(0, 1)])
-                            time.sleep(2)   
+                            # time.sleep(2)   
                         else :
                             self.close(conn)
                             break
@@ -831,77 +831,78 @@ class Controller (Client) :
 #####################################################
 
 if __name__ == "__main__":
-    # server = JavaServer(host="localhost", port=5000)
+    server = JavaServer(host="localhost", port=5000)
+    server.start()
     # server = JavaServer(host=SERVER, port=34295)        
-    if "server" in sys.argv:
-        server = Server(SERVER_IP, PORT)
-        server.start()
+    # if "server" in sys.argv:
+    #     server = Server(SERVER_IP, PORT)
+    #     server.start()
     
-    if "logger" in sys.argv:
-        logger = Logger(CLIENT_IP, PORT, sys.argv)
+    # if "logger" in sys.argv:
+    #     logger = Logger(CLIENT_IP, PORT, sys.argv)
         
-        if "logger" in sys.argv and not ("server" in sys.argv or "controller" in sys.argv or "input" in sys.argv):
-            logger.show = True
-        else :
-            logger.show = False
+    #     if "logger" in sys.argv and not ("server" in sys.argv or "controller" in sys.argv or "input" in sys.argv):
+    #         logger.show = True
+    #     else :
+    #         logger.show = False
         
-        logger.start()
+    #     logger.start()
         
-    if "controller" in sys.argv:
-        controller = Controller(CLIENT_IP, PORT, sys.argv)
+    # if "controller" in sys.argv:
+    #     controller = Controller(CLIENT_IP, PORT, sys.argv)
         
-        if "controller" in sys.argv and not ("server" in sys.argv or "logger" in sys.argv or "input" in sys.argv):
-            controller.show = True
-        else :
-            controller.show = False
+    #     if "controller" in sys.argv and not ("server" in sys.argv or "logger" in sys.argv or "input" in sys.argv):
+    #         controller.show = True
+    #     else :
+    #         controller.show = False
             
-        controller.start()
+    #     controller.start()
     
-    if "input" in sys.argv:
-        time.sleep(2)
-        input = Input(CLIENT_IP, PORT, sys.argv)
-        input.start()
+    # if "input" in sys.argv:
+    #     time.sleep(2)
+    #     input = Input(CLIENT_IP, PORT, sys.argv)
+    #     input.start()
         
         
-    if "server" in sys.argv and "input" in sys.argv:
-            time.sleep(1)
+    # if "server" in sys.argv and "input" in sys.argv:
+    #         time.sleep(1)
             
-            def on_press_key(key, server, client):
-                client.keyboard_input(key)
-                try:
-                    if key == '²':
-                        server.shutdown()
-                except AttributeError:
-                    pass
-            on_press = lambda key : on_press_key(key, server, input)
-            keyboard_thread = threading.Thread(target=sshkeyboard.listen_keyboard, args=(on_press,))
-            keyboard_thread.start()
-            keyboard_thread.join()
-            server.join()
-    else :
-        if "server" in sys.argv:
-            time.sleep(1)
+    #         def on_press_key(key, server, client):
+    #             client.keyboard_input(key)
+    #             try:
+    #                 if key == '²':
+    #                     server.shutdown()
+    #             except AttributeError:
+    #                 pass
+    #         on_press = lambda key : on_press_key(key, server, input)
+    #         keyboard_thread = threading.Thread(target=sshkeyboard.listen_keyboard, args=(on_press,))
+    #         keyboard_thread.start()
+    #         keyboard_thread.join()
+    #         server.join()
+    # else :
+    #     if "server" in sys.argv:
+    #         time.sleep(1)
             
-            def on_press_key(key, server):
-                try:
-                    if key == '²':
-                        server.shutdown()
-                except AttributeError:
-                    pass
+    #         def on_press_key(key, server):
+    #             try:
+    #                 if key == '²':
+    #                     server.shutdown()
+    #             except AttributeError:
+    #                 pass
                 
-            on_press = lambda key : on_press_key(key, server)
-            server_keyboard_thread = threading.Thread(target=sshkeyboard.listen_keyboard, args=(on_press,))
-            server_keyboard_thread.start()
-            server_keyboard_thread.join()
-            server.join()
+    #         on_press = lambda key : on_press_key(key, server)
+    #         server_keyboard_thread = threading.Thread(target=sshkeyboard.listen_keyboard, args=(on_press,))
+    #         server_keyboard_thread.start()
+    #         server_keyboard_thread.join()
+    #         server.join()
             
-        if "input" in sys.argv:
-            time.sleep(1)
+    #     if "input" in sys.argv:
+    #         time.sleep(1)
             
-            def on_press_key(key, client):
-                client.keyboard_input(key)
+    #         def on_press_key(key, client):
+    #             client.keyboard_input(key)
                 
-            on_press = lambda key : on_press_key(key, input)
-            client_keyboard_thread = threading.Thread(target=sshkeyboard.listen_keyboard, args=(on_press, None, None, False, 0.05,))
-            client_keyboard_thread.start()
-            client_keyboard_thread.join()
+    #         on_press = lambda key : on_press_key(key, input)
+    #         client_keyboard_thread = threading.Thread(target=sshkeyboard.listen_keyboard, args=(on_press, None, None, False, 0.05,))
+    #         client_keyboard_thread.start()
+    #         client_keyboard_thread.join()
